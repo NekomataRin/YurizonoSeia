@@ -17,11 +17,11 @@ module.exports = async (client) => {
         console.log(chalk.blue('[LOG]') + ' Database, Check!')
     }
 
-    var i = 0, a = 0
+    var i = 0, a = 1
     b = [
         'v0.5.0 - Yurizono Seia, Prepare To Run!',
         '/quick-math and /room-history Commands: Done!',
-        'Issues: N-Word Detector, Logger... (still, lazy to fix)',
+        'Revived! Now you can use me again!',
     ], 
     c = [
         '/drp-calc is working in progress, please wait until it\'s stable to use! -Nakamura Taki'

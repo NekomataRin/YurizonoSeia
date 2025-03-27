@@ -3,6 +3,7 @@ const Level = require('../../Database/Leveling')
 const UserCards = require('../../Database/usercards')
 const FooterEmbeds = require('../../Utils/embed')
 const RankingArr = require('../../Assets/RankCards/rankcardarr')
+const BotOwner = require('../../Utils/owners')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -82,7 +83,7 @@ module.exports = {
 
         const usemem = await interaction.guild.members.fetch(interaction.user.id)
         var usingkey = false
-        if (usemem.roles.cache.has('1244608723737903165')) {
+        if (usemem.roles.cache.has('1244608723737903165') || BotOwner.includes(usemem.id)) {
             usingkey = true
         }
 
@@ -110,7 +111,7 @@ module.exports = {
             Level.findOne({ UserID: user }, async (err, data) => {
                 if (err) throw err
                 if (!data) {
-                    await interaction.editReply('<:seiaheh:1244128991628103700> • Looks like the user you chose is currently not active yet... Please try again later...')
+                    await interaction.editReply('<:seiaheh:1244128244664504392> • Looks like the user you chose is currently not active yet... Please try again later...')
                 }
                 if (data) {
                     const previouskey = data.background
@@ -118,7 +119,7 @@ module.exports = {
                         const SkipKey = new EmbedBuilder()
                             .setColor('DarkButNotBlack')
                             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                            .setTitle('<:seiaheh:1244128991628103700> • Key skipped')
+                            .setTitle('<:seiaheh:1244128244664504392> • Key skipped')
                             .setDescription(`<:seiaehem:1244129111169826829> • Since you wrote '\`${key}\`', I skipped this for <@${user}> for now...`)
                             .setTimestamp()
                             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -138,7 +139,7 @@ module.exports = {
                         const EditKey = new EmbedBuilder()
                             .setColor('Yellow')
                             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                            .setTitle('<:seiaheh:1244128991628103700> • The key has been successfully set.')
+                            .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully set.')
                             .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
                             .setTimestamp()
                             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -161,7 +162,7 @@ module.exports = {
                                     const AddKey = new EmbedBuilder()
                                         .setColor('Yellow')
                                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                        .setTitle('<:seiaheh:1244128991628103700> • The key has been successfully added.')
+                                        .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully added.')
                                         .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
                                         .setTimestamp()
                                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -186,7 +187,7 @@ module.exports = {
                                                 const AddKey = new EmbedBuilder()
                                                     .setColor('Yellow')
                                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                                    .setTitle('<:seiaheh:1244128991628103700> • The key has been successfully added.')
+                                                    .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully added.')
                                                     .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
                                                     .setTimestamp()
                                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -199,7 +200,7 @@ module.exports = {
                                                 const IgnoreKey = new EmbedBuilder()
                                                     .setColor('Yellow')
                                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                                    .setTitle('<:seiaheh:1244128991628103700> • The key has been ignored.')
+                                                    .setTitle('<:seiaheh:1244128244664504392> • The key has been ignored.')
                                                     .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
                                                     .setTimestamp()
                                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -219,7 +220,7 @@ module.exports = {
                                                 const RemoveKey = new EmbedBuilder()
                                                     .setColor('Yellow')
                                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                                    .setTitle('<:seiaheh:1244128991628103700> • The key has been successfully removed.')
+                                                    .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully removed.')
                                                     .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
                                                     .setTimestamp()
                                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -231,7 +232,7 @@ module.exports = {
                                                 const IgnoreKey = new EmbedBuilder()
                                                     .setColor('Yellow')
                                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                                    .setTitle('<:seiaheh:1244128991628103700> • The key has been ignored.')
+                                                    .setTitle('<:seiaheh:1244128244664504392> • The key has been ignored.')
                                                     .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
                                                     .setTimestamp()
                                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })

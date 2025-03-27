@@ -32,7 +32,7 @@ module.exports = {
         let CurrentCard = await Level.findOne({ UserID: interaction.user.id }).select('-_id background')
 
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
-        let page = interaction.options.getInteger('page') || 0
+        let page = interaction.options.getInteger('page') || 1
         for (var i in BackgroundList) {
             Backgrounds.push(new AttachmentBuilder(BackgroundList[i]))
             Emoji.push(EmojiList[i])
@@ -40,7 +40,7 @@ module.exports = {
             BGSyntax.push(`attachment://RankCard_${i}.png`)
             for (var j in UnlockedRankCards.Cards) {
                 if (RankKeyName[i] === UnlockedRankCards.Cards[j]) {
-                    Status[i] = ('<:seiaheh:1244128991628103700> Status: `Obtained`')
+                    Status[i] = ('<:seiaheh:1244128244664504392> Status: `Obtained`')
                     break
                 }
             }
@@ -50,7 +50,7 @@ module.exports = {
             Status[RankKeyName.indexOf(CurrentCard.background)] = '<:SeiaSip:1244890166116618340> Status: `Currently Equipped`'
         }
         Status[0] = '<:SeiaMuted:1244890584276008970> Status: `Obtained by Default`'
-        let count = 0, listlen = RankKeyName.length
+        let listlen = RankKeyName.length
         const BackgroundEmbed = []
 
         for (var i = 0; i < RankKeyName.length; i++) {
@@ -64,7 +64,7 @@ module.exports = {
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
         }
 
-        function ListMovingButton(count) {
+        function ListMovingButton(count = page) {
             const ListButton = new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()

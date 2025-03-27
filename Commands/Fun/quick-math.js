@@ -190,7 +190,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244129048494473246> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!`)
+                        .setDescription(` <:seiaconcerned:1244129048494473246> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime/1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
@@ -291,7 +291,7 @@ module.exports = {
                                         TimeResult = (Date.now() - QstTime) / 1000
                                         let TimeScore = TimeResult.toFixed(2)
                                         TimeResult = TimeResult.toFixed(2) + 's'
-                                        scoreadd = Number(eqtcount + (1-(TimeScore/RunTime)) * Number(Difficulties.indexOf(Difficulty) + 1) * AttemptsCalc(MsgCount))
+                                        scoreadd = Math.max(Number(eqtcount + (1-(TimeScore/RunTime)) * Number(Difficulties.indexOf(Difficulty) + 1) * AttemptsCalc(MsgCount)), 0)
                                         scoreadd = scoreadd.toFixed(1)
                                         score += Number(scoreadd)
                                         score = Number(score.toFixed(1))

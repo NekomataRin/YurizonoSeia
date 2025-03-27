@@ -6,7 +6,7 @@ const Cluster2_Assets = [
         '#75cfff',
         'https://cdn.discordapp.com/emojis/1262716341270347787.png?quality=lossless',
         '<:FurinaNews:1262716341270347787>',
-        'Fontaine - Furina (<Wait For The Author>)',
+        'Fontaine - Furina (@operagx0535)',
     ],
     [
         27,

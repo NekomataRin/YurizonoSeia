@@ -73,7 +73,7 @@ module.exports = {
                 .setColor('Yellow')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setTitle('<:seiaconcerned:1244129048494473246> • Player\'s Info')
-                .setDescription(`<:seiaehem:1244129111169826829> • Form details:\n> <:SeiaPeek:1244890461592621147> **Username:** \`${UserName}\`\n> <:SeiaSip:1244890166116618340> **In Game Name:** \`${UserInGameName}\`\n> <:seiaheh:1244128991628103700> **User's Opinions:** ${UserOpinions}`)
+                .setDescription(`<:seiaehem:1244129111169826829> • Form details:\n> <:SeiaPeek:1244890461592621147> **Username:** \`${UserName}\`\n> <:SeiaSip:1244890166116618340> **In Game Name:** \`${UserInGameName}\`\n> <:seiaheh:1244128244664504392> **User's Opinions:** ${UserOpinions}`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 
@@ -82,7 +82,7 @@ module.exports = {
             })
 
             await ModalResponse.reply({
-                content: `<:seiaheh:1244128991628103700> • Ok, I collected your form answer then, anyways, this is just a testing command, not the official one, okay?`,
+                content: `<:seiaheh:1244128244664504392> • Ok, I collected your form answer then, anyways, this is just a testing command, not the official one, okay?`,
                 ephemeral: true
             })
         }

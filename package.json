@@ -10,11 +10,11 @@
   "author": "NekomataRin & LouieNotHere",
   "license": "MIT",
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.52",
+    "@napi-rs/canvas": "^0.1.68",
     "@rian8337/osu-base": "^3.3.0",
     "@rian8337/osu-difficulty-calculator": "^3.3.2",
     "chalk": "^4.1.0",
-    "discord.js": "^14.15.3",
+    "discord.js": "^14.18.0",
     "dotenv": "^16.4.5",
     "mongoose": "^6.0.2",
     "node-cron": "^3.0.3",

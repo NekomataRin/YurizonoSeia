@@ -63,7 +63,7 @@ module.exports = {
                 .setColor('Red')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setTitle('<:seiaconcerned:1244129048494473246> • Reset Rank - Done!')
-                .setDescription('<:seiaheh:1244128991628103700> • The server members\' ranking data has been deleted, hope you won\'t regret it, heehee')
+                .setDescription('<:seiaheh:1244128244664504392> • The server members\' ranking data has been deleted, hope you won\'t regret it, heehee')
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 

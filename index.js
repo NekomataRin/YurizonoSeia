@@ -42,7 +42,7 @@ const rest = new REST({ version: '10' }).setToken(token);
         let data
         data = await rest.put(
             Routes.applicationGuildCommands(clientID, guildID),
-            { body: [] },
+            { body: commands },
             //{ body : []},
         );
         console.log(chalk.blue('[LOG]') + ` Successfully Created ${data.length} Commands`)
