@@ -85,13 +85,13 @@ module.exports = async (client, message) => {
                     `<:SeiaPeek:1244890461592621147> **${message.member}** has raised their sword, raising their level to a whole new one...\n> **Current level:** \`${data.level - 1}\` >>> \`${data.level}\``,
                     `<:seiaehem:1244129111169826829> **${message.member} Sensei**, in the past, I dreamed you level up and now, you've done it so quickly... don't give up your work, Sensei!\n> **Current level:** \`${data.level - 1}\` >>> \`${data.level}\``,
                     `<:seiaehem:1244129111169826829> Hmm... i wonder what **${message.member} Sensei** is doing right now... Ah, Sensei got level up recently, so i want to cheer Sensei then...\n> **Current level:** \`${data.level - 1}\` >>> \`${data.level}\``,
-                    `<:seiaheh:1244128991628103700> **${message.member} Sensei** has successfully raised his gyatt level! Now Sensei's gyatt level is ${data.level}\n> **Current level:** \`${data.level - 1}\` >>> \`${data.level}\` `,
+                    `<:seiaheh:1244128244664504392> **${message.member} Sensei** has successfully raised his gyatt level! Now Sensei's gyatt level is ${data.level}\n> **Current level:** \`${data.level - 1}\` >>> \`${data.level}\` `,
                     `<:SeiaPeek:1244890461592621147> Embraced by the flame **${message.member}** can not see anything right now... But the memories of their levels forever remains... They got level up to that higher level, to their top of this server, you know?\n> **Current Level:** \`${data.level - 1}\` >>> \`${data.level}\``,
                 ]
 
                 const LevelUpEmbed = new EmbedBuilder()
                     .setColor('Yellow')
-                    .setTitle(`<:seiaheh:1244128991628103700> **Ranking - Level Up**`)
+                    .setTitle(`<:seiaheh:1244128244664504392> **Ranking - Level Up**`)
                     .setAuthor({ name: `${message.author.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setDescription(LevelUpMsg[Math.floor(Math.random() * LevelUpMsg.length)])
                     .setTimestamp()
