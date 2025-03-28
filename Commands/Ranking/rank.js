@@ -1,5 +1,7 @@
 const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js')
 const chalk = require('chalk')
+const { getFonts } = require('../../Functions/getFont')
+getFonts()
 
 const Canvas = require('@napi-rs/canvas')
 const Level = require('../../Database/Leveling')
