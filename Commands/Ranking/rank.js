@@ -183,16 +183,16 @@ module.exports = {
         context.globalAlpha = 1.0
         context.fillStyle = RankingColor
         context.textAlign = 'left'
-        context.font = 'bold 23px Ubuntu'
+        context.font = '700 23px Ubuntu'
         const ranktxt = `#${CurrentRank}`
         context.fillText(ranktxt, 68, 254)
 
         //Detail 5 - Username + Title
         context.fillStyle = Color
-        context.font = 'bold 30px Ubuntu'
+        context.font = '700 30px Ubuntu'
         context.fillText(user.username, 383, 55)
 
-        context.font = 'bold 20px Ubuntu'
+        context.font = '700 20px Ubuntu'
         context.fillText(Title, 382, 85)
         //Detail 6: Hexagon Level Lol
         context.beginPath()
@@ -210,7 +210,7 @@ module.exports = {
         context.fill()
         context.textAlign = 'center'
         context.fillStyle = '#FFFFFF'
-        context.font = 'bold 30px Ubuntu'
+        context.font = '700 30px Ubuntu'
         const lvltxt = `${FetchedLevel.level}`
         context.fillText(lvltxt, 384, 208)
 
@@ -234,12 +234,12 @@ module.exports = {
 
         context.fillStyle = '#FFFFFF'
         context.textAlign = 'left'
-        context.font = 'bold 12px Ubuntu'
+        context.font = '700 12px Ubuntu'
         const totalexp = `Total PP • ${FetchedLevel.total}`
         context.fillText(totalexp, 65, 213)
 
         context.textAlign = 'center'
-        context.font = 'bold 18px Ubuntu'
+        context.font = '700 18px Ubuntu'
         const Progressnum = FetchedLevel.exp / ReqExp * 100
         const Progress = `${Progressnum.toFixed(2)}%`
         const Progresstxt = `[${Progress}] ${FetchedLevel.exp}/${ReqExp}`
