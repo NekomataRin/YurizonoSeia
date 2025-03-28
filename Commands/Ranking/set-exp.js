@@ -48,12 +48,13 @@ module.exports = {
             const Total_Exp = interaction.options.getInteger('total-exp')
 
             function ReturnExp(num) {
+                if(num === 0) return [0, 0]
                 let level = 0
                 do {
                     num -= GetReqExp(level)
                     level++
                 } while (num > GetReqExp(level))
-                return [level, num]
+                return [level, num] 
             }
 
             const ResultArr = ReturnExp(Total_Exp)
