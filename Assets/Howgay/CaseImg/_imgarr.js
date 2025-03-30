@@ -20,7 +20,7 @@ const ImgArr = [
         './Assets/Howgay/CaseImg/wysi.gif',
         './Assets/Howgay/CaseImg/call-911.gif',
         './Assets/Howgay/CaseImg/waduh.png',
-        './Assets/Howgay/CaseImg/ThanhPahm.png',
+        './Assets/Howgay/CaseImg/ThanhPahm.jpg',
     ],
     [
         'attachment://403.png',
