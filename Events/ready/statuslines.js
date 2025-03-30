@@ -19,9 +19,10 @@ module.exports = async (client) => {
 
     var i = 0, a = 1
     b = [
-        'v0.5.0 - Yurizono Seia, Prepare To Run!',
-        '/quick-math and /room-history Commands: Done!',
+        'v0.5.5 - Yurizono Seia, Prepare To Run!',
+        'Updated /howgay command comments (fix bug pending session...)',
         'Revived! Now you can use me again!',
+        'Osudroid!relax Community - Official Mascot!'
     ], 
     c = [
         '/drp-calc is working in progress, please wait until it\'s stable to use! -Nakamura Taki'

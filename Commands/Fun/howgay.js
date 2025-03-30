@@ -1,8 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js')
 const FooterEmbeds = require('../../Utils/embed')
+
+const ImgList = require('../../Assets/Howgay/Texts/imglist')
 const Denied_Cases = require('../../Assets/Howgay/Texts/denied')
-const ImgArr = require('../../Assets/Howgay/CaseImg/_imgarr')
-const Cases = require('../../Assets/Howgay/Texts/normalcases')
+const Cases = require('../../Assets/Howgay/Texts/allcases')
 const wait = require('node:timers/promises').setTimeout
 const cdSchema = require('../../Database/cooldown')
 const chalk = require('chalk')
@@ -28,65 +29,37 @@ module.exports = {
         const cdtime = 45000
 
         const target = await interaction.options.getUser('user') || interaction.user
+        const tuser = await interaction.guild.members.fetch(target.id)
+
         const AvgChr = await interaction.options.getBoolean('avg') || false
-        const NumEntry = [10, 25, 50, 75, 90, 100, 101]
-        const SpecialEntry = [40.3, 40.4, 63.0, 72.7, 91.1, 99.9]
+        const NumEntry = Cases.Ranges.NormalCases
+        const SpecialEntry = Cases.Ranges.SpecialCases
 
         let Desc, Color, RunKey, ImgLink, ImgCtx
         //Bypassed Cases
-        for (var i in Denied_Cases[0]) {
-            if (target.id === Denied_Cases[0][i]) {
+        for (var i in Denied_Cases) {
+            if (target.id === Denied_Cases[i].id) {
+                Color = Cases.Colors.Rejected
+                Desc = Denied_Cases[i].desc
+                ImgLink = new AttachmentBuilder(Denied_Cases[i].img)
+                ImgCtx = Denied_Cases[i].ctx
                 RunKey = 'Denied'
                 break
             }
         }
 
         if (RunKey === 'Denied') {
-            Color = Cases[0][7]
-            if (target.id === Denied_Cases[0][0]) {
-                ImgLink = new AttachmentBuilder(ImgArr[0][0])
-                ImgCtx = ImgArr[1][0]
-                Desc = Denied_Cases[1][0]
-            } else {
-                ImgLink = new AttachmentBuilder(ImgArr[0][1])
-                ImgCtx = ImgArr[1][1]
-            }
-            for (var i = 1; i < Denied_Cases[0].length; i++) {
-                if (target.id === Denied_Cases[0][i]) {
-                    Desc = Denied_Cases[1][i]
-                    break
-                }
-            }
-
             if (target.bot && target.id !== '1244213929438089286') {
                 Desc = `<a:YaeSlap:1251733720600412240> Oi, you can't check \`/howgay\` command on a bot! (${target}), please go check someone else!`
-                ImgLink = new AttachmentBuilder(ImgArr[0][1])
-                ImgCtx = ImgArr[1][1]
-            }
-            switch (target.id) {
-                case '751225225047179324':
-                    {
-                        ImgLink = new AttachmentBuilder(ImgArr[0][0])
-                        ImgCtx = ImgArr[1][0]
-                        break
-                    }
-                case '879893732302921738':
-                    {
-                        ImgLink = new AttachmentBuilder(ImgArr[2][5])
-                        ImgCtx = ImgArr[3][5]
-                        break
-                    }
-                case '1206234286056017923':
-                    {
-                        ImgLink = new AttachmentBuilder(ImgArr[2][6])
-                        ImgCtx = ImgArr[3][6]
-                        break
-                    }
+                Color = Cases.Colors.Rejected
+                ImgLink = new AttachmentBuilder(ImgList.Rejected.None.value)
+                ImgCtx = ImgList.Rejected.None.ctx
             }
 
             const DeniedEmbed = new EmbedBuilder()
                 .setColor(Color)
                 .setTitle(`🏳️‍🌈 Checking gayness of a user`)
+                .setThumbnail(tuser.displayAvatarURL({ dynamic: true, size: 512 }))
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setDescription(Desc)
                 .setTimestamp()
@@ -105,36 +78,38 @@ module.exports = {
 
                 //Normal Entry
                 for (var i in NumEntry) {
-                    if (rng <= NumEntry[i]) {
-                        Color = Cases[0][i]
-                        Emoji = Cases[3][i]
-                        ImgLink = new AttachmentBuilder(ImgArr[0][2])
-                        ImgCtx = ImgArr[1][2]
-                        Comment = Cases[1][i][Math.floor(Math.random() * Cases[1][i].length)]
+                    if (rng < NumEntry[i]) {
+                        Color = Cases.Colors.NormalCases[i]
+                        Emoji = Cases.EmojisNormal[i]
+                        ImgLink = new AttachmentBuilder(ImgList.Default.value)
+                        ImgCtx = ImgList.Default.ctx
+                        Comment = Cases.NormalCases[`Case-${i}`][Math.floor(Math.random() * Cases.NormalCases[`Case-${i}`].length)]
                         break
                     }
                 }
-                if (rng <= 10) {
-                    ImgLink = new AttachmentBuilder(ImgArr[0][3])
-                    ImgCtx = ImgArr[1][3]
+                if (rng <= 1) {
+                    const index = Math.floor(Math.random() * ImgList.GigaChad.length)
+                    ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
+                    ImgCtx = ImgList.GigaChad[index].ctx
                 }
-                if (rng > 100) {
-                    ImgLink = new AttachmentBuilder(ImgArr[0][4])
-                    ImgCtx = ImgArr[1][4]
+                if (rng >= 100) {
+                    const index = Math.floor(Math.random() * ImgList.Gay.length)
+                    ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
+                    ImgCtx = ImgList.Gay[index].ctx
                 }
                 //Special Cases
                 for (var i in SpecialEntry) {
                     if (Number(rng) === SpecialEntry[i]) {
-                        ImgLink = new AttachmentBuilder(ImgArr[2][i])
-                        ImgCtx = ImgArr[3][i]
-                        Emoji = Cases[4][i]
-                        Color = Cases[0][7]
-                        Comment = Cases[2][i]
+                        ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Cases${rng}`].img)
+                        ImgCtx = Cases.SpecialCases[`Cases${rng}`].ctx
+                        Emoji = Cases.SpecialCases[`Cases${rng}`].emoji
+                        Color = Cases.Colors.SpecialCases
+                        Comment = Cases.SpecialCases[`Cases${rng}`].desc
                         break
                     }
                 }
 
-                DescArr.push(`## ${Emoji} - The gayness of ${target} is \`${rng}%\`\n> Comments: ${Comment}`)
+                DescArr.push(`## ${Emoji} - Gayness Test Result\n▸ The gayness of ${target} is \`${rng}%\`\n### > Comments:\n\n ${Comment}`)
 
                 GayEmbeds[0] = new EmbedBuilder()
                     .setColor(Color)
@@ -142,6 +117,7 @@ module.exports = {
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setDescription(DescArr[0])
                     .setTimestamp()
+                    .setThumbnail(tuser.displayAvatarURL({ dynamic: true, size: 512 }))
                     .setImage(ImgCtx)
                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             } else {
@@ -150,7 +126,7 @@ module.exports = {
                     let temp = Math.random() * 101.1
                     temp = (Math.floor(temp * 10) / 10).toFixed(1)
                     rnglist.push(temp)
-                    DescArr.push(`- **Attempt ${i + 1}:** The gayness of ${target} is \`${rnglist[i]}%\`\n`)
+                    DescArr.push(`▸ **Attempt ${i + 1}:** The gayness of ${target} is \`${rnglist[i]}%\`\n`)
                     avgrng += Number(rnglist[i])
                 }
 
@@ -158,36 +134,38 @@ module.exports = {
                 avgrng = (Math.floor(avgrng * 10) / 10).toFixed(1)
                 //avgrng = 72.7 //Tesing Purposes, Only Removed When You Do That
                 for (var i in NumEntry) {
-                    if (avgrng <= NumEntry[i]) {
-                        Color = Cases[0][i]
-                        Emoji = Cases[3][i]
-                        ImgLink = new AttachmentBuilder(ImgArr[0][2])
-                        ImgCtx = ImgArr[1][2]
-                        Comment = Cases[1][i][Math.floor(Math.random() * Cases[1][i].length)]
+                    if (avgrng < NumEntry[i]) {
+                        Color = Cases.Colors.NormalCases[i]
+                        Emoji = Cases.EmojisNormal[i]
+                        ImgLink = new AttachmentBuilder(ImgList.Default.value)
+                        ImgCtx = ImgList.Default.ctx
+                        Comment = Cases.NormalCases[`Case-${i}`][Math.floor(Math.random() * Cases.NormalCases[`Case-${i}`].length)]
                         break
                     }
                 }
-                if (avgrng <= 10) {
-                    ImgLink = new AttachmentBuilder(ImgArr[0][3])
-                    ImgCtx = ImgArr[1][3]
+                if (avgrng <= 1) {
+                    const index = Math.floor(Math.random() * ImgList.GigaChad.length)
+                    ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
+                    ImgCtx = ImgList.GigaChad[index].ctx
                 }
-                if (avgrng > 100) {
-                    ImgLink = new AttachmentBuilder(ImgArr[0][4])
-                    ImgCtx = ImgArr[1][4]
+                if (avgrng >= 100) {
+                    const index = Math.floor(Math.random() * ImgList.Gay.length)
+                    ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
+                    ImgCtx = ImgList.Gay[index].ctx
                 }
                 //Special Cases
                 for (var i in SpecialEntry) {
                     if (Number(avgrng) === SpecialEntry[i]) {
-                        ImgLink = new AttachmentBuilder(ImgArr[2][i])
-                        ImgCtx = ImgArr[3][i]
-                        Emoji = Cases[4][i]
-                        Color = Cases[0][7]
-                        Comment = Cases[2][i]
+                        ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Cases${avgrng}`].img)
+                        ImgCtx = Cases.SpecialCases[`Cases${avgrng}`].ctx
+                        Emoji = Cases.SpecialCases[`Cases${avgrng}`].emoji
+                        Color = Cases.Colors.SpecialCases
+                        Comment = Cases.SpecialCases[`Cases${avgrng}`].desc
                         break
                     }
                 }
 
-                DescArr.push(`## ${Emoji} - The calculated gayness of ${target} is \`${avgrng}%\`\n> Comments: ${Comment}`)
+                DescArr.push(`## ${Emoji} - Gayness test result\n▸ The calculated gayness of ${target} is \`${avgrng}%\`\n\n### > Comments:\n ${Comment}`)
                 let OfficialDesc = ''
                 for (var i = 0; i < 3; i++) {
                     OfficialDesc += DescArr[i]
@@ -197,6 +175,7 @@ module.exports = {
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setDescription(OfficialDesc)
                         .setTimestamp()
+                        .setThumbnail(tuser.displayAvatarURL({ dynamic: true, size: 512 }))
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                 }
 
@@ -207,6 +186,7 @@ module.exports = {
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setDescription(OfficialDesc)
                     .setTimestamp()
+                    .setThumbnail(tuser.displayAvatarURL({ dynamic: true, size: 512 }))
                     .setImage(ImgCtx)
                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             }
@@ -244,6 +224,7 @@ module.exports = {
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setDescription(`<:SeiaSip:1244890166116618340> The system is checking the gayness of ${target}... Please wait...`)
                         .setTimestamp()
+                        .setThumbnail(tuser.displayAvatarURL({ dynamic: true, size: 512 }))
                         .setImage(ImgCtx)
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({
