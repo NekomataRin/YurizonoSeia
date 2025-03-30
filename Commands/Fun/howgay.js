@@ -78,8 +78,8 @@ module.exports = {
                     }
                 case '1206234286056017923':
                     {
-                        ImgLink = new AttachmentBuilder(ImgArr[2][7])
-                        ImgCtx = ImgArr[3][7]
+                        ImgLink = new AttachmentBuilder(ImgArr[2][6])
+                        ImgCtx = ImgArr[3][6]
                         break
                     }
             }
