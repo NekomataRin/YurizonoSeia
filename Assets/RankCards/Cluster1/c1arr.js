@@ -41,8 +41,8 @@ const Cluster1_Assets =
             'seia',
             './Assets/RankCards/Cluster1/Images/RankCard_5.png',
             '#fff598',
-            'https://cdn.discordapp.com/emojis/1244128991628103700.png?quality=lossless',
-            '<:seiaheh:1244128991628103700>',
+            'https://cdn.discordapp.com/emojis/1244128244664504392.png?quality=lossless',
+            '<:seiaheh:1244128244664504392>',
             'Trinity - Seia (1st Tourney Champion)',
         ],
         [
