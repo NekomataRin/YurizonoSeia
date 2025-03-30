@@ -47,15 +47,16 @@ module.exports = {
                 break
             }
         }
+        
+        if (target.bot && target.id !== '1244213929438089286') {
+            Desc = `<a:YaeSlap:1251733720600412240> Oi, you can't check \`/howgay\` command on a bot! (${target}), please go check someone else!`
+            Color = Cases.Colors.Rejected
+            ImgLink = new AttachmentBuilder(ImgList.Rejected.None.value)
+            ImgCtx = ImgList.Rejected.None.ctx
+            RunKey = 'Denied'
+        }
 
         if (RunKey === 'Denied') {
-            if (target.bot && target.id !== '1244213929438089286') {
-                Desc = `<a:YaeSlap:1251733720600412240> Oi, you can't check \`/howgay\` command on a bot! (${target}), please go check someone else!`
-                Color = Cases.Colors.Rejected
-                ImgLink = new AttachmentBuilder(ImgList.Rejected.None.value)
-                ImgCtx = ImgList.Rejected.None.ctx
-            }
-
             const DeniedEmbed = new EmbedBuilder()
                 .setColor(Color)
                 .setTitle(`🏳️‍🌈 Checking gayness of a user`)
