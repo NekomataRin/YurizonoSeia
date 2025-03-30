@@ -19,7 +19,7 @@ const Denied_Cases = [
         `<:mikacopium:1254110047831720058> You wanna check the \`/howgay\` command on <@790882475173609472>? Hell no! This guy belongs to Misono Mika!`,
         `<a:YaeSlap:1251733720600412240> Oi, you can't check \`/howgay\` command on <@361673191199997954>, please go check someone else!`,
         `<:SeiaMuted:1244890584276008970> I see then, so you're gonna test the \`/howgay\` command on <@879893732302921738>? There's no need my guy, HE IS ALREADY CERTIFIED GAY!!!`,
-        `<:SeiaL:1355916415529521213> Oya? Checking \`/howgay\` command on <@1206234286056017923>? After you see me going out with **Neru** from Millennium Sciene School gotcha mad?\nDon't worry, a wise artist said: *"Men and women don't matter as long as they're happy"*, right?\nSo, no need to shy, my guy, even my dad is also me, don't wory, he is NOT as GAY as you are...`
+        `<:SeiaL:1355916415529521213> Oya? Checking \`/howgay\` command on <@1206234286056017923>? After you see me going out with **Neru** from Millennium Sciene School gotcha mad?\nDon't worry, a wise artist said: *"Men and women don't matter as long as they're happy"*, right?\nSo, no need to shy, my guy, even my dad is also me, don't wory, he is NOT GAY as you are... and it's ALWAYS has been.`
     ],
 ]
 
