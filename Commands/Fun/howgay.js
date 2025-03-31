@@ -77,7 +77,6 @@ module.exports = {
                 //rng = 32 //Tesing Purposes, Only Remove When You Do That
                 rng = (Math.floor(rng * 10) / 10).toFixed(1)
 
-
                 //Normal Entry
                 for (var i in NumEntry) {
                     if (rng < NumEntry[i]) {
@@ -133,6 +132,7 @@ module.exports = {
                 //avgrng = 32 //Tesing Purposes, Only Remove When You Do That
                 avgrng = (Math.floor(avgrng * 10) / 10).toFixed(1)
 
+                //Normal Entry
                 for (var i in NumEntry) {
                     if (avgrng < NumEntry[i]) {
                         Color = Cases.Colors.NormalCases[i]
