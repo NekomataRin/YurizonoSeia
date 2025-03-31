@@ -101,11 +101,11 @@ module.exports = {
                 //Special Cases
                 for (var i in SpecialEntry) {
                     if (Number(rng) === SpecialEntry[i]) {
-                        ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Cases${rng}`].img)
-                        ImgCtx = Cases.SpecialCases[`Cases${rng}`].ctx
-                        Emoji = Cases.SpecialCases[`Cases${rng}`].emoji
+                        ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${rng}`].img)
+                        ImgCtx = Cases.SpecialCases[`Case${rng}`].ctx
+                        Emoji = Cases.SpecialCases[`Case${rng}`].emoji
                         Color = Cases.Colors.SpecialCases
-                        Comment = Cases.SpecialCases[`Cases${rng}`].desc
+                        Comment = Cases.SpecialCases[`Case${rng}`].desc
                         break
                     }
                 }
@@ -157,11 +157,11 @@ module.exports = {
                 //Special Cases
                 for (var i in SpecialEntry) {
                     if (Number(avgrng) === SpecialEntry[i]) {
-                        ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Cases${avgrng}`].img)
-                        ImgCtx = Cases.SpecialCases[`Cases${avgrng}`].ctx
-                        Emoji = Cases.SpecialCases[`Cases${avgrng}`].emoji
+                        ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${avgrng}`].img)
+                        ImgCtx = Cases.SpecialCases[`Case${avgrng}`].ctx
+                        Emoji = Cases.SpecialCases[`Case${avgrng}`].emoji
                         Color = Cases.Colors.SpecialCases
-                        Comment = Cases.SpecialCases[`Cases${avgrng}`].desc
+                        Comment = Cases.SpecialCases[`Case${avgrng}`].desc
                         break
                     }
                 }
