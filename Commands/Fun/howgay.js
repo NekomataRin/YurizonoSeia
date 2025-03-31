@@ -47,7 +47,7 @@ module.exports = {
                 break
             }
         }
-        
+
         if (target.bot && target.id !== '1244213929438089286') {
             Desc = `<a:YaeSlap:1251733720600412240> Oi, you can't check \`/howgay\` command on a bot! (${target}), please go check someone else!`
             Color = Cases.Colors.Rejected
@@ -74,8 +74,9 @@ module.exports = {
             var DescArr = [], GayEmbeds = [], Emoji, Comment
             if (!AvgChr) {
                 var rng = Math.random() * 101.1
+                //rng = 32 //Tesing Purposes, Only Remove When You Do That
                 rng = (Math.floor(rng * 10) / 10).toFixed(1)
-                //rng = 72.7 //Tesing Purposes, Only Removed When You Do That
+
 
                 //Normal Entry
                 for (var i in NumEntry) {
@@ -99,15 +100,12 @@ module.exports = {
                     ImgCtx = ImgList.Gay[index].ctx
                 }
                 //Special Cases
-                for (var i in SpecialEntry) {
-                    if (Number(rng) === SpecialEntry[i]) {
-                        ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${rng}`].img)
-                        ImgCtx = Cases.SpecialCases[`Case${rng}`].ctx
-                        Emoji = Cases.SpecialCases[`Case${rng}`].emoji
-                        Color = Cases.Colors.SpecialCases
-                        Comment = Cases.SpecialCases[`Case${rng}`].desc
-                        break
-                    }
+                if (SpecialEntry.includes(Number(rng))) {
+                    ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${rng}`].img)
+                    ImgCtx = Cases.SpecialCases[`Case${rng}`].ctx
+                    Emoji = Cases.SpecialCases[`Case${rng}`].emoji
+                    Color = Cases.Colors.SpecialCases
+                    Comment = Cases.SpecialCases[`Case${rng}`].desc
                 }
 
                 DescArr.push(`## ${Emoji} - Gayness Test Result\n▸ The gayness of ${target} is \`${rng}%\`\n### > Comments:\n\n ${Comment}`)
@@ -132,8 +130,9 @@ module.exports = {
                 }
 
                 avgrng /= 3
+                //avgrng = 32 //Tesing Purposes, Only Remove When You Do That
                 avgrng = (Math.floor(avgrng * 10) / 10).toFixed(1)
-                //avgrng = 72.7 //Tesing Purposes, Only Removed When You Do That
+
                 for (var i in NumEntry) {
                     if (avgrng < NumEntry[i]) {
                         Color = Cases.Colors.NormalCases[i]
@@ -155,16 +154,14 @@ module.exports = {
                     ImgCtx = ImgList.Gay[index].ctx
                 }
                 //Special Cases
-                for (var i in SpecialEntry) {
-                    if (Number(avgrng) === SpecialEntry[i]) {
-                        ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${avgrng}`].img)
-                        ImgCtx = Cases.SpecialCases[`Case${avgrng}`].ctx
-                        Emoji = Cases.SpecialCases[`Case${avgrng}`].emoji
-                        Color = Cases.Colors.SpecialCases
-                        Comment = Cases.SpecialCases[`Case${avgrng}`].desc
-                        break
-                    }
+                if (SpecialEntry.includes(Number(avgrng))) {
+                    ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${avgrng}`].img)
+                    ImgCtx = Cases.SpecialCases[`Case${avgrng}`].ctx
+                    Emoji = Cases.SpecialCases[`Case${avgrng}`].emoji
+                    Color = Cases.Colors.SpecialCases
+                    Comment = Cases.SpecialCases[`Case${avgrng}`].desc
                 }
+
 
                 DescArr.push(`## ${Emoji} - Gayness test result\n▸ The calculated gayness of ${target} is \`${avgrng}%\`\n\n### > Comments:\n ${Comment}`)
                 let OfficialDesc = ''
