@@ -47,7 +47,7 @@ module.exports = {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
-        const cdtime = 45000
+        const cdtime = 20000
         const Difficulties = ['easy', 'normal', 'hard', 'lunatic', 'extra', 'phantasm', 'asian']
         const Timer = [25, 20, 18, 16, 14, 12, 10]
         const MultiList = [0.5, 1, 2, 2.5, 3, 5, 10]

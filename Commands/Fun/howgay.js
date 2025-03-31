@@ -26,7 +26,7 @@ module.exports = {
 
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
-        const cdtime = 45000
+        const cdtime = 20000
 
         const target = await interaction.options.getUser('user') || interaction.user
         const tuser = await interaction.guild.members.fetch(target.id)
