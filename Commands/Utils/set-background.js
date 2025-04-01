@@ -19,7 +19,7 @@ module.exports = {
         const focusedValue = interaction.options.getFocused()
         const choices = UnlokedCards
         let filtered = choices.filter(choice => choice.startsWith(focusedValue))
-        filtered = filtered.slice(0,24)
+        filtered = filtered.slice(0, 24)
         await interaction.respond(
             filtered.map(choice => ({ name: choice, value: choice }))
         )
@@ -28,6 +28,21 @@ module.exports = {
         await interaction.deferReply()
         const key = interaction.options.getString('keyword')
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
+        const ValidKeys = await UserCards.findOne({ UserID: interaction.user.id }).select('-_id Cards')
+
+        if (!ValidKeys['Cards'].includes(key) || !ValidKeys) {
+            const ErrEmbed = new EmbedBuilder()
+                .setColor('Red')
+                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                .setTitle('Error - Invalid Key')
+                .setDescription(`<:seiaehem:1244129111169826829> • I cannot set this key because it is invalid from the database, sorry!`)
+                .setTimestamp()
+                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+
+            return interaction.editReply({
+                embeds: [ErrEmbed]
+            })
+        }
 
         Level.findOne({ UserID: interaction.user.id }, async (err, data) => {
             if (err) throw err

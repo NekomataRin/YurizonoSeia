@@ -71,10 +71,10 @@ module.exports = {
                 files: [ImgLink]
             })
         } else {
-            var DescArr = [], GayEmbeds = [], Emoji, Comment
+            var DescArr = [], GayEmbeds = [], Emoji, Comment, rng, avgrng
             if (!AvgChr) {
-                var rng = Math.random() * 101.1
-                //rng = 32 //Tesing Purposes, Only Remove When You Do That
+                rng = Math.random() * 101.1
+                //rng = 0.5 //Tesing Purposes, Only Remove When You Do That
                 rng = (Math.floor(rng * 10) / 10).toFixed(1)
 
                 //Normal Entry
@@ -88,16 +88,7 @@ module.exports = {
                         break
                     }
                 }
-                if (rng <= 1) {
-                    const index = Math.floor(Math.random() * ImgList.GigaChad.length)
-                    ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
-                    ImgCtx = ImgList.GigaChad[index].ctx
-                }
-                if (rng >= 100) {
-                    const index = Math.floor(Math.random() * ImgList.Gay.length)
-                    ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
-                    ImgCtx = ImgList.Gay[index].ctx
-                }
+
                 //Special Cases
                 if (SpecialEntry.includes(Number(rng))) {
                     ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${rng}`].img)
@@ -108,7 +99,26 @@ module.exports = {
                 }
 
                 DescArr.push(`## ${Emoji} - Gayness Test Result\n▸ The gayness of ${target} is \`${rng}%\`\n### > Comments:\n\n ${Comment}`)
-
+                if (rng <= 1) {
+                    const index = Math.floor(Math.random() * ImgList.GigaChad.length)
+                    ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
+                    ImgCtx = ImgList.GigaChad[index].ctx
+                    if (tuser.roles.cache.has("1356679121996087487")) {
+                        DescArr[0] += `\n-# > Successfully removed <@&1356679121996087487> to ${target}, well then, since they proved themselves to be a real person.`
+                    } else {
+                        DescArr[0] += `\n-# > Successfully added <@&1356678602028093490> to ${target}. Congratulations, you're the real chad here!`
+                    }
+                }
+                if (rng >= 100) {
+                    const index = Math.floor(Math.random() * ImgList.Gay.length)
+                    ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
+                    ImgCtx = ImgList.Gay[index].ctx
+                    if (tuser.roles.cache.has("1356678602028093490")) {
+                        DescArr[0] += `\n-# > Successfully removed <@&1356678602028093490> to ${target}, well too bad, bro lost your title lol.`
+                    } else {
+                        DescArr[0] += `\n-# > Successfully added <@&1356679121996087487> to ${target}. Congratulations, now everyone knows that you are GAY`
+                    }
+                }
                 GayEmbeds[0] = new EmbedBuilder()
                     .setColor(Color)
                     .setTitle(`🏳️‍🌈 Checking gayness of a user`)
@@ -119,7 +129,8 @@ module.exports = {
                     .setImage(ImgCtx)
                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             } else {
-                let avgrng = 0, rnglist = []
+                avgrng = 0
+                let rnglist = []
                 for (var i = 0; i < 3; i++) {
                     let temp = Math.random() * 101.1
                     temp = (Math.floor(temp * 10) / 10).toFixed(1)
@@ -129,7 +140,7 @@ module.exports = {
                 }
 
                 avgrng /= 3
-                //avgrng = 32 //Tesing Purposes, Only Remove When You Do That
+                //avgrng = 100.5 //Tesing Purposes, Only Remove When You Do That
                 avgrng = (Math.floor(avgrng * 10) / 10).toFixed(1)
 
                 //Normal Entry
@@ -143,16 +154,6 @@ module.exports = {
                         break
                     }
                 }
-                if (avgrng <= 1) {
-                    const index = Math.floor(Math.random() * ImgList.GigaChad.length)
-                    ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
-                    ImgCtx = ImgList.GigaChad[index].ctx
-                }
-                if (avgrng >= 100) {
-                    const index = Math.floor(Math.random() * ImgList.Gay.length)
-                    ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
-                    ImgCtx = ImgList.Gay[index].ctx
-                }
                 //Special Cases
                 if (SpecialEntry.includes(Number(avgrng))) {
                     ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${avgrng}`].img)
@@ -161,7 +162,6 @@ module.exports = {
                     Color = Cases.Colors.SpecialCases
                     Comment = Cases.SpecialCases[`Case${avgrng}`].desc
                 }
-
 
                 DescArr.push(`## ${Emoji} - Gayness test result\n▸ The calculated gayness of ${target} is \`${avgrng}%\`\n\n### > Comments:\n ${Comment}`)
                 let OfficialDesc = ''
@@ -175,6 +175,29 @@ module.exports = {
                         .setTimestamp()
                         .setThumbnail(tuser.displayAvatarURL({ dynamic: true, size: 512 }))
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+                }
+
+                if (avgrng <= 1) {
+                    const index = Math.floor(Math.random() * ImgList.GigaChad.length)
+                    ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
+                    ImgCtx = ImgList.GigaChad[index].ctx
+                    if (tuser.roles.cache.has("1356679121996087487")) {
+                        tuser.roles.remove('1356679121996087487')
+                        DescArr[3] += `\n-# > Successfully removed <@&1356679121996087487> to ${target}, well then, since they proved themselves to be a real person.`
+                    } else {
+                        tuser.roles.add('1356678602028093490')
+                        DescArr[3] += `\n-# > Successfully added <@&1356678602028093490> to ${target}. Congratulations, you're the real chad here!`
+                    }
+                }
+                if (avgrng >= 100) {
+                    const index = Math.floor(Math.random() * ImgList.Gay.length)
+                    ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
+                    ImgCtx = ImgList.Gay[index].ctx
+                    if (tuser.roles.cache.has("1356678602028093490")) {
+                        DescArr[3] += `\n-# > Successfully removed <@&1356678602028093490> to ${target}, well too bad, bro lost your title lol.`
+                    } else {
+                        DescArr[3] += `\n-# > Successfully added <@&1356679121996087487> to ${target}. Congratulations, now everyone knows that you are GAY`
+                    }
                 }
 
                 OfficialDesc += DescArr[3]
@@ -215,7 +238,7 @@ module.exports = {
                 } else {
                     data.HowGay = Date.now() + cdtime
                     data.save()
-
+                    let RoleKey = false
                     const WaitingEmbed = new EmbedBuilder()
                         .setColor('White')
                         .setTitle(`🏳️‍🌈 Checking gayness of a user`)
@@ -235,6 +258,7 @@ module.exports = {
                             embeds: [GayEmbeds[0]],
                             files: [ImgLink]
                         })
+                        RoleKey = true
                     } else {
                         for (var i = 0; i <= 3; i++) {
                             await wait(500)
@@ -247,6 +271,26 @@ module.exports = {
                                 await interaction.editReply({
                                     embeds: [GayEmbeds[i]]
                                 })
+                            }
+                        }
+                        RoleKey = true
+                    }
+
+                    if (RoleKey) {
+                        const value = rng || avgrng
+                        if (value <= 1) {
+                            if (tuser.roles.cache.has("1356679121996087487")) {
+                                await tuser.roles.remove('1356679121996087487')
+                            } else {
+                                await tuser.roles.add('1356678602028093490')
+                            }
+                        }
+
+                        if (value >= 100) {
+                            if (tuser.roles.cache.has("1356678602028093490")) {
+                                await tuser.roles.remove('1356678602028093490')
+                            } else {
+                                await tuser.roles.add('1356679121996087487')
                             }
                         }
                     }
