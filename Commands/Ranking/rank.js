@@ -4,9 +4,9 @@ const { getFonts } = require('../../Functions/getFont')
 getFonts()
 
 const Canvas = require('@napi-rs/canvas')
-const Level = require('../../Database/Leveling')
+const Level = require('../../Database/Ranking/Leveling')
 const cdSchema = require('../../Database/cooldown')
-const LvlCalc = require('../../Utils/lvlcalc')
+const LvlCalc = require('../../Utils/Ranking/lvlcalc')
 const RankingArr = require('../../Assets/RankCards/rankcardarr')
 const FooterEmbeds = require('../../Utils/embed')
 

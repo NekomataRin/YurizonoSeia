@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder } = require('discord.js')
 const FooterEmbeds = require('../../Utils/embed')
-const Level = require('../../Database/Leveling')
+const Level = require('../../Database/Ranking/Leveling')
 const RankingArr = require('../../Assets/RankCards/rankcardarr')
-const UserCards = require('../../Database/usercards')
+const UserCards = require('../../Database/Ranking/usercards')
 
 module.exports = {
     data: new SlashCommandBuilder()

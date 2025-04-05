@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, Butt
 
 const wait = require('node:timers/promises').setTimeout
 const FooterEmbeds = require('../../Utils/embed')
-const Level = require('../../Database/Leveling')
+const Level = require('../../Database/Ranking/Leveling')
 
 module.exports = {
     data: new SlashCommandBuilder()

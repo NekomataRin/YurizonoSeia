@@ -58,9 +58,8 @@ module.exports = {
             case 'gnb':
                 {
                     user = interaction.options.getMember('user') || interaction.user
-                    let n = await user.fetch()
                     user = await interaction.guild.members.fetch(user.id)
-                    BannerURL = n.bannerURL({ extension: 'png', size: 512, dynamic: true })
+                    BannerURL = user.bannerURL({ extension: 'png', size: 512, dynamic: true })
                     console.log(`${chalk.cyanBright('[DEBUG]')} ${BannerURL}`)
                     break
                 }
@@ -89,7 +88,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244129048494473246> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime/1000)}:R>`)
+                        .setDescription(` <:seiaconcerned:1244129048494473246> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
@@ -152,17 +151,19 @@ module.exports = {
                                 await interaction.editReply({
                                     embeds: [GuildAvt]
                                 })
-                                const BannerAvt = new EmbedBuilder()
-                                    .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                    .setTitle(`<:seiaehem:1244128370669650060> **Banner Displayer** (Global)`)
-                                    .setDescription(`[Banner_URL](${BannerURL})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**\n> *Note: Due to the API itself, I can't find the way to show the user's guild banner.*`)
-                                    .setColor('Blue')
-                                    .setTimestamp()
-                                    .setImage(BannerURL)
-                                    .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                                await interaction.followUp({
-                                    embeds: [BannerAvt]
-                                })
+                                if (BannerURL !== null) {
+                                    const BannerAvt = new EmbedBuilder()
+                                        .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                                        .setTitle(`<:seiaehem:1244128370669650060> **Banner Displayer** (Global)`)
+                                        .setDescription(`[Banner_URL](${BannerURL})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
+                                        .setColor('Blue')
+                                        .setTimestamp()
+                                        .setImage(BannerURL)
+                                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+                                    await interaction.followUp({
+                                        embeds: [BannerAvt]
+                                    })
+                                }
                                 break
                             }
                         default:

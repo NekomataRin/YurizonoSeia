@@ -1,9 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 
 const FooterEmbeds = require('../../Utils/embed')
-const Level = require('../../Database/Leveling')
+const Level = require('../../Database/Ranking/Leveling')
 const BotOwner = require('../../Utils/owners')
-const GetReqExp = require('../../Utils/lvlcalc')
+const GetReqExp = require('../../Utils/Ranking/lvlcalc')
 
 module.exports = {
     data: new SlashCommandBuilder()

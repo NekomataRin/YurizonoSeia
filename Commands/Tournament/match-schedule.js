@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 
 const FooterEmbeds = require('../../Utils/embed')
-const PendingMatches = require('../../Database/pending-matches')
+const PendingMatches = require('../../Database/Tournaments/pending-matches')
 
 module.exports = {
     data: new SlashCommandBuilder()

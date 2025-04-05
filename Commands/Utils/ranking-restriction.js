@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
-const Level = require('../../Database/Leveling')
+const Level = require('../../Database/Ranking/Leveling')
 const FooterEmbeds = require('../../Utils/embed')
 const BotOwner = require('../../Utils/owners')
 

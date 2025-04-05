@@ -1,8 +1,8 @@
 const { ChannelType, EmbedBuilder } = require('discord.js')
-const Level = require('../../Database/Leveling')
+const Level = require('../../Database/Ranking/Leveling')
 const cd = new Set()
-const WhiteListedChannel = require('../../Utils/rankchannels')
-const LevelCalc = require('../../Utils/lvlcalc')
+const WhiteListedChannel = require('../../Utils/Ranking/rankchannels')
+const LevelCalc = require('../../Utils/Ranking/lvlcalc')
 const FooterEmbeds = require('../../Utils/embed')
     
 module.exports = async (client, message) => {

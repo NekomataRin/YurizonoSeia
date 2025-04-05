@@ -1,1 +1,0 @@
-module.exports = (level) => 500 + Math.floor(Math.pow(2 * level, 2) + 1.5 * level - Math.pow(level, 2))

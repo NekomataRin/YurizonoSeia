@@ -70,60 +70,70 @@ const Cases = {
     },
     SpecialCases: {
         'Case32.0': {
+            name: 'Orin-1',
             desc: "You wake up, drenched… Something feels off. Groggy, you stumble toward the mirror—and freeze. A catgirl stares back at you. Wet hair, red twin tails, a swimsuit clinging to your skin—wait, WHAT?! No, this… this is Orin?!\nYou spin around to see Seia, smug as ever. \"Honestly, I’m not even surprised anymore. But you? Bucko up, my guy, you aren’t actually turning into Orin… just because my dad is transforming to her in order to prank you... or are you? Kufufu~\"",
             img: ImgList.SpecialNumbers['case32.0'].value,
             ctx: ImgList.SpecialNumbers['case32.0'].ctx,
             emoji: '<:OrinXD:1152868801713557514>'
         },
         'Case40.3': {
+            name: 'Err-403',
             desc: "Error 403 - Forbiden, looks like you cannot access to your gayness? Impressive, but isn't that the precentage gayness inside of you?",
             img: ImgList.SpecialNumbers['case40.3'].value,
             ctx: ImgList.SpecialNumbers['case40.3'].ctx,
             emoji: '<:LYG_Error:1087366990160740452>'
         },
         'Case40.4': {
+            name: 'Err-404',
             desc: "Error 404 - Gayness not Found, trust me, this is just a lie, the dog below just revealed your gayness already...",
             img: ImgList.SpecialNumbers['case40.4'].value,
             ctx: ImgList.SpecialNumbers['case40.4'].ctx,
             emoji: '<a:LYG_404:1086172141998833684>'
         },
         'Case42.0': {
+            name: 'Hare-Weed',
             desc: "He's so stoned someone might be convinced he's gay, but nah, he's so smoked that he may be touching the homies a bit more than normal, he likes girls, but maybe those touchings are intentional, if they are we might have something to talk after he's done with it",
             img: ImgList.SpecialNumbers['case42.0'].value,
             ctx: ImgList.SpecialNumbers['case42.0'].ctx,
             emoji: '<:HareGrin:1356028119965765743>'
         },
         'Case49.9': {
+            name: 'WHAT',
             desc: "49.9%? Seriously? Brother, this almost makes you a bisexual person. Even my cat couldn't get that amount of gayness because he got bald last night due to an accident.",
             img: ImgList.SpecialNumbers['case49.9'].value,
             ctx: ImgList.SpecialNumbers['case49.9'].ctx,
             emoji: '<:WHAT:1355739613095792839>'
         },
         'Case63.0': {
+            name: 'Cloutiful',
             desc: "Oh Frick 63!! Not so fast man, bro can\'t hide your cheating skills like CLOUTIFUL! you\'re getting your account restricted!!!",
             img: ImgList.SpecialNumbers['case63.0'].value,
             ctx: ImgList.SpecialNumbers['case63.0'].ctx,
             emoji: '<:63ms:1255016983649325140>'
         },
         'Case72.7': {
+            name: 'WYSI',
             desc: "Seven Twenty-Seven, SEVEN TWENTY-SEVEN! When You See It! When You FUCKING See It!\nBut Aireu and Shige will bonk you because your gayness is kinda questionable already, such a disrespectful to the goat who invented the meme.",
             img: ImgList.SpecialNumbers['case72.7'].value,
             ctx: ImgList.SpecialNumbers['case72.7'].ctx,
             emoji: '<a:LYG_WYSI:1087359689035104307>'
         },
         'Case91.1': {
+            name: 'Your-Emergency',
             desc: "Mr. Officer: 911 here, what\'s your emergency?\nYurizono Seia: Umm... there\'s a GAY person who\'s tweaking in the channel, Mr. Officer!",
             img: ImgList.SpecialNumbers['case91.1'].value,
             ctx: ImgList.SpecialNumbers['case91.1'].ctx,
             emoji: '<:HikariREE:1356028568961941636>'
         },
         'Case96.9': {
+            name: 'Orin-2',
             desc: "Huh? Isn't that Orin right there? Wait a sec… My dad’s just chilling on the couch watching TV, and the REAL Orin’s supposed to be at Chireiden, not here. And YOU—soaking wet, standing right in front of me?! WHAT THE HECK DID YOU DO BEFORE THIS?!\n... Wait, don’t tell me—you just transformed into her without even realizing it??? NAH BRO, THAT'S YOUR GAYNESS WISH COMING TRUE LMAOOOOOO",
             img: ImgList.SpecialNumbers['case96.9'].value,
             ctx: ImgList.SpecialNumbers['case96.9'].ctx,
             emoji: '<:OrinSuprise:1156221486349172766>'
         },
         'Case99.9': {
+            name: 'LMAO',
             desc: "Yurizono Seia: It\'s just one step before you achieve the \"moment\" that everyone laughing at... Still one step aways and everyone knows the point that you are totally gay.",
             img: ImgList.SpecialNumbers['case99.9'].value,
             ctx: ImgList.SpecialNumbers['case99.9'].ctx,

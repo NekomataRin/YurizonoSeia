@@ -1,9 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 const chalk = require('chalk')
 
-const Level = require('../../Database/Leveling')
+const Level = require('../../Database/Ranking/Leveling')
 const cdSchema = require('../../Database/cooldown')
-const LevelCalc = require('../../Utils/lvlcalc')
+const LevelCalc = require('../../Utils/Ranking/lvlcalc')
 const RankingArr = require('../../Assets/RankCards/rankcardarr')
 const FooterEmbeds = require('../../Utils/embed')
 

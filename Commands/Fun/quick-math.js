@@ -3,7 +3,7 @@ const FooterEmbeds = require('../../Utils/embed')
 const wait = require('node:timers/promises').setTimeout;
 const cdSchema = require('../../Database/cooldown')
 const chalk = require('chalk')
-const QuickMathDb = require('../../Database/quickmath')
+const QuickMathDb = require('../../Database/Fun/quickmath')
 
 module.exports = {
     data: new SlashCommandBuilder()
