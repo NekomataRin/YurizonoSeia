@@ -64,7 +64,7 @@ const Cases = {
         "Case-7": [
             "Pfft—there’s not a single trace of ‘no homo’ left in your soul, huh? You’re practically radiating rainbow energy at this point.\nEven if you tried to deny it, the sheer force of your aura would out you in an instant.",
             "Honestly, even your shadow is waving a pride flag at this point. You’ve reached the final stage, the peak, the ultimate form.\nWhat’s next? A parade in your honor? A Gay Olympics gold medal? Oh wait, you’re probably already the MVP.",
-            "♪ Yo listen up, here’s a story… about a little guy who lives in a world that’s GAY, and all day and all night, and everything he sees is just GAY like him, inside and outside—! ♪\nYou’ve ascended to MAXIMUM GAY MODE, and now, even God cannot save you anymore...",
+            "♪ Yo listen up, here’s a story… about a little guy who lives in a GAY world, and all day and all night, and everything he sees is just GAY like him, inside and outside—! ♪\nYou’ve ascended to MAXIMUM GAY MODE, and now, even God cannot save you anymore...",
             "You looked in the mirror… and saw Astolfo staring back. You’re so deep into the femboy void that you didn’t just admire the aesthetic—you became him. There’s no salvation. No return point. Your one true fate? Sitting pretty on another dude’s lap for eternity.\nSo… should I start calling you Princess, or are we skipping straight to Maid Mode?"
         ]
     },
