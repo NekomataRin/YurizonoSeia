@@ -17,7 +17,7 @@ module.exports = async (client) => {
         console.log(chalk.blue('[LOG]') + ' Database, Check!')
     }
 
-    var i = 0, a = 0
+    var i = 0, a = 1
     b = [
         'v0.5.5 - Yurizono Seia, Prepare To Run!',
         'Updated /howgay command comments (fix bug pending session...)',
