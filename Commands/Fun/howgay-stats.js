@@ -92,7 +92,7 @@ module.exports = {
 
             const desc = (!responsekey) ?
                 `<a:SeiaMuted:1336385867136241705> Well, <@${targetid}> doesn't have any stats for this (maybe they are in the rejection list or have never tested before, lmao)` :
-                `### User: <@${targetid}>\n▸ **Non-Average:** (Max: \`${Number(UserObj.values.max).toFixed(1)}%\` -- Min: \`${Number(UserObj.values.min).toFixed(1)}%\`)\n▸ **Average:** (Max: \`${Number(UserObj.values.maxavg).toFixed(1)}%\` -- Min: \`${Number(UserObj.values.minavg).toFixed(1)}%\`)`
+                `### User: <@${targetid}>\n▸ **Total Checking Usage:** \`${UserObj.total.normal + UserObj.total.special}\`\n• **Normal Cases:** \`${UserObj.total.normal}\`\n• **Special Cases:** \`${UserObj.total.special}\`\n\n▸ **Max/Min of The 100 Recent Usages:**\n• **Non-Average:** (Max: \`${(UserObj.values.run.nonavg.length > 0) ? Number(UserObj.values.max).toFixed(1) : '--'}%\` -- Min: \`${(UserObj.values.run.nonavg.length > 0) ? Number(UserObj.values.min).toFixed(1) : '--'}%\`)\n• **Average:** (Max: \`${(UserObj.values.run.avg.length > 0) ? Number(UserObj.values.maxavg).toFixed(1) : '--'}%\` -- Min: \`${(UserObj.values.run.avg.length > 0) ? Number(UserObj.values.minavg).toFixed(1) : '--'}%\`)`
 
             const ResponseEmbed = new EmbedBuilder()
                 .setColor('White')
@@ -109,9 +109,32 @@ module.exports = {
 
         if (runkey === 2) {
             const HowgayData = await HowgayList.findOne({ GuildId: interaction.guild.id }).select('-_id TypeRecords')
-            const NormalTypes = HowgayData.TypeRecords[0], SpecialCases = HowgayData.TypeRecords[1]
+            if (HowgayData.TypeRecords.length === 0) {
+                const HowGayStat_Server = new EmbedBuilder()
+                    .setColor('White')
+                    .setTitle(`🏳️‍🌈 Checking Gayness Stats Of The Server`)
+                    .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                    .setDescription(`<a:SeiaMuted:1336385867136241705> Well, server **${interaction.guild.name}** doesn't have actual data for this... please try again later.`)
+                    .setTimestamp(Date.now())
+                    .setThumbnail(interaction.guild.iconURL({ dynamic: true, size: 512 }))
+                    .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+                return interaction.editReply({
+                    embeds: [HowGayStat_Server],
+                    components: []
+                })
+            }
 
-            let desc = `## Server: ${interaction.guild.name}\n### Normal Cases:\n`
+            const NormalTypes = HowgayData.TypeRecords[0], SpecialCases = HowgayData.TypeRecords[1]
+            let SNormal = 0, SSpecial = 0, STotal = 0
+            for (var i in Object.keys(NormalTypes)) {
+                SNormal += Number(NormalTypes[i].value)
+            }
+            for (var i in Object.keys(SpecialCases)) {
+                let Key = Object.keys(SpecialCases)[i]
+                SSpecial += Number(SpecialCases[Key])
+            }
+            STotal += (SNormal + SSpecial)
+            let desc = `## Server: ${interaction.guild.name}\n## **Total Usages:** \`[${STotal}]\`\n### **Normal Cases:** \`[${SNormal}]\`\n`
             desc += `▸ ${Cases.EmojisNormal[0]} \`${NormalTypes[0].name}\` **(0.0% - 1.0%)**: **\`[${NormalTypes[0].value}]\`**\n`
             const Keys = Object.keys(NormalTypes)
             for (var i = 1; i < Keys.length - 1; i++) {
@@ -119,7 +142,7 @@ module.exports = {
             }
             desc += `▸ ${Cases.EmojisNormal[7]} \`${NormalTypes[7].name}\` **(100.0% - 101.0%)**: **\`[${NormalTypes[7].value}]\`**\n`
 
-            desc += `\n### Special Cases\n`
+            desc += `\n### **Special Cases:** \`[${SSpecial}]\`\n`
             const keys = Object.keys(SpecialCases)
             for (var i in keys) {
                 let key = `Case${keys[i]}`

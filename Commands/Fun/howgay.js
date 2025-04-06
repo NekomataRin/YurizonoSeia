@@ -72,7 +72,7 @@ module.exports = {
                 files: [ImgLink]
             })
         } else {
-            var DescArr = [], GayEmbeds = [], Emoji, Comment, rng, avgrng, typeindex
+            var DescArr = [], GayEmbeds = [], Emoji, Comment, rng, avgrng, typeindex, spkey = false
             if (!AvgChr) {
                 rng = Math.random() * 101.1
                 //rng = 0.5 //Tesing Purposes, Only Remove When You Do That
@@ -99,6 +99,7 @@ module.exports = {
                     Color = Cases.Colors.SpecialCases
                     Comment = Cases.SpecialCases[`Case${rng}`].desc
                     specialnum = rng
+                    spkey = true
                 }
 
                 DescArr.push(`## ${Emoji} - Gayness Test Result\n▸ The gayness of ${target} is \`${rng}%\`\n### > Comments:\n\n ${Comment}`)
@@ -170,6 +171,7 @@ module.exports = {
                     Color = Cases.Colors.SpecialCases
                     Comment = Cases.SpecialCases[`Case${avgrng}`].desc
                     specialnum = avgrng
+                    spkey = true
                 }
 
                 DescArr.push(`## ${Emoji} - Gayness test result\n▸ The calculated gayness of ${target} is \`${avgrng}%\`\n\n### > Comments:\n ${Comment}`)
@@ -193,7 +195,7 @@ module.exports = {
                     if (tuser.roles.cache.has("1356679121996087487")) {
                         tuser.roles.remove('1356679121996087487')
                         DescArr[3] += `\n-# > Successfully removed <@&1356679121996087487> to ${target}, well then, since they proved themselves to be a real person.`
-                    } else if (!tuser.roles.cache.has("1356678602028093490")){
+                    } else if (!tuser.roles.cache.has("1356678602028093490")) {
                         tuser.roles.add('1356678602028093490')
                         DescArr[3] += `\n-# > Successfully added <@&1356678602028093490> to ${target}. Congratulations, you're the real chad here!`
                     } else {
@@ -290,25 +292,20 @@ module.exports = {
                         RoleKey = true
                     }
 
-                    let SavingKey = 0, finalvalue, SavingKey1 = 0
                     if (RoleKey) {
                         finalvalue = rng || avgrng
                         if (finalvalue <= 1) {
-                            SavingKey = 1
                             if (tuser.roles.cache.has("1356679121996087487")) {
                                 await tuser.roles.remove('1356679121996087487')
                             } else if (!tuser.roles.cache.has("1356678602028093490")) {
-                                SavingKey1 = 1
                                 await tuser.roles.add('1356678602028093490')
                             }
                         }
 
                         if (finalvalue >= 100) {
-                            SavingKey = 2
                             if (tuser.roles.cache.has("1356678602028093490")) {
                                 await tuser.roles.remove('1356678602028093490')
                             } else if (!tuser.roles.cache.has("1356679121996087487")) {
-                                SavingKey1 = 2
                                 await tuser.roles.add('1356679121996087487')
                             }
                         }
@@ -316,22 +313,6 @@ module.exports = {
                         HowgayList.findOne({ GuildId: interaction.guild.id }, async (err, data1) => {
                             if (err) return err
                             if (data1) {
-                                if (Number(SavingKey) === 2) {
-                                    for (var i in ChadArr) {
-                                        if (ChadArr[i].id === target.id) {
-                                            ChadArr = ChadArr.splice(i, 1)
-                                            break
-                                        }
-                                    }
-                                    if (Number(SavingKey1) === 2) {
-                                        GayArr.unshift({
-                                            id: target.id,
-                                            removetime: Date.now() + 60000
-                                        })
-
-                                    }
-                                }
-
                                 //Save Record For User 
                                 const UserRecordsArr = data1.UserRecords, TypeRecords = data1.TypeRecords
                                 if (UserRecordsArr.length > 0) {
@@ -349,6 +330,9 @@ module.exports = {
                                                 UserRecordsArr[i].values.max = Math.max(...Arr)
                                                 UserRecordsArr[i].values.min = Math.min(...Arr)
                                             }
+                                            UserRecordsArr[i].total.normal += 1
+                                            UserRecordsArr[i].total.special += (spkey) ? 1 : 0
+
                                             console.log(UserRecordsArr[i].values.max, UserRecordsArr[i].values.min, UserRecordsArr[i].values.maxavg, UserRecordsArr[i].values.minavg)
                                             break
                                         }
@@ -356,42 +340,54 @@ module.exports = {
                                     }
                                     console.log(Number(index) === UserRecordsArr.length - 1)
                                     if (Number(index) === UserRecordsArr.length - 1) {
+                                        let key = (AvgChr) ? 'avg' : 'nonavg'
                                         UserRecordsArr.push(
                                             {
                                                 id: target.id,
                                                 values: {
                                                     run: {
-                                                        nonavg: [(!AvgChr) ? Number(finalvalue) : 0],
-                                                        avg: [(AvgChr) ? Number(finalvalue) : 0]
+                                                        nonavg: [],
+                                                        avg: []
                                                     },
                                                     max: 0,
                                                     min: 0,
                                                     maxavg: 0,
                                                     minavg: 0
+                                                },
+                                                total: {
+                                                    normal: 1,
+                                                    special: (spkey) ? 1 : 0
                                                 }
                                             }
                                         )
+                                        UserRecordsArr[UserRecordsArr.length - 1].values.run[key].unshift(Number(finalvalue))
                                         UserRecordsArr[UserRecordsArr.length - 1].values.max = Math.max(...UserRecordsArr[UserRecordsArr.length - 1].values.run.nonavg)
                                         UserRecordsArr[UserRecordsArr.length - 1].values.min = Math.min(...UserRecordsArr[UserRecordsArr.length - 1].values.run.nonavg)
                                         UserRecordsArr[UserRecordsArr.length - 1].values.maxavg = Math.max(...UserRecordsArr[UserRecordsArr.length - 1].values.run.avg)
                                         UserRecordsArr[UserRecordsArr.length - 1].values.minavg = Math.min(...UserRecordsArr[UserRecordsArr.length - 1].values.run.avg)
                                     }
                                 } else {
+                                    let key = (AvgChr) ? 'avg' : 'nonavg'
                                     UserRecordsArr.push(
                                         {
                                             id: target.id,
                                             values: {
                                                 run: {
-                                                    nonavg: [(!AvgChr) ? Number(finalvalue) : 0],
-                                                    avg: [(AvgChr) ? Number(finalvalue) : 0]
+                                                    nonavg: [],
+                                                    avg: []
                                                 },
                                                 max: 0,
                                                 min: 0,
                                                 maxavg: 0,
                                                 minavg: 0
+                                            },
+                                            total: {
+                                                normal: 1,
+                                                special: (spkey) ? 1 : 0
                                             }
                                         }
                                     )
+                                    UserRecordsArr[0].values.run[key].unshift(Number(finalvalue))
                                     UserRecordsArr[0].values.max = Math.max(...UserRecordsArr[0].values.run.nonavg)
                                     UserRecordsArr[0].values.min = Math.min(...UserRecordsArr[0].values.run.nonavg)
                                     UserRecordsArr[0].values.maxavg = Math.max(...UserRecordsArr[0].values.run.avg)
@@ -401,47 +397,61 @@ module.exports = {
 
                                 //Log Generated
                                 const TypeRecordsArr = TypeRecords
-                                const NormalCasesList = TypeRecordsArr[0] || {
+                                const NormalCasesList = {
                                     0: {
                                         name: 'Type-0',
-                                        value: 0
+                                        value: (TypeRecordsArr.length > 0) ? TypeRecordsArr[0][0].value : 0
                                     },
                                     1: {
                                         name: 'Type-1',
-                                        value: 0
+                                        value: (TypeRecordsArr.length > 0) ? TypeRecordsArr[0][1].value : 0
                                     },
                                     2: {
                                         name: 'Type-2',
-                                        value: 0
+                                        value: (TypeRecordsArr.length > 0) ? TypeRecordsArr[0][2].value : 0
                                     },
                                     3: {
                                         name: 'Type-3',
-                                        value: 0
+                                        value: (TypeRecordsArr.length > 0) ? TypeRecordsArr[0][3].value : 0
                                     },
                                     4: {
                                         name: 'Type-4',
-                                        value: 0
+                                        value: (TypeRecordsArr.length > 0) ? TypeRecordsArr[0][4].value : 0
                                     },
                                     5: {
                                         name: 'Type-5',
-                                        value: 0
+                                        value: (TypeRecordsArr.length > 0) ? TypeRecordsArr[0][5].value : 0
                                     },
                                     6: {
                                         name: 'Type-6',
-                                        value: 0
+                                        value: (TypeRecordsArr.length > 0) ? TypeRecordsArr[0][6].value : 0
                                     },
                                     7: {
                                         name: 'Type-7',
-                                        value: 0
+                                        value: (TypeRecordsArr.length > 0) ? TypeRecordsArr[0][7].value : 0
                                     },
                                 }
-                                const SpecialCasesList = TypeRecords[1] || { "32.0": 0, "40.3": 0, "40.4": 0, "42.0": 0, "49.9": 0, "63.0": 0, "72.7": 0, "91.1": 0, "96.9": 0, "99.9": 0 }
+
+                                const SpecialCasesList = {
+                                    "32.0": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["32.0"] : 0,
+                                    "40.3": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["40.3"] : 0,
+                                    "40.4": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["40.4"] : 0,
+                                    "42.0": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["42.0"] : 0,
+                                    "49.9": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["49.9"] : 0,
+                                    "63.0": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["63.0"] : 0,
+                                    "72.7": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["72.7"] : 0,
+                                    "91.1": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["91.1"] : 0,
+                                    "96.9": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["96.9"] : 0,
+                                    "99.9": (TypeRecordsArr.length > 0) ? TypeRecordsArr[1]["99.9"] : 0
+                                }
 
                                 //Normal Cases
+                                console.log(typeindex)
                                 const NormalIndexes = Object.keys(NormalCasesList)
+                                console.log(NormalIndexes)
                                 for (var i in NormalIndexes) {
                                     if (NormalIndexes[i] === typeindex) {
-                                        NormalCasesList[i].value = Number(NormalCasesList[i].value) + 1
+                                        NormalCasesList[i].value += 1
                                         break
                                     }
                                 }
@@ -457,7 +467,7 @@ module.exports = {
                                 }
                                 TypeRecordsArr[1] = SpecialCasesList
 
-                                data1.UserRecords = [], data1.TypeRecords = [], data1.GigaChads = [], data1.Gays = []
+                                data1.UserRecords = [], data1.TypeRecords = []
                                 function ArrPush(arr = [], item = []) {
                                     for (var i in arr) {
                                         item.push(arr[i])

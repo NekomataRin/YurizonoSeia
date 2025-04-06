@@ -17,7 +17,7 @@ module.exports = async (client) => {
         console.log(chalk.blue('[LOG]') + ' Database, Check!')
     }
 
-    var i = 0, a = 1
+    var i = 0, a = 0
     b = [
         'v0.5.5 - Yurizono Seia, Prepare To Run!',
         'Updated /howgay command comments (fix bug pending session...)',
@@ -25,7 +25,7 @@ module.exports = async (client) => {
         'Osudroid!relax Community - Official Mascot!'
     ], 
     c = [
-        '/drp-calc is working in progress, please wait until it\'s stable to use! -Nakamura Taki'
+        '/howgay and /howgay-stats are under maintenance, please do not use those commands until the maintenance has been done.'
     ], namearr = (a === 0) ? c : b
     while (i !== -1) {
         await client.user.setPresence({
