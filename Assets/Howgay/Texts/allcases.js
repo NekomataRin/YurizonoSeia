@@ -1,7 +1,7 @@
 const ImgList = require('./imglist')
 const Cases = {
     Ranges: {
-        NormalCases: [1.1, 25.1, 40.1, 60.1, 75.1, 90.1, 100, 101.1],
+        NormalCases: [1.1, 17.6, 34.1, 50.6, 67.1, 83.6, 100, 101.1],
         SpecialCases: [32.0, 40.3, 40.4, 42.0, 49.9, 63.0, 72.7, 91.1, 96.9, 99.9]
     },
     Colors: {
