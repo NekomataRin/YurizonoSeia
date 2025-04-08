@@ -7,6 +7,7 @@ let cdSchema = new Schema({
     //Fun
     HowGay: String,
     QuickMath: String,
+    Omikuji: String,
     //Misc
     CheckAlive: String,
     //Ranking

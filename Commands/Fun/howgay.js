@@ -312,6 +312,13 @@ module.exports = {
 
                         HowgayList.findOne({ GuildId: interaction.guild.id }, async (err, data1) => {
                             if (err) return err
+                            if (!data1) {
+                                return HowgayList.create({
+                                    GuildId: interaction.guild.id,
+                                    UserRecords: [],
+                                    TypeRecords: []
+                                })
+                            }
                             if (data1) {
                                 //Save Record For User 
                                 const UserRecordsArr = data1.UserRecords, TypeRecords = data1.TypeRecords
@@ -338,8 +345,8 @@ module.exports = {
                                         }
                                         index = i
                                     }
-                                    console.log(Number(index) === UserRecordsArr.length - 1)
-                                    if (Number(index) === UserRecordsArr.length - 1) {
+                                    
+                                    if (Number(index) === UserRecordsArr.length - 1 && UserRecordsArr.length > 1) {
                                         let key = (AvgChr) ? 'avg' : 'nonavg'
                                         UserRecordsArr.push(
                                             {
