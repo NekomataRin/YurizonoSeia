@@ -323,7 +323,7 @@ module.exports = {
                                 //Save Record For User 
                                 const UserRecordsArr = data1.UserRecords, TypeRecords = data1.TypeRecords
                                 if (UserRecordsArr.length > 0) {
-                                    let index = 0, pushkey = false
+                                    let index = 0
                                     for (var i in UserRecordsArr) {
                                         if (UserRecordsArr[i].id === target.id) {
                                             let key = (AvgChr) ? 'avg' : 'nonavg'
