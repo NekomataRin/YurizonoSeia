@@ -116,7 +116,7 @@ module.exports = {
                                     }
                                     index = i
                                 }
-                                if (Number(index) === UserRecordsArr.length - 1 && UserRecordsArr.length > 1) {
+                                if (Number(index) === UserRecordsArr.length - 1) {
                                     const UserObj_Push = {
                                         UserID: interaction.user.id,
                                         "C-Tier": 0,
