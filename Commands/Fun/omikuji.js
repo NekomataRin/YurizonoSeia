@@ -59,10 +59,10 @@ module.exports = {
                 const cduser = data.UserID
                 const CDTime = data.Omikuji
                 console.log(chalk.yellow('[Command: Omikuji]') + ` ${cduser}, ${CDTime}, ${Date.now()}`)
-                let cdkey = CDTime < Date.now()
+                //let cdkey = CDTime < Date.now()
                 
                 //cdkey = true Debug: Only Remove When Testing
-                if (!cdkey) {
+                if (Date.now() < CDTime) {
                     const cdembed = new EmbedBuilder()
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
