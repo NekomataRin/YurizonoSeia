@@ -20,7 +20,7 @@ const Cluster2_Assets = [
     [
         31,
         'castorice',
-        '.Assets/RankCards/Cluster2/Image/RankCard_31.png',
+        './Assets/RankCards/Cluster2/Image/RankCard_31.png',
         '#b84dff',
         'https://cdn.discordapp.com/emojis/1360440195966570701.png?size=512&quality=lossless',
         '<:CastoriceSip:1360440195966570701>',
