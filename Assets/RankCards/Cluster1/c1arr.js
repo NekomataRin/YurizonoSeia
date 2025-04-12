@@ -248,8 +248,8 @@ const Cluster1_Assets =
             'yuuka-py',
             './Assets/RankCards/Cluster1/Images/RankCard_30.png',
             '#7069f5',
-            '<:YuukaPyjama:1360424442420924539>',
             'https://cdn.discordapp.com/emojis/1360424442420924539.png?size=512&quality=lossless',
+            '<:YuukaPyjama:1360424442420924539>',
             'Millennium - Yuuka (Pyjama) (@witwickj)'
         ],
     ]
