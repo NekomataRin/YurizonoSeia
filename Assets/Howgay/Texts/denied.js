@@ -9,9 +9,9 @@ const Denied_Cases = [
     },
     {
         id: '751225225047179324', //nekorin727
-        desc: `<:SeiaMenacing:1250945297660641351> Are you trying to test the \`/howgay\` command on <@751225225047179324> ? Not so fast little bro, this is my dad (~~aka my clone rn~~), you do NOT have the permission to do this to him!`,
-        img: ImgList.Rejected.Seia.value,
-        ctx: ImgList.Rejected.Seia.ctx
+        desc: `<:CastoriceAngy:1360440200966176878> So, even my dad chosen to use this last resort... He really wanted you to be dead right now... why did you check \`/howgay\` on <@751225225047179324>? Since you already know that he cannot be checked?`,
+        img: ImgList.Rejected.Rin.value,
+        ctx: ImgList.Rejected.Rin.ctx
     },
     {
         id: '786816081032773662', //serika.206

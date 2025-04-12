@@ -20,6 +20,10 @@ const ImgList = {
             value: './Assets/Howgay/CaseImg/Rejected/reject-3.jpg',
             ctx: 'attachment://reject-3.jpg'
         },
+        Rin: {
+            value: './Assets/Howgay/CaseImg/Rejected/reject-4.png',
+            ctx: 'attachment://reject-4.png'
+        }
     },
     GigaChad: [
         {
