@@ -1,2 +1,3 @@
-# YurizonoSeia-Archived
- An Archive Code From YurizonoSeia Bot, Made By NekoRin727
+# YurizonoSeia
+- Lazy to put desc, might leave this soon...
+v0.6.0
