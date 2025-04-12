@@ -136,8 +136,8 @@ module.exports = {
         context.strokeRect(0, 0, canvas.width, canvas.height)
 
         //Detail 2 - Fill Frame 1 
-        context.globalAlpha = 0.75
-        context.fillStyle = '#4F4F4F'
+        context.globalAlpha = 0.5
+        context.fillStyle = '#000000'
         context.beginPath()
         context.moveTo(17, 282)
         context.lineTo(132, 0)
@@ -159,8 +159,8 @@ module.exports = {
         context.closePath()
         context.stroke()
 
-        context.fillStyle = '#4F4F4F'
-        context.globalAlpha = 0.75
+        context.fillStyle = '#000000'
+        context.globalAlpha = 0.5
         context.beginPath()
         context.roundRect(369, 20, 475, 78, [22])
         context.closePath()
@@ -168,7 +168,7 @@ module.exports = {
         context.fillStyle = Color
         context.stroke()
 
-        context.fillStyle = '#4F4F4F'
+        context.fillStyle = '#000000'
         context.beginPath()
         context.roundRect(326, 130, 517, 125, [30])
         context.closePath()
