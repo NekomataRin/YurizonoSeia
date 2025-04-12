@@ -1,5 +1,6 @@
 const Cluster1_Assets = require('./Cluster1/c1arr')
 const Cluster2_Assets = require('./Cluster2/c2arr')
+const Cluster3_Assets = require('./Cluster3/c3arr')
 
 let rankattributes = [
     [
@@ -12,7 +13,8 @@ let rankattributes = [
         'osudroid!relax Member',
     ],
     ...Cluster1_Assets,
-    ...Cluster2_Assets
+    ...Cluster2_Assets,
+    ...Cluster3_Assets
 ]
 /*
 [0] Rank_Key
