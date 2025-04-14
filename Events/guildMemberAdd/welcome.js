@@ -64,7 +64,7 @@ module.exports = async (client, member) => {
     ctx.fillStyle = '#ffffff'
     ctx.lineWidth = 2
 
-    let px = (vmember.length > 20) ? 35 : 35 * Number(20 / vmember.length)
+    let px = (vmember.length <= 20) ? 35 : 35 * Number(20 / vmember.length)
     ctx.font = `700 ${px}px Ubuntu`
     ctx.textAlign = 'center'
     ctx.fillText(vmember, 640, 720)
