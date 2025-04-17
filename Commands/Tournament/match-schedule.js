@@ -46,7 +46,7 @@ module.exports = {
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
         const timereg = /\b(2[0-3]|[01]?[0-9]):([0-5]?[0-9])\b/g
-        const datereg = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/g
+        const datereg = /^\d{4}[-/](0[1-9]|1[012])[-/](0[1-9]|[12][0-9]|3[01])$/g
 
         let errcode = []
         /*
@@ -91,8 +91,8 @@ module.exports = {
 
         let ErrorDesc = '', errcount = 0, temperr = []
         const ErrDesc = [
-            'Invalid Time Format - You must provided the apporiate to `24 hours time` format!\n',
-            'Invalid Date Format - You must provided the apporiate to `yyyy-mm-dd` format!\n',
+            'Invalid Time Format - You must provided the apporiate time of the `24 hours time` format!\n',
+            'Invalid Date Format - You must provided the apporiate date of the `yyyy-mm-dd` or `yyyy/mm/dd` format!\n',
             'Same User - Seriously? You scheduled your match... with yourself?\n',
             'Bot - Seriously? Bot can play osudroid!relax? They aren\'t NeuroSama, dude? Even me, I\'m also trigger this error, you know?\n',
             'Date In The Past - You can\'t schedule your match in the past...\n'

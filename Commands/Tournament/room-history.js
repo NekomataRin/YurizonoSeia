@@ -40,38 +40,57 @@ module.exports = {
                     })
                 .setRequired(true)
         )
-        .addNumberOption(option =>
+        .addStringOption(option =>
             option.setName('ref-id')
-                .setDescription('The room\'s referee\'s id - (0 for None)')
-                .setMinValue(0)
+                .setDescription('The room\'s referee\'s id - (Please specify the room id)')
                 .setRequired(true)
+                .setAutocomplete(true)
         ),
+    async autocomplete(interaction) {
+        const Focused = interaction.options.getFocused(true)
+        let room_id = interaction.options.getNumber('room-id') || 1
+
+        const LinkReq = await request(`https://droidpp.osudroid.moe/api/tournament/getrooms_history?id=${room_id}`)
+        const Result = await LinkReq.body.json()
+        let choices = []
+        
+        if (Result.length > 0) {
+            for (var i in Result[0].scores) {
+                choices.push(`${Result[0].scores[i].user_id} | ${Result[0].scores[i].user_name}`)
+            }
+        } else 
+            choices.push('ERROR 404 - Room Not Found')
+
+        const filtered = choices.filter(choice => choice.startsWith(Focused.value));
+        await interaction.respond(
+            filtered.map(choice => ({ name: choice, value: choice.split('|')[0] })),
+        )
+    },
 
     async execute(interaction) {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
         const room_id = interaction.options.getNumber('room-id')
-        const Ref_id = interaction.options.getNumber('ref-id')
+        const Ref_id = interaction.options.getString('ref-id') || 0
         const SortMethod = interaction.options.getString('sort-method')
         const MatchType = interaction.options.getString('match-type')
 
-        const LinkReq = await request(`https://droidpp.osudroid.moe/api/tournament/getrooms_history?id=${room_id}`)
-        const Result = await LinkReq.body.json()
-
-        if (Result.length === 0) {
-            const NoData = new EmbedBuilder()
-                .setColor('DarkGreen')
-                .setTitle(`<:seiaconcerned:1244129048494473246> **No Match Room Data Provided**`)
+        if (Ref_id === 'ERROR 404 - Room Not Found') {
+            const ErrEmbed = new EmbedBuilder()
+                .setColor('Red')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setDescription(`<:seiaehem:1244129111169826829> Unfortunately, This room \`[${room_id}]\` has no data, so... I can't retrieve the match history...`)
+                .setTitle('<:seiaconcerned:1244129048494473246> • Error - Room Not Found')
+                .setDescription(`<:seiaehem:1244129111169826829> • I cannot retrieve the history of this room id (${room_id}) for you because there's no data from the link.`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-            return interaction.editReply({
-                embeds: [NoData]
+            await interaction.editReply({
+                embeds: [ErrEmbed]
             })
         }
 
+        const LinkReq = await request(`https://droidpp.osudroid.moe/api/tournament/getrooms_history?id=${room_id}`)
+        const Result = await LinkReq.body.json()
 
         let MapName = [], Scores = [], MapHashes = []
         for (var i in Result) {
@@ -93,24 +112,39 @@ module.exports = {
             BackgroundLink.push(`https://osu.direct/api/media/background/${IDList[i]}`)
         }
 
-        const ModSymbList = ['|', 'x', 'p', 'e', 'n', 'r', 'h', 'i', 'd', 'c', 't', 's', 'u', 'f', 'l', 'v']
-        const ModsName = ['', 'RX', 'AP', 'EZ', 'NF', 'HR', 'HD', 'FL', 'DT', 'NC', 'HT', 'PR', 'SD', 'PF', 'RE', 'V2']
+        const ModsObj = {
+            '|': '',
+            'a': "AT",
+            'b': 'TC',
+            'c': 'NC',
+            'd': 'DT',
+            'e': 'EZ',
+            'f': 'PF',
+            'h': 'HD',
+            'i': 'FL',
+            'm': 'CS',
+            'n': 'NF',
+            'P': 'AP',
+            'r': 'HR',
+            's': 'PR',
+            't': 'HT',
+            'u': 'SD',
+            'v': 'V2',
+            'x': 'RX'
+        }
+
         function RetrieveMods(str) {
             let Mods = ''
             let Substr = str.split('|')
             if (Substr[0].length > 0) {
                 for (var i in Substr[0]) {
-                    if (ModSymbList.indexOf(Substr[0][i]) !== -1) {
-                        let n = ModSymbList.indexOf(Substr[0][i])
-                        Mods += ModsName[n]
+                    if (Object.keys(ModsObj).includes(Substr[0][i])) {
+                        Mods += ModsObj[Substr[0][i]]
                     }
                 }
             }
-            if (Substr[1].length > 0) {
-                Mods += ` ${Substr[1]}`
-            } else if (Substr[0].length === 0) {
-                Mods = 'No Mod'
-            }
+            if (Substr[1].length > 0) Mods += ` ${Substr[1]}`
+            if (Substr[0].length === 0) Mods = 'No Mod'
             return Mods
         }
 
@@ -190,15 +224,15 @@ module.exports = {
                     }
                     for (var j = 0; j < MapScores[i].length; j++) {
                         if (j === 0) {
-                            MapDetailsDesc += `[👑] **Player:** \`${MapScores[i][j][0]} [${MapScores[i][j][5]}]\` ▸ **Score:** \`${MapScores[i][j][1]}\`\n▸ **Accuracy:** \`${MapScores[i][j][2]}\` ▸ **Misses:** \`${MapScores[i][j][3]}\`\n▸ **Mods:** \`${MapScores[i][j][4]}\`\n`
+                            MapDetailsDesc += `[👑] **Player:** \`${MapScores[i][j][0]} [${MapScores[i][j][5]}]\` ▸ **Score:** \`${MapScores[i][j][1]}\`\n▸ **Accuracy:** \`${MapScores[i][j][2]}%\` ▸ **Misses:** \`${MapScores[i][j][3]}\`\n▸ **Mods:** \`${MapScores[i][j][4]}\`\n`
                         } else {
-                            MapDetailsDesc += `[🏳] **Player:** \`${MapScores[i][j][0]} [${MapScores[i][j][5]}]\` ▸ **Score:** \`${MapScores[i][j][1]}\`\n▸ **Accuracy:** \`${MapScores[i][j][2]}\` ▸ **Misses:** \`${MapScores[i][j][3]}\`\n▸ **Mods:** \`${MapScores[i][j][4]}\`\n`
+                            MapDetailsDesc += `[🏳] **Player:** \`${MapScores[i][j][0]} [${MapScores[i][j][5]}]\` ▸ **Score:** \`${MapScores[i][j][1]}\`\n▸ **Accuracy:** \`${MapScores[i][j][2]}%\` ▸ **Misses:** \`${MapScores[i][j][3]}\`\n▸ **Mods:** \`${MapScores[i][j][4]}\`\n`
                         }
                     }
                 }
                 if (MatchType === 'qlfr') {
                     for (var j = 0; j < MapScores[i].length; j++) {
-                        MapDetailsDesc += `[⬛] **Player:** \`${MapScores[i][j][0]} [${MapScores[i][j][5]}]\` ▸ **Score:** \`${MapScores[i][j][1]}\`\n▸ **Accuracy:** \`${MapScores[i][j][2]}\` ▸ **Misses:** \`${MapScores[i][j][3]}\`\n▸ **Mods:** \`${MapScores[i][j][4]}\`\n`
+                        MapDetailsDesc += `**\`[No. ${Number(j) + 1}]\`** **Player:** \`${MapScores[i][j][0]} [${MapScores[i][j][5]}]\` ▸ **Score:** \`${MapScores[i][j][1]}\`\n▸ **Accuracy:** \`${MapScores[i][j][2]}%\` ▸ **Misses:** \`${MapScores[i][j][3]}\`\n▸ **Mods:** \`${MapScores[i][j][4]}\`\n`
                     }
                 }
                 HistoryEmbed[count_1] = new EmbedBuilder()

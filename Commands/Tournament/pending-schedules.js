@@ -12,7 +12,6 @@ module.exports = {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
-        const AllMembers = await interaction.guild.members.fetch()
         const RefereeList = await interaction.guild.roles.cache.get('1240650723860156466').members.map(m => m.user.id)
 
         const usekey = (RefereeList.indexOf(interaction.user.id) !== -1) ? true : false
