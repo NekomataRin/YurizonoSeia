@@ -345,33 +345,34 @@ module.exports = {
                                         }
                                         index = i
                                     }
-                                    
+
                                     if (Number(index) === UserRecordsArr.length - 1) {
                                         let key = (AvgChr) ? 'avg' : 'nonavg'
-                                        UserRecordsArr.push(
-                                            {
-                                                id: target.id,
-                                                values: {
-                                                    run: {
-                                                        nonavg: [],
-                                                        avg: []
-                                                    },
-                                                    max: 0,
-                                                    min: 0,
-                                                    maxavg: 0,
-                                                    minavg: 0
+                                        const Obj = {
+                                            id: target.id,
+                                            values: {
+                                                run: {
+                                                    nonavg: [],
+                                                    avg: []
                                                 },
-                                                total: {
-                                                    normal: 1,
-                                                    special: (spkey) ? 1 : 0
-                                                }
+                                                max: 0,
+                                                min: 0,
+                                                maxavg: 0,
+                                                minavg: 0
+                                            },
+                                            total: {
+                                                normal: 1,
+                                                special: (spkey) ? 1 : 0
                                             }
-                                        )
-                                        UserRecordsArr[UserRecordsArr.length - 1].values.run[key].unshift(Number(finalvalue))
-                                        UserRecordsArr[UserRecordsArr.length - 1].values.max = Math.max(...UserRecordsArr[UserRecordsArr.length - 1].values.run.nonavg)
-                                        UserRecordsArr[UserRecordsArr.length - 1].values.min = Math.min(...UserRecordsArr[UserRecordsArr.length - 1].values.run.nonavg)
-                                        UserRecordsArr[UserRecordsArr.length - 1].values.maxavg = Math.max(...UserRecordsArr[UserRecordsArr.length - 1].values.run.avg)
-                                        UserRecordsArr[UserRecordsArr.length - 1].values.minavg = Math.min(...UserRecordsArr[UserRecordsArr.length - 1].values.run.avg)
+                                        }
+                                        if (Obj.UserID !== UserRecordsArr[index].UserID) {
+                                            UserRecordsArr.push(Obj)
+                                            UserRecordsArr[UserRecordsArr.length - 1].values.run[key].unshift(Number(finalvalue))
+                                            UserRecordsArr[UserRecordsArr.length - 1].values.max = Math.max(...UserRecordsArr[UserRecordsArr.length - 1].values.run.nonavg)
+                                            UserRecordsArr[UserRecordsArr.length - 1].values.min = Math.min(...UserRecordsArr[UserRecordsArr.length - 1].values.run.nonavg)
+                                            UserRecordsArr[UserRecordsArr.length - 1].values.maxavg = Math.max(...UserRecordsArr[UserRecordsArr.length - 1].values.run.avg)
+                                            UserRecordsArr[UserRecordsArr.length - 1].values.minavg = Math.min(...UserRecordsArr[UserRecordsArr.length - 1].values.run.avg)
+                                        }
                                     }
                                 } else {
                                     let key = (AvgChr) ? 'avg' : 'nonavg'

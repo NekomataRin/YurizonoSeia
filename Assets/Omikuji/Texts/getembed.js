@@ -8,7 +8,7 @@ async function GetOmikujiCard() {
     let RNG = Math.random() * 100.001
     RNG = RNG.toFixed(3)
 
-    //RNG = 99.995 //Debug - Only Remove When Testing
+    //RNG = 99.994 //Debug - Only Remove When Testing
     let index = 0, key = 'C-Tier'
     for (var i in OmikujiAssets.Range) {
         if (Number(RNG) < OmikujiAssets.Range[i]) {
@@ -42,7 +42,7 @@ async function GetOmikujiCard() {
         OmikujiEmbed.setImage(ImgCtx)
     }
 
-    return [index, key, OmikujiEmbed, ImgLink]
+    return [runindex, key, OmikujiEmbed, ImgLink]
 }
 
 module.exports = { GetOmikujiCard }

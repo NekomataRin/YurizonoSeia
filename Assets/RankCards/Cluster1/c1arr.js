@@ -214,7 +214,7 @@ const Cluster1_Assets =
             '#afb0b1',
             'https://cdn.discordapp.com/emojis/1262268455499862036.png?size=512&quality=lossless',
             '<:KayokoThinking:1262268455499862036>',
-            'Gehenna - Kayoko (NY) (2nd Tourney Testers)',
+            'Gehenna - Kayoko (NY) (OG 2nd Testers)',
         ],
         [
             25,
