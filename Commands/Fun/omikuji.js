@@ -6,6 +6,7 @@ const cdSchema = require('../../Database/cooldown')
 const Omikuji = require('../../Database/Fun/omikuji')
 const OmikujiBonus = require('../../Database/Fun/omikuji-bonus')
 const chalk = require('chalk')
+const { Key } = require('../../Assets/Omikuji/Texts/cases')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -48,12 +49,13 @@ module.exports = {
             })
         }
 
+
         //20 Rolls Bonus (Cuz Of The Bug Fixing)
-        let Bypass = true
-        if (Date.now() <= 1746377999000) {
-            OmikujiBonus.findOne({ GuildID: interaction.guild.id }, async (err, data) => {
+        const eventtime = 1746377999000
+        if (Date.now() <= eventtime) {
+            OmikujiBonus.findOne({ GuildID: interaction.guild.id }, async (err, datan) => {
                 if (err) throw err
-                if (!data) {
+                if (!datan) {
                     OmikujiBonus.create({
                         GuildID: interaction.guild.id,
                         UserStats: [
@@ -63,13 +65,11 @@ module.exports = {
                             }
                         ]
                     })
-                    Bypass = true
                 }
-                if (data) {
-                    Bypass = false
-                    const UserStats = data.UserStats
-                    data.UserStats = []
-                    let index = 0, Pulls = 0
+                if (datan) {
+                    const UserStats = datan.UserStats
+                    datan.UserStats = []
+                    let index = 0
 
                     for (var i in UserStats) {
                         if (UserStats[i].UserID === interaction.user.id) {
@@ -80,7 +80,7 @@ module.exports = {
                         index = i
                     }
 
-                    if (index === UserStats.length - 1) {
+                    if (Number(index) === UserStats.length - 1) {
                         if (interaction.user.id !== UserStats[index].UserID) {
                             UserStats.push({
                                 UserID: interaction.user.id,
@@ -88,31 +88,24 @@ module.exports = {
                             })
                         }
                     }
-
-                    if (Number(Pulls) <= 20) {
-                        Bypass = true
+                    for (var i in UserStats) {
+                        datan.UserStats.push(UserStats[i])
                     }
-                   
-                    for(var i in UserStats) {
-                        data.UserStats.push(UserStats[i])
-                    }
-                    data.save()
-                    console.log(chalk.cyan('[DEBUG]') + ` Pulls: ${Pulls}, BypassKey: ${Bypass}`)
+                    datan.save()
                 }
             })
         } else {
-            Bypass = false
-            OmikujiBonus.findOne({ GuildID: interaction.guild.id }, async (err, data) => { 
-                if(err) throw err
-                if(!data) return
+            OmikujiBonus.findOne({ GuildID: interaction.guild.id }, async (err, datae) => {
+                if (err) throw err
+                if (!datae) return
                 else {
-                    const Stats = data.UserStats
-                    data.UserStats = []
-                    for(var i in Stats) {
+                    const Stats = datae.UserStats
+                    datae.UserStats = []
+                    for (var i in Stats) {
                         Stats[i].Pulls = 0
-                        data.UserStats.push(Stats[i])
+                        datae.UserStats.push(Stats[i])
                     }
-                    data.save()
+                    datae.save()
                 }
             })
         }
@@ -131,10 +124,26 @@ module.exports = {
                 const CDTime = data.Omikuji
                 console.log(chalk.yellow('[Command: Omikuji]') + ` ${cduser}, ${CDTime}, ${Date.now()}`)
                 let cdkey = CDTime < Date.now()
+
+                let Bypass = false
+                if (Date.now() <= eventtime) {
+                    const KeyCheck = await OmikujiBonus.findOne({ GuildID: interaction.guild.id }).select('-_id UserStats')
+                    if (!KeyCheck) Bypass = true
+                    else {
+                        const UserStats = KeyCheck.UserStats
+                        for (var i in UserStats) {
+                            if (UserStats[i].UserID === interaction.user.id) {
+                                if (Number(UserStats[i].Pulls) <= 20) Bypass = true
+                                break
+                            }
+                        }
+                    }
+                }
+
                 cdkey = Bypass
                 //cdkey = true //Debug: Only remove when testing
                 //if (Date.now() < CDTime) {
-                if (cdkey === false) {
+                if (!cdkey) {
                     const cdembed = new EmbedBuilder()
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
