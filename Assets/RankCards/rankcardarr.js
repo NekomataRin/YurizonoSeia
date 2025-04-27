@@ -1,6 +1,7 @@
 const Cluster1_Assets = require('./Cluster1/c1arr')
 const Cluster2_Assets = require('./Cluster2/c2arr')
 const Cluster3_Assets = require('./Cluster3/c3arr')
+const Cluster4_Assets = require('./Cluster4/c4arr')
 
 let rankattributes = [
     [
@@ -14,7 +15,8 @@ let rankattributes = [
     ],
     ...Cluster1_Assets,
     ...Cluster2_Assets,
-    ...Cluster3_Assets
+    ...Cluster3_Assets,
+    ...Cluster4_Assets
 ]
 /*
 [0] Rank_Key
