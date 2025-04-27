@@ -123,7 +123,6 @@ module.exports = {
                 const cduser = data.UserID
                 const CDTime = data.Omikuji
                 console.log(chalk.yellow('[Command: Omikuji]') + ` ${cduser}, ${CDTime}, ${Date.now()}`)
-                let cdkey = CDTime < Date.now()
 
                 let Bypass = false
                 if (Date.now() <= eventtime) {
@@ -140,7 +139,7 @@ module.exports = {
                     }
                 }
 
-                cdkey = Bypass
+                let cdkey = (Bypass) ? Bypass : CDTime < Date.now()
                 //cdkey = true //Debug: Only remove when testing
                 //if (Date.now() < CDTime) {
                 if (!cdkey) {
