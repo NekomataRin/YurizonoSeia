@@ -108,7 +108,7 @@ module.exports = {
             Background = RankingArr[0][1]
             ImgLink = RankingArr[0][3]
             Emoji = RankingArr[0][4]
-            Color = '#000000' 
+            Color = '#222222' 
             Title = `Restricted: ${RestrictKey.restrict}`
         }
         if (RestrictKey.restrict === 'Code-2') {
