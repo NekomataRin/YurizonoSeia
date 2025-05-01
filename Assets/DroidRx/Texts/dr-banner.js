@@ -1,7 +1,7 @@
 const BannerObj = {
     "default": {
         role_id: '1095655353435304017',
-        image: './Assets/DroidRx/Images/Banner/banner-0dan.png',
+        image: './Assets/DroidRx/Images/Banner/banner-default.png',
         color: '#ffffff'
     },
     "1dan": {

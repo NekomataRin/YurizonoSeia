@@ -6,14 +6,18 @@ const FooterEmbeds = require('../../Utils/embed')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('user-bind')
-        .setDescription('-Dev Only- Bind a osudroid!relax Account to a user (ONLY ONE/DISCORD USER)')
-        .addIntegerOption(option => option.setName('id')
-            .setDescription('The osudroid!relax User Id you wanted to bind')
-            .setMinValue(1)
-            .setRequired(true))
         .addUserOption(option => option.setName('user')
             .setDescription('The user you watned to bind that id to')
-            .setRequired(true)),
+            .setRequired(true))
+        .setDescription('-Dev Only- Bind a osudroid!relax Account to a user (ONLY ONE/DISCORD USER)')
+        .addIntegerOption(option => option.setName('id')
+            .setDescription('The osudroid!relax User ID you wanted to bind')
+            .setMinValue(1)
+            .setRequired(false))
+        .addStringOption(option => option.setName('username')
+            .setDescription('The osudroid!relax Username you wanted to bind')
+            .setMinLength(1)
+            .setRequired(false)),
 
     async execute(interaction) {
         await interaction.deferReply()
@@ -35,10 +39,11 @@ module.exports = {
             })
         }
 
-        const Dr_ID = interaction.options.getInteger('id')
+        const Dr_ID = interaction.options.getInteger('id') || -1
+        const UserName = interaction.options.getString('username') || ''
         const User = interaction.options.getUser('user')
-
-        const { body } = await request(`https://v4rx.me/api/get_user/?id=${Dr_ID}`)
+        const Url = (Number(Dr_ID) > 0) ? `https://v4rx.me/api/get_user/?id=${Dr_ID}` : `https://v4rx.me/api/get_user/?name=${UserName}`
+        const { body } = await request(Url)
         const Result = await body.json()
 
         const Keys = Object.keys(Result)
@@ -67,7 +72,7 @@ module.exports = {
                 embeds: [InvalidUser]
             })
         }
-        const IDCheck = await DrxUsers.findOne({ UserID: Dr_ID }) || -1
+        const IDCheck = await DrxUsers.findOne({ UserID: Result.id }) || -1
 
         const AvtUrl = `https://v4rx.me/user/avatar/${Dr_ID}.png/`
         DrxUsers.findOne({ DiscordID: User.id }, async (err, data) => {
@@ -93,7 +98,7 @@ module.exports = {
                         .setColor('Yellow')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setTitle('<:seiaconcerned:1244129048494473246> • User: Bind Account')
-                        .setDescription(`<:SeiaSip:1244890166116618340> Successfully binded account to ${User}\n[:flag_${Result.country.toLowerCase()}:] **Username:** \`${Result.name}\` ▸ **User ID:** \`${Result.id}\`\n\n-# Responsible Dev: ${interaction.user}`)
+                        .setDescription(`<:SeiaSip:1244890166116618340> Successfully bound account to ${User}\n[:flag_${Result.country.toLowerCase()}:] **Username:** \`${Result.name}\` ▸ **User ID:** \`${Result.id}\`\n\n-# Responsible Dev: ${interaction.user}`)
                         .setTimestamp()
                         .setThumbnail(AvtUrl)
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -107,7 +112,7 @@ module.exports = {
                         .setColor('Red')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setTitle('<:seiaconcerned:1244129048494473246> • User: Bind Account')
-                        .setDescription(`<:seiaehem:1244129111169826829> • Nah... this is the same thing... okay, why need to double check for this?`)
+                        .setDescription(`<:seiaehem:1244129111169826829> • Nah... this is the same thing... okay, why do you need to double check for this?`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     return interaction.editReply({
@@ -120,8 +125,8 @@ module.exports = {
                     const EditBind = new EmbedBuilder()
                         .setColor('Yellow')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setTitle('<:seiaconcerned:1244129048494473246> • Edit Binded Successfully')
-                        .setDescription(`<:SeiaSip:1244890166116618340> Successfully changed the binded account to ${User}\n[:flag_${Result.country.toLowerCase()}:] **Username:** \`${Result.name}\` ▸ **User ID:** \`${Result.id}\`\n\n-# Responsible Dev: ${interaction.user}`)
+                        .setTitle('<:seiaconcerned:1244129048494473246> • User: Bind Account')
+                        .setDescription(`<:SeiaSip:1244890166116618340> Successfully changed the bound account to ${User}\n[:flag_${Result.country.toLowerCase()}:] **Username:** \`${Result.name}\` ▸ **User ID:** \`${Result.id}\`\n\n-# Responsible Dev: ${interaction.user}`)
                         .setTimestamp()
                         .setThumbnail(AvtUrl)
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })

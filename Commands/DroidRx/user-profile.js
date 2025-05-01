@@ -6,7 +6,7 @@ const BannerObj = require('../../Assets/DroidRx/Texts/dr-banner')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('profile')
+        .setName('user-profile')
         .setDescription('Get profile of a user in game')
         .addIntegerOption(option =>
             option.setName('id')
@@ -15,7 +15,7 @@ module.exports = {
                 .setRequired(false))
         .addUserOption(option =>
             option.setName('user')
-                .setDescription('The user to get the profile (note: works if they binded game account)')
+                .setDescription('The user to get the profile (note: works if they bound their in game account)')
                 .setRequired(false)),
 
     async execute(interaction) {
@@ -31,14 +31,14 @@ module.exports = {
                 .setColor('DarkButNotBlack')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setTitle('<:seiaconcerned:1244129048494473246> • Error: Invalid User ID')
-                .setDescription(`<:seiaehem:1244129111169826829> • There's no ID provided, either the user hasn't binded their account or the id itself is not provided, so I cannot look up for a profile!`)
+                .setDescription(`<:seiaehem:1244129111169826829> • There's no ID provided, either the user hasn't bound their account or the id itself is not provided, so I cannot look up for a profile!`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             return interaction.editReply({
                 embeds: [InvalidID]
             })
         } else {
-            if(!UserID) UserID = GetID.UserID
+            if (!UserID) UserID = GetID.UserID
         }
 
         let key, discordid
@@ -57,9 +57,9 @@ module.exports = {
                 }
             }
         }
-        
+
         const ResultObj = await GetDroidRxUser(UserID, DanList[0], discordid, key)
-        
+
         if (!ResultObj) {
             const InvalidUser = new EmbedBuilder()
                 .setColor('DarkButNotBlack')
@@ -77,7 +77,7 @@ module.exports = {
             .setColor(ResultObj.Color)
             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
             .setTitle('<:seiaconcerned:1244129048494473246> • Profile View')
-            .setDescription(`<:SeiaSip:1244890166116618340> [:flag_${ResultObj.UserInfo.country.toLowerCase()}:] **Username:** \`${ResultObj.UserInfo.name}\` ▸ **User ID:** \`${ResultObj.UserInfo.id}\`\n▸ **Binded To:** ${ResultObj.BindedTo}`)
+            .setDescription(`<:SeiaSip:1244890166116618340> [:flag_${ResultObj.UserInfo.country.toLowerCase()}:] **Username:** \`${ResultObj.UserInfo.name}\` ▸ **User ID:** \`${ResultObj.UserInfo.id}\`\n▸ **Bound To:** ${ResultObj.BindedTo}`)
             .setTimestamp()
             .setImage(ResultObj.Ctx)
             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
