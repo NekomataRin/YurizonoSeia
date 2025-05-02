@@ -80,11 +80,14 @@ module.exports = {
         const BeatmapBackground = `https://osu.direct/api/media/background/${MapID}`
         const MapTitle = `${MapSetInfo.artist} - ${MapSetInfo.title} [${DifficultyName}]`
 
+        const e = await request(`https://osu.direct/api/v2/b/${MapID}`)
+        const MapResult = await e.body.json()
+        const MapUrl = MapResult.url
         const ResultEmbed = new EmbedBuilder()
             .setColor('Yellow')
             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
             .setTitle(`<:seiaehem:1244129111169826829> Recent play of: \`${ProfileResult.name}\` \`[${ProfileResult.id}]\` (Offset: \`${Offset}\`)`)
-            .setDescription(`▸ **Map Info:** ${MapTitle}\n▸ **Mods:** \`${Mods}\`\n\n> <:mikaeat:1254109782592327783> **Play Details:**\n• **PP:** \`${PlayResult.pp.toFixed(2)}\` • **Rating:** ${PlayEmoList.rating[PlayResult.rank]}\n• **Score:** \`${PlayResult.score}\` • **Accuracy:** \`${PlayResult.acc.toFixed(2)}%\`\n• **Combo:** \`${PlayResult.combo}x/${MapInfo.max_combo}x\`\n> ${PlayEmoList.hits.hit300} \`${PlayResult.hit300}\` | ${PlayEmoList.hits.hit100} \`${PlayResult.hit100}\` | ${PlayEmoList.hits.hit50} \`${PlayResult.hit50}\` | ${PlayEmoList.hits.hitmiss} \`${PlayResult.hitmiss}\``)
+            .setDescription(`▸ **Map Info:** [${MapTitle}](${MapUrl})\n▸ **Mods:** \`${Mods}\`\n\n> <:mikaeat:1254109782592327783> **Play Details:**\n• **PP:** \`${PlayResult.pp.toFixed(2)}\` • **Rating:** ${PlayEmoList.rating[PlayResult.rank]}\n• **Score:** \`${PlayResult.score}\` • **Accuracy:** \`${PlayResult.acc.toFixed(2)}%\`\n• **Combo:** \`${PlayResult.combo}x/${MapInfo.max_combo}x\`\n> ${PlayEmoList.hits.hit300} \`${PlayResult.hit300}\` | ${PlayEmoList.hits.hit100} \`${PlayResult.hit100}\` | ${PlayEmoList.hits.hit50} \`${PlayResult.hit50}\` | ${PlayEmoList.hits.hitmiss} \`${PlayResult.hitmiss}\``)
             .setTimestamp()
             .setThumbnail(BeatmapBackground)
             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
