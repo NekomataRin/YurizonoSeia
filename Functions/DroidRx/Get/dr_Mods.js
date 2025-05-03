@@ -8,6 +8,7 @@ const ModsObj = {
     'f': 'PF',
     'h': 'HD',
     'i': 'FL',
+    'l': 'RE',
     'm': 'CS',
     'n': 'NF',
     'P': 'AP',

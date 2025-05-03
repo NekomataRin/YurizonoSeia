@@ -63,7 +63,7 @@ module.exports = {
             const Progress = `${ProgressNum.toFixed(2)}%`
             const ProgressTxt = `[${Progress}] ${AllLevels[i].exp}/${ReqExp}`
             let UserProg = `### • [${Emoji[i]}] **__Rank:__** #${i + 1}\n• **__User:__** <@${AllLevels[i].UserID}> • **__Total PP:__** ${AllLevels[i].total}\n• **__Level:__** ${AllLevels[i].level} • **__Progress:__** ${ProgressTxt}\n`
-            if(['Code-1', 'Code-2', 'Code-3'].includes(AllLevels[i].restrict)) UserProg = `### • [${Emoji[i]}] **__Rank:__** #${i + 1}\n• **__User:__** <@${AllLevels[i].UserID}> • **__Total PP:__** ${AllLevels[i].total}\n• **__Level:__** ${AllLevels[i].level} • **__Progress:__** ${ProgressTxt}\n Note: This User Has Been Restricted (Restrict Code: [${AllLevels[i].restrict}])`
+            if(['Code-1', 'Code-2', 'Code-3'].includes(AllLevels[i].restrict)) UserProg = `### • [${Emoji[i]}] **__Rank:__** #${i + 1}\n• **__User:__** <@${AllLevels[i].UserID}> • **__Total PP:__** ${AllLevels[i].total}\n• **__Level:__** ${AllLevels[i].level} • **__Progress:__** ${ProgressTxt}\n-# Note: This User Has Been Restricted (Restrict Code: [${AllLevels[i].restrict}])\n`
             TopList.push(UserProg)
 
         }
