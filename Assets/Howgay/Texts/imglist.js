@@ -12,17 +12,13 @@ const ImgList = {
             value: './Assets/Howgay/CaseImg/Rejected/reject-1.png',
             ctx: 'attachment://reject-1.png'
         },
-        Tacos: {
-            value: './Assets/Howgay/CaseImg/Rejected/reject-2.png',
-            ctx: 'attachment://reject-2.png'
-        },
         QuocMinh: {
             value: './Assets/Howgay/CaseImg/Rejected/reject-3.jpg',
-            ctx: 'attachment://reject-3.jpg'
+            ctx: 'attachment://reject-2.jpg'
         },
         Rin: {
             value: './Assets/Howgay/CaseImg/Rejected/reject-4.png',
-            ctx: 'attachment://reject-4.png'
+            ctx: 'attachment://reject-3.png'
         }
     },
     GigaChad: [
