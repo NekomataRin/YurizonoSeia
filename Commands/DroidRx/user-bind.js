@@ -74,7 +74,7 @@ module.exports = {
         }
         const IDCheck = await DrxUsers.findOne({ UserID: Result.id }) || -1
 
-        const AvtUrl = `https://v4rx.me/user/avatar/${Dr_ID}.png/`
+        const AvtUrl = `https://v4rx.me/user/avatar/${Result.id}.png/`
         DrxUsers.findOne({ DiscordID: User.id }, async (err, data) => {
             if (err) throw err
             if (!data) {
@@ -92,7 +92,7 @@ module.exports = {
                 } else {
                     DrxUsers.create({
                         DiscordID: User.id,
-                        UserID: Dr_ID
+                        UserID: Result.id
                     })
                     const NewBind = new EmbedBuilder()
                         .setColor('Yellow')
@@ -121,7 +121,7 @@ module.exports = {
                 }
 
                 if (User.id === data.DiscordID && data.UserID !== Number(Dr_ID)) {
-                    data.UserID = Dr_ID
+                    data.UserID = Result.id
                     const EditBind = new EmbedBuilder()
                         .setColor('Yellow')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
