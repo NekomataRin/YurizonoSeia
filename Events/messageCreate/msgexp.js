@@ -8,7 +8,7 @@ const FooterEmbeds = require('../../Utils/embed')
 module.exports = async (client, message) => {
     if (message.author.bot) return
     if (message.channel.type === ChannelType.DM || message.channel.type === ChannelType.GroupDM) return
-    if (message.guild.id !== '1095653998389907468' || cd.has(message.author.id)) return
+    if (message.guild.id !== process.env.GUILD_ID || cd.has(message.author.id)) return
     if ((message.content.length) <= 1) return
 
     const iuser = await message.guild.members.fetch(message.author.id)
