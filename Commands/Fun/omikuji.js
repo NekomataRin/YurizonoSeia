@@ -116,7 +116,7 @@ module.exports = {
             if (!data) {
                 cdSchema.create({
                     UserID: interaction.user.id,
-                    Omikuji: Date.now()
+                    Omikuji: "0"
                 })
                 return interaction.editReply('<:seiaconcerned:1244129048494473246> Well, since you haven\'t in cooldown database yet... now you can try again')
             } else {
@@ -139,10 +139,10 @@ module.exports = {
                     }
                 }
 
-                let cdkey = (Bypass) ? Bypass : CDTime < Date.now()
+                //let cdkey = (Bypass) ? Bypass : CDTime < Date.now()
                 //cdkey = true //Debug: Only remove when testing
-                //if (Date.now() < CDTime) {
-                if (!cdkey) {
+                if (Date.now() < CDTime) {
+                //if (!cdkey) {
                     const cdembed = new EmbedBuilder()
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
