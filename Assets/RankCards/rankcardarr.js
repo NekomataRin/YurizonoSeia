@@ -1,7 +1,7 @@
-const Cluster1_Assets = require('./Cluster1/c1arr')
-const Cluster2_Assets = require('./Cluster2/c2arr')
-const Cluster3_Assets = require('./Cluster3/c3arr')
-const Cluster4_Assets = require('./Cluster4/c4arr')
+const Cluster1_Assets = require('./Cluster1 - Blue Archive/c1arr')
+const Cluster2_Assets = require('./Cluster2 - HoyoGames/c2arr')
+const Cluster3_Assets = require('./Cluster3 - Arcaea/c3arr')
+const Cluster4_Assets = require('./Cluster4 - VTubers/c4arr')
 
 let rankattributes = [
     [
