@@ -19,38 +19,42 @@ module.exports = async (client, message) => {
 
     const leetMap = {
         '0': 'o', '1': 'i', '!': 'i', '3': 'e', '4': 'a', '@': 'a',
-        '5': 's', '7': 't', '$': 's', '+': 't', '|': 'i', '¡': 'i', '¥': 'y'
+        '5': 's', '7': 't', '$': 's', '+': 't', '|': 'i', '¡': 'i', '¥': 'y',
+        '*': 'a', '#': 'h', '%': 'a', '6': 'g', '9': 'g' // Added for censored characters
     };
 
     function normalizeContent(text) {
         // Step 1: Remove accents/homoglyphs & lowercase
         let cleaned = unhomoglyph(text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '')).toLowerCase();
         
-        // Step 2: Convert leetspeak to letters
+        // Step 2: Convert leetspeak AND censor symbols to letters
         cleaned = cleaned.split('').map(c => leetMap[c] || c).join('');
         
-        // Step 3: Remove ALL non-letters (spaces, symbols, numbers)
+        // Step 3: Remove ALL non-letters (keeps only a-z)
         return cleaned.replace(/[^a-z]/g, '');
     }
 
-    function collapseRepeats(text) {
-        return text.replace(/([a-z])\1{2,}/g, '$1'); // "gggg" → "g"
-    }
-
     function generateRegex(word) {
-        // Match even if embedded in other words (no word boundaries)
-        const pattern = word.split('').join('[^a-z]*') + '[a-z]*';
+        // Match both original and censored variants (n*gga, n!**a, etc.)
+        const pattern = word.split('')
+            .map(c => `[${c}*#@%]`) // Allow original char or censor symbols
+            .join('[^a-z]*') +      // Optional separators
+            '[a-z]*';               // Optional suffix
+            
         return new RegExp(pattern, 'i');
     }
 
     function isOffensive(content) {
-        const normalized = collapseRepeats(normalizeContent(content));
+        const normalized = normalizeContent(content);
 
         // Skip if a false alarm word is present
-        if (FalseAlarms.some(safe => normalized.includes(safe))) return false;
+        if (FalseAlarms.some(safe => normalized.includes(normalizeContent(safe)))) return false;
 
-        // Check against all N-word variants
-        return NWords.some(word => generateRegex(word).test(normalized));
+        // Check against all N-word variants (including censored)
+        return NWords.some(word => {
+            const regex = generateRegex(word);
+            return regex.test(normalized);
+        });
     }
 
     if (isOffensive(message.content)) {
