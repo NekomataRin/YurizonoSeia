@@ -1,4 +1,4 @@
-const unhomoglyph = require('unhomoglyph'); // ⬅️ new
+const unhomoglyph = require('unhomoglyph');
 
 module.exports = async (client, message) => {
     const IgnoredChannels = [
@@ -50,35 +50,43 @@ module.exports = async (client, message) => {
             .map(c => leetMap[c] || c)
             .join('');
 
-        // Step 4: Remove non-letter characters (symbols, spaces, emojis, etc.)
-        return cleaned.replace(/[^a-z]/g, '');
+        // Step 4: Remove non-alphanumeric characters (but keep letters and numbers)
+        return cleaned.replace(/[^a-z0-9]/g, '');
     }
 
     function collapseRepeats(text) {
-        return text.replace(/(\w)\1{2,}/g, '$1'); // collapse "ggggg" → "g"
+        return text.replace(/([a-z])\1{2,}/gi, '$1$1'); // collapse "ggggg" → "gg" (keep 2 repeats)
     }
 
-    function generateRegex(word) {
-        const separator = `[^a-zA-Z]*`; // match anything non-alphabetic between letters
-        const suffix = `[asrzx]{0,9999}`; // allow plural endings
-        const pattern = word
-            .split('')
-            .map(c => `${separator}${c}`)
-            .join('') + suffix;
-
-        return new RegExp(pattern, 'i');
+    function generatePatterns(word) {
+        // Create multiple pattern variations
+        const patterns = [];
+        
+        // Basic pattern with optional separators
+        patterns.push(
+            word.split('').join('[^a-z0-9]*') + '[a-z]*'
+        );
+        
+        // Pattern with optional repeated letters (like "nniiggaa")
+        patterns.push(
+            word.split('').map(c => `${c}+`).join('[^a-z0-9]*') + '[a-z]*'
+        );
+        
+        return patterns.map(p => new RegExp(p, 'i'));
     }
 
     function isOffensive(content) {
         const normalized = collapseRepeats(normalizeContent(content));
 
+        // First check for false alarms - if found, skip further checks
         for (const safe of FalseAlarms) {
             if (normalized.includes(safe)) return false;
         }
 
+        // Check each offensive word with multiple patterns
         return NWords.some(word => {
-            const regex = generateRegex(word);
-            return regex.test(normalized);
+            const patterns = generatePatterns(word);
+            return patterns.some(regex => regex.test(normalized));
         });
     }
 
