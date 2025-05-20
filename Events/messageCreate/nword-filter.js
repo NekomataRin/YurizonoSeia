@@ -18,76 +18,39 @@ module.exports = async (client, message) => {
     const FalseAlarms = ['niger', 'nigeria', 'nigerian', 'niigata'];
 
     const leetMap = {
-        '0': 'o',
-        '1': 'i',
-        '!': 'i',
-        '3': 'e',
-        '4': 'a',
-        '@': 'a',
-        '5': 's',
-        '7': 't',
-        '$': 's',
-        '+': 't',
-        '|': 'i',
-        '¡': 'i',
-        '¥': 'y'
+        '0': 'o', '1': 'i', '!': 'i', '3': 'e', '4': 'a', '@': 'a',
+        '5': 's', '7': 't', '$': 's', '+': 't', '|': 'i', '¡': 'i', '¥': 'y'
     };
 
     function normalizeContent(text) {
-        // Step 1: Unicode normalization & homoglyph collapse
-        let cleaned = unhomoglyph(
-            text
-                .normalize('NFKD')
-                .replace(/[\u0300-\u036f]/g, '') // Remove accents
-        );
-
-        // Step 2: Lowercase
-        cleaned = cleaned.toLowerCase();
-
-        // Step 3: Apply leetspeak substitutions
-        cleaned = cleaned
-            .split('')
-            .map(c => leetMap[c] || c)
-            .join('');
-
-        // Step 4: Remove non-alphanumeric characters (but keep letters and numbers)
-        return cleaned.replace(/[^a-z0-9]/g, '');
+        // Step 1: Remove accents/homoglyphs & lowercase
+        let cleaned = unhomoglyph(text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '')).toLowerCase();
+        
+        // Step 2: Convert leetspeak to letters
+        cleaned = cleaned.split('').map(c => leetMap[c] || c).join('');
+        
+        // Step 3: Remove ALL non-letters (spaces, symbols, numbers)
+        return cleaned.replace(/[^a-z]/g, '');
     }
 
     function collapseRepeats(text) {
-        return text.replace(/([a-z])\1{2,}/gi, '$1$1'); // collapse "ggggg" → "gg" (keep 2 repeats)
+        return text.replace(/([a-z])\1{2,}/g, '$1'); // "gggg" → "g"
     }
 
-    function generatePatterns(word) {
-        // Create multiple pattern variations
-        const patterns = [];
-        
-        // Basic pattern with optional separators
-        patterns.push(
-            word.split('').join('[^a-z0-9]*') + '[a-z]*'
-        );
-        
-        // Pattern with optional repeated letters (like "nniiggaa")
-        patterns.push(
-            word.split('').map(c => `${c}+`).join('[^a-z0-9]*') + '[a-z]*'
-        );
-        
-        return patterns.map(p => new RegExp(p, 'i'));
+    function generateRegex(word) {
+        // Match even if embedded in other words (no word boundaries)
+        const pattern = word.split('').join('[^a-z]*') + '[a-z]*';
+        return new RegExp(pattern, 'i');
     }
 
     function isOffensive(content) {
         const normalized = collapseRepeats(normalizeContent(content));
 
-        // First check for false alarms - if found, skip further checks
-        for (const safe of FalseAlarms) {
-            if (normalized.includes(safe)) return false;
-        }
+        // Skip if a false alarm word is present
+        if (FalseAlarms.some(safe => normalized.includes(safe))) return false;
 
-        // Check each offensive word with multiple patterns
-        return NWords.some(word => {
-            const patterns = generatePatterns(word);
-            return patterns.some(regex => regex.test(normalized));
-        });
+        // Check against all N-word variants
+        return NWords.some(word => generateRegex(word).test(normalized));
     }
 
     if (isOffensive(message.content)) {
