@@ -3,7 +3,7 @@ const Cluster1_Assets =
         [
             1,
             'shiroko',
-            './Assets/RankCards/Cluster1/Images/RankCard_1.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_1.png',
             '#aff5f6',
             'https://cdn.discordapp.com/emojis/1206633868271030332.png?size=512&quality=lossless',
             '<:ShirokoSip:1206633868271030332>',
@@ -12,7 +12,7 @@ const Cluster1_Assets =
         [
             2,
             'hoshino',
-            './Assets/RankCards/Cluster1/Images/RankCard_2.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_2.png',
             '#f2abf5',
             'https://cdn.discordapp.com/emojis/1229126728417280050.png?size=512&quality=lossless',
             '<:HoshinoSleep:1229126728417280050>',
@@ -21,7 +21,7 @@ const Cluster1_Assets =
         [
             3,
             'serika',
-            './Assets/RankCards/Cluster1/Images/RankCard_3.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_3.png',
             '#ff7073',
             'https://cdn.discordapp.com/emojis/1012752122363785279.png?size=512&quality=lossless',
             '<:SerikaPray:1242841678214205451>',
@@ -30,7 +30,7 @@ const Cluster1_Assets =
         [
             4,
             'reisa',
-            './Assets/RankCards/Cluster1/Images/RankCard_4.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_4.png',
             '#d9d3f6',
             'https://cdn.discordapp.com/emojis/1244667503657881693.png?size=512&quality=lossless',
             '<:ReisaStare:1244667503657881693>',
@@ -39,7 +39,7 @@ const Cluster1_Assets =
         [
             5,
             'seia',
-            './Assets/RankCards/Cluster1/Images/RankCard_5.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_5.png',
             '#fff598',
             'https://cdn.discordapp.com/emojis/1244128244664504392.png?size=512&quality=lossless',
             '<:seiaheh:1244128244664504392>',
@@ -48,7 +48,7 @@ const Cluster1_Assets =
         [
             6,
             'mika',
-            './Assets/RankCards/Cluster1/Images/RankCard_6.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_6.png',
             '#ffc7f3',
             'https://cdn.discordapp.com/emojis/1245234978522923028.png?size=512&quality=lossless',
             '<:mikahappy:1245234978522923028>',
@@ -57,7 +57,7 @@ const Cluster1_Assets =
         [
             7,
             'nagisa',
-            './Assets/RankCards/Cluster1/Images/RankCard_7.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_7.png',
             '#e9ebcd',
             'https://cdn.discordapp.com/emojis/1245235614274555914.png?size=512&quality=lossless',
             '<:NagisaTea:1245235614274555914>',
@@ -66,7 +66,7 @@ const Cluster1_Assets =
         [
             8,
             'kazusa',
-            './Assets/RankCards/Cluster1/Images/RankCard_8.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_8.png',
             '#b0b8ff',
             'https://cdn.discordapp.com/emojis/1245237990108696667.png?size=512&quality=lossless',
             '<:KazusaThumbsup:1245237990108696667>',
@@ -75,7 +75,7 @@ const Cluster1_Assets =
         [
             9,
             'arona',
-            './Assets/RankCards/Cluster1/Images/RankCard_9.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_9.png',
             '#50ffff',
             'https://cdn.discordapp.com/emojis/1245354648651563101.png?size=512&quality=lossless',
             '<:arona:1245354648651563101>',
@@ -84,7 +84,7 @@ const Cluster1_Assets =
         [
             10,
             'kikyou',
-            './Assets/RankCards/Cluster1/Images/RankCard_10.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_10.png',
             '#018f8c',
             'https://cdn.discordapp.com/emojis/1245950012815310949.png?size=512&quality=lossless',
             '<:KikyouStare:1245950012815310949>',
@@ -93,7 +93,7 @@ const Cluster1_Assets =
         [
             11,
             'renge',
-            './Assets/RankCards/Cluster1/Images/RankCard_11.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_11.png',
             '#ff2b2b',
             'https://cdn.discordapp.com/emojis/1245952444106543124.png?size=512&quality=lossless',
             '<:RengeConfident:1245952444106543124>',
@@ -102,7 +102,7 @@ const Cluster1_Assets =
         [
             12,
             'yukari',
-            './Assets/RankCards/Cluster1/Images/RankCard_12.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_12.png',
             '#a67dff',
             'https://cdn.discordapp.com/emojis/1245953558117879848.png?size=512&quality=lossless',
             '<:YukariPast:1245953558117879848>',
@@ -111,7 +111,7 @@ const Cluster1_Assets =
         [
             13,
             'nagusa',
-            './Assets/RankCards/Cluster1/Images/RankCard_13.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_13.png',
             '#edffff',
             'https://cdn.discordapp.com/emojis/1245954205328478300.png?size=512&quality=lossless',
             '<:NagusaChill:1245954205328478300>',
@@ -120,7 +120,7 @@ const Cluster1_Assets =
         [
             14,
             'noa',
-            './Assets/RankCards/Cluster1/Images/RankCard_14.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_14.png',
             '#92e4ff',
             'https://cdn.discordapp.com/emojis/1247028261847040050.png?size=512&quality=lossless',
             '<:NoaNoted:1247028261847040050>',
@@ -129,7 +129,7 @@ const Cluster1_Assets =
         [
             15,
             'ichika',
-            './Assets/RankCards/Cluster1/Images/RankCard_15.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_15.png',
             '#a9a7d8',
             'https://cdn.discordapp.com/emojis/1253900720219099228.png?size=512&quality=lossless',
             '<:IchikaHi:1253900720219099228>',
@@ -138,7 +138,7 @@ const Cluster1_Assets =
         [
             16,
             'mika-2',
-            './Assets/RankCards/Cluster1/Images/RankCard_16.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_16.png',
             '#ffc7f3',
             'https://cdn.discordapp.com/emojis/1254109761125875802.png?size=512&quality=lossless',
             '<:mikalove:1254109761125875802>',
@@ -147,7 +147,7 @@ const Cluster1_Assets =
         [
             17,
             'seia-2',
-            './Assets/RankCards/Cluster1/Images/RankCard_17.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_17.png',
             '#fff598',
             'https://cdn.discordapp.com/emojis/1250945393370333214.png?size=512&quality=lossless',
             '<:SeiaSmug:1250945393370333214>',
@@ -156,7 +156,7 @@ const Cluster1_Assets =
         [
             18,
             'nagisa-2',
-            './Assets/RankCards/Cluster1/Images/RankCard_18.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_18.png',
             '#e9ebcd',
             'https://cdn.discordapp.com/emojis/1254453616320708710.png?size=512&quality=lossless',
             '<:NagisaHmm:1254453616320708710>',
@@ -165,7 +165,7 @@ const Cluster1_Assets =
         [
             19,
             'hifumi',
-            './Assets/RankCards/Cluster1/Images/RankCard_19.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_19.png',
             '#edb19f',
             'https://cdn.discordapp.com/emojis/1254645986190430309.png?size=512&quality=lossless',
             '<:hifumiperoro:1254645986190430309>',
@@ -174,7 +174,7 @@ const Cluster1_Assets =
         [
             20,
             'hina-dr',
-            './Assets/RankCards/Cluster1/Images/RankCard_20.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_20.png',
             '#c073ff',
             'https://cdn.discordapp.com/emojis/1257280218612371518.png?size=512&quality=lossless',
             '<:HinaDressPerformance:1257280218612371518>',
@@ -183,7 +183,7 @@ const Cluster1_Assets =
         [
             21,
             'hoshino-2',
-            './Assets/RankCards/Cluster1/Images/RankCard_21.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_21.png',
             '#f2abf5',
             'https://cdn.discordapp.com/emojis/1230898571197546568.png?size=512&quality=lossless',
             '<:hoshinoyawn:1230898571197546568>',
@@ -192,7 +192,7 @@ const Cluster1_Assets =
         [
             22,
             'atsuko',
-            './Assets/RankCards/Cluster1/Images/RankCard_22.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_22.png',
             '#e8b1fc',
             'https://cdn.discordapp.com/emojis/1262257895282573313.png?size=512&quality=lossless',
             '<:atsukohappy:1262257895282573313>',
@@ -201,7 +201,7 @@ const Cluster1_Assets =
         [
             23,
             'kayoko',
-            './Assets/RankCards/Cluster1/Images/RankCard_23.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_23.png',
             '#5d5d5d',
             'https://cdn.discordapp.com/emojis/1262266983739691138.png?size=512&quality=lossless',
             '<:KayokoConfused:1262266983739691138>',
@@ -210,7 +210,7 @@ const Cluster1_Assets =
         [
             24,
             'kayoko-ny',
-            './Assets/RankCards/Cluster1/Images/RankCard_24.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_24.png',
             '#afb0b1',
             'https://cdn.discordapp.com/emojis/1262268455499862036.png?size=512&quality=lossless',
             '<:KayokoThinking:1262268455499862036>',
@@ -219,7 +219,7 @@ const Cluster1_Assets =
         [
             25,
             'wakamo',
-            './Assets/RankCards/Cluster1/Images/RankCard_25.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_25.png',
             '#ff4343',
             'https://cdn.discordapp.com/emojis/1259326736240214097.png?size=512&quality=lossless',
             '<:WakamoCoffee:1259326736240214097>',
@@ -228,7 +228,7 @@ const Cluster1_Assets =
         [
             28,
             'mari-track',
-            './Assets/RankCards/Cluster1/Images/RankCard_28.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_28.png',
             '#ffe770',
             'https://cdn.discordapp.com/emojis/1269887207993512008.png?size=512&quality=lossless',
             '<:Mari_Water:1269887207993512008>',
@@ -237,7 +237,7 @@ const Cluster1_Assets =
         [
             29,
             'mari',
-            './Assets/RankCards/Cluster1/Images/RankCard_29.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_29.png',
             '#ffe770',
             'https://cdn.discordapp.com/emojis/1269896593554018314.png?size=512&quality=lossless',
             '<:Mari_Pray:1269896593554018314>',
@@ -246,7 +246,7 @@ const Cluster1_Assets =
         [
             30,
             'yuuka-py',
-            './Assets/RankCards/Cluster1/Images/RankCard_30.png',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_30.png',
             '#7069f5',
             'https://cdn.discordapp.com/emojis/1360424442420924539.png?size=512&quality=lossless',
             '<:YuukaPyjama:1360424442420924539>',
