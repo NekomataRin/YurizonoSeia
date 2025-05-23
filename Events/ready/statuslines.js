@@ -19,8 +19,9 @@ module.exports = async (client) => {
 
     var i = 0, a = 1
     b = [
-        'v0.6.0 - Yurizono Seia, Prepare To Run!',
-        'Welcome and Goodbye Messages are now available!',
+        'v0.6.5 - Yurizono Seia, Prepare To Run!',
+        'Added A Bunch Of Rank Cards (Specific Requirements From NekoRin)',
+        'N-Word Filter: Observing, and fixing bugs',
         'Popular commands: /howgay | /quickmath | /omikuji',
         'Osudroid!relax Community - Official Mascot!'
     ], 

@@ -1,3 +1,3 @@
 # YurizonoSeia
 - Lazy to put desc, might leave this soon...
-v0.6.0
+v0.6.5 (Still Lazy Lmao...)

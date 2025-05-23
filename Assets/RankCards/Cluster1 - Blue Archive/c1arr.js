@@ -196,7 +196,7 @@ const Cluster1_Assets =
             '#e8b1fc',
             'https://cdn.discordapp.com/emojis/1262257895282573313.png?size=512&quality=lossless',
             '<:atsukohappy:1262257895282573313>',
-            'Arius - Atsuko (100 Mems Special)',
+            'Arius - Atsuko (100 Members Special)',
         ],
         [
             23,
@@ -251,6 +251,15 @@ const Cluster1_Assets =
             'https://cdn.discordapp.com/emojis/1360424442420924539.png?size=512&quality=lossless',
             '<:YuukaPyjama:1360424442420924539>',
             'Millennium - Yuuka (Pyjama) (@witwickj)'
+        ],
+        [
+            45,
+            'kisaki',
+            './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_45.png',
+            '#b4b5d6',
+            'https://cdn.discordapp.com/emojis/1375525818696077362.png?size=512&quality=lossless',
+            '<:Kisaki_Tada:1375525818696077362>',
+            'Genryuumon - Kisaki (@rimcie)'
         ],
     ]
 

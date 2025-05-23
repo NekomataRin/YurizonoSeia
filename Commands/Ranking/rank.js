@@ -194,7 +194,7 @@ module.exports = {
         context.font = '700 30px Ubuntu'
         context.fillText(user.username, 383, 55)
 
-        context.font = '700 20px Ubuntu'
+        context.font = '700 17.5px Ubuntu'
         context.fillText(Title, 382, 85)
         //Detail 6: Hexagon Level Lol
         context.beginPath()

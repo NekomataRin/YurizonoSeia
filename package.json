@@ -1,7 +1,7 @@
 {
   "name": "yurizono-seia",
-  "version": "0.6.0",
-  "description": "osudroid!relax Server Official Mascot - Bot | Made By: @nekorin727 - @paytouse",
+  "version": "0.6.5",
+  "description": "osudroid!relax Server Official Mascot - Bot | Made By: @nekorin727 - @ruikurenaii",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

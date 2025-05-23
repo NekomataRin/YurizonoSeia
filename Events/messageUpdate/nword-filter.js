@@ -39,6 +39,9 @@ module.exports = async (client, message) => {
     if (message.guild.id !== process.env.GUILD_ID) return;
     if (IgnoredChannels.includes(message.channel.id)) return;
 
+    let n = await message.fetch()
+    let EditedContent = n.content, PreContent = message.content
+    if (EditedContent === PreContent) return
     const NWords = [
         'nigger', 'nigga', 'niga', 'nigg', 'nig', 'nega', 'negga', 'negger',
         'niggers', 'niggas', 'neggas', 'negas', 'neggers', 'niggerian', 'ních gờ', 'níc gờ'
@@ -148,7 +151,7 @@ module.exports = async (client, message) => {
         return isMatch;
     }
 
-    if (isOffensive(message.content)) {
+    if (isOffensive(EditedContent)) {
         await message.delete().catch(err => console.error(`Failed to delete message: ${err}`));
         await message.channel.send('<:SeiaMuted:1244890584276008970> • Oi! That word is offensive, you know? You cannot say the **N-Word** HERE!');
     }

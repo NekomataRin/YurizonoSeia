@@ -6,10 +6,10 @@ module.exports = async (client, message) => {
     if (message.channel.type === ChannelType.DM || message.channel.type === ChannelType.GroupDM) return
     if (message.guild.id !== '1095653998389907468') return
 
-    let n = await message.fetch()
     const iuser = await message.guild.members.fetch(message.author.id)
     const Channel = client.channels.cache.get('1244996189510697043')
-
+    
+    let n = await message.fetch()
     let EditedContent = n.content, PreContent = message.content
     if (EditedContent === PreContent) return
     let desc = `Ufufu~ Looks like someone edited their message! Are they hiding something? Or maybe they just made a typo / mistake?\n<:seiaehem:1244129111169826829> Message Author: ${message.member}\n> Channel: ${message.channel}`
