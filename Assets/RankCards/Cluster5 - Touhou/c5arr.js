@@ -89,6 +89,15 @@ const Cluster5_Assets = [
         '<:Reimu_Money:1110239685017612318>',
         'Touhou - Hakurei Reimu',
     ],
+    [
+        48,
+        'tenshi',
+        './Assets/RankCards/Cluster5 - Touhou/Images/RankCard_48.png',
+        '#64fff1',
+        'https://cdn.discordapp.com/emojis/1205836795527569469.png?quality=lossless',
+        '<:TenshiSmug:1205836795527569469>',
+        'Touhou 10.5 - Hinanawi Tenshi',
+    ]
 ]
 
 /*
