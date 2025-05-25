@@ -104,7 +104,7 @@ module.exports = {
         const a = await request(`https://v4rx.me/api/get_user/?id=${UserID}`)
         const ProfileResult = await a.body.json()
 
-        let DanKeyCheck = false, Offset = 0, ReqID, DanName, DanMods, RoleID, ReqAcc
+        let DanKeyCheck = false, ReqID, DanName, DanMods, RoleID, ReqAcc
         for (var i in Object.keys(DanCourseList)) {
             if (DanKey === DanCourseList[Object.keys(DanCourseList)[i]].value) {
                 ReqID = DanCourseList[Object.keys(DanCourseList)[i]].map_id
@@ -115,6 +115,7 @@ module.exports = {
                 break
             }
         }
+
         const Pending = new EmbedBuilder()
             .setColor('DarkButNotBlack')
             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
@@ -126,23 +127,18 @@ module.exports = {
             embeds: [Pending]
         })
 
-        let MapID, PlayResult, ScoreList
-
-        while (Offset < 100) {
-            const b = await request(`https://v4rx.me/api/recent/?id=${UserID}&offset=${Offset}`)
-            PlayResult = await b.body.json()
-
-            const MapHash = PlayResult.maphash
-            const c = await request(`https://osu.direct/api/v2/md5/${MapHash}`)
-            const MapInfo = await c.body.json()
-            MapID = MapInfo.id
-            if (MapID === ReqID) {
-                DanKeyCheck = true
-                ScoreList.push(PlayResult)
-            }
-            Offset++
-        }
+        let PlayResult, ScoreList = []
+        const PlayLimit = ProfileResult.stats.plays 
+        const b = await request(`https://v4rx.me/api/get_scores/?limit=${PlayLimit}&id=${UserID}`)
+        const OverallList = await b.body.json()
         
+        for(var i in OverallList) {
+            if(OverallList[i].beatmap.id === ReqID) {
+                DanKeyCheck = true
+                ScoreList.push(OverallList[i]) 
+            }
+        }
+
         if (!DanKeyCheck) {
             const InvalidPlay = new EmbedBuilder()
                 .setColor('DarkButNotBlack')
@@ -156,17 +152,23 @@ module.exports = {
             })
         } else {
             ScoreList = ScoreList.sort((a, b) => b.acc - a.acc)
-            console.log('v1 list (sorted)', ScoreList)
-            ScoreList = ScoreList.filter(a => { a = a.mods.split('|')[1] === '' })
-            console.log('v2 list', ScoreList)
-
+            
+            for(var i in ScoreList) {
+                let SubStr = ScoreList[i].mods.split('|')[1]
+                console.log(SubStr)
+                if(SubStr.length > 0) ScoreList.splice(i, 1)
+            }
+            
             PlayResult = ScoreList[0]
+            
             let Desc = '', SubmitKey = 0, Color = 'Red', Role
             const Mods = PlayResult.mods
-            const SubStr = Mods.split('|')
-            console.log(DanMods.test(SubStr[0]))
+            const SubStr = Mods.split('|')[0]
+            
             if (DanKey === 'exdan' && SubmitKey === 0) {
-                SubmitKey = (DanMods.test(SubStr[0])) ? 0 : 1
+                const n = DanMods.test(SubStr)
+                console.log(n)
+                SubmitKey = (n) ? 0 : 1
                 if (SubmitKey === 0) {
                     let index = -1
                     for (var i in ReqAcc) {
@@ -179,17 +181,19 @@ module.exports = {
                     SubmitKey = (index === 0) ? 2 : (index === 1) ? 3 : 4
                 }
             } else if (SubmitKey === 0) {
-                SubmitKey = (DanMods.test(SubStr[0])) ? 0 : 1
+                const n = DanMods.test(SubStr)
+                console.log(n)
+                SubmitKey = (n) ? 0 : 1
                 if (SubmitKey === 0) {
                     SubmitKey = (PlayResult.acc >= ReqAcc) ? 5 : 6
                 }
             }
 
+            console.log(SubmitKey)
             switch (SubmitKey) {
                 case 2:
                 case 5:
                     {
-
                         Color = 'Green'
                         Desc = `Congratulations, you have passed the requirement of the course!\n> ${DanName} - Submit Status: \`Passed\``
                         break
