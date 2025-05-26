@@ -47,7 +47,20 @@ module.exports = {
         const Offset = interaction.options.getInteger('offset') || 0
         const a = await request(`https://v4rx.me/api/get_user/?id=${UserID}`)
         const ProfileResult = await a.body.json()
-        
+        const Keys = Object.keys(ProfileResult)
+        if (['error'].includes(Keys[0])) {
+            const InvalidUser = new EmbedBuilder()
+                .setColor('DarkButNotBlack')
+                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                .setTitle('<:seiaconcerned:1244129048494473246> • Error: User not Found')
+                .setDescription(`<:seiaehem:1244129111169826829> • There\'s no user with this id ${UserID}, so I cannot find their recent play!`)
+                .setTimestamp()
+                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+            return interaction.editReply({
+                embeds: [InvalidUser]
+            })
+        }
+
         if (Number(Offset) >= Number(ProfileResult.stats.plays)) {
             const InvalidOffset = new EmbedBuilder()
                 .setColor('DarkButNotBlack')

@@ -132,11 +132,7 @@ module.exports = {
                     }
                 case ('5pleft'):
                     {
-                        if (page < 5) {
-                            page = 0
-                        } else {
-                            page -= 5
-                        }
+                        page = (page < 5) ? 0 : page - 5
                         await interaction.editReply({
                             embeds: [BackgroundEmbed[page]],
                             components: [ListMovingButton(page)],
@@ -146,11 +142,7 @@ module.exports = {
                     }
                 case ('5pright'):
                     {
-                        if (page + 5 > listlen - 1) {
-                            page = listlen - 1
-                        } else {
-                            page += 5
-                        }
+                        page = (page + 5 > listlen - 1) ? listlen - 1 : page + 5
                         await interaction.editReply({
                             embeds: [BackgroundEmbed[page]],
                             components: [ListMovingButton(page)],
