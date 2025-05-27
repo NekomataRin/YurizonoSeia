@@ -29,7 +29,7 @@ module.exports = {
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
         const GetID = await DrxUsers.findOne({ DiscordID: guser.id })
-        if (!GetID) {
+        if (!GetID && !UserID) {
             const InvalidID = new EmbedBuilder()
                 .setColor('DarkButNotBlack')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })

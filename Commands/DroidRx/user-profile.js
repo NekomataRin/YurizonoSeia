@@ -26,7 +26,7 @@ module.exports = {
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
         const GetID = await DrxUsers.findOne({ DiscordID: guser.id })
-        if (!GetID) {
+        if (!GetID && !UserID) {
             const InvalidID = new EmbedBuilder()
                 .setColor('DarkButNotBlack')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
@@ -59,7 +59,7 @@ module.exports = {
         }
 
         const ResultObj = await GetDroidRxUser(UserID, DanList[0], discordid, key)
-
+        
         if (!ResultObj) {
             const InvalidUser = new EmbedBuilder()
                 .setColor('DarkButNotBlack')
@@ -77,7 +77,7 @@ module.exports = {
             .setColor(ResultObj.Color)
             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
             .setTitle('<:seiaconcerned:1244129048494473246> • Profile View')
-            .setDescription(`<:SeiaSip:1244890166116618340> [:flag_${ResultObj.UserInfo.country.toLowerCase()}:] **Username:** \`${ResultObj.UserInfo.name}\` ▸ **User ID:** \`${ResultObj.UserInfo.id}\`\n▸ **Bound To:** ${ResultObj.BindedTo}`)
+            .setDescription(`<:SeiaSip:1244890166116618340> [${(ResultObj.UserInfo.country) ? `:flag_${ResultObj.UserInfo.country.toLowerCase()}:` : `❔`}] **Username:** \`${ResultObj.UserInfo.name}\` ▸ **User ID:** \`${ResultObj.UserInfo.id}\`\n▸ **Bound To:** ${ResultObj.BindedTo}`)
             .setTimestamp()
             .setImage(ResultObj.Ctx)
             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
