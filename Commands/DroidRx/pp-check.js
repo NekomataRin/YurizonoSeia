@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, User } = require('discord.js')
 const FooterEmbeds = require('../../Utils/embed')
 const DrxUsers = require('../../Database/DroidRx/drxuserdata')
 const { request } = require('undici')
@@ -67,10 +67,12 @@ module.exports = {
         const b = await request(`https://v4rx.me/api/top_scores/?id=${UserID}`)
         const TopPlays = await b.body.json()
         const PlaysLimit = ProfileResult.stats.plays
+        const MapScores = await request(`https://v4rx.me/api/get_scores/?limit=${PlaysLimit}&id=${UserID}`)
+        const MapScoresInfo = await MapScores.body.json()
 
         const DescList = []
         for (var i in TopPlays) {
-            const Result = await getMap(UserID, TopPlays[i].pp, PlaysLimit)
+            const Result = await getMap(TopPlays[i].pp, MapScoresInfo)
             DescList.push(`### \`${Number(i) + 1}\` ${Result[0]}\n **▸ Mods:** \`${DroidRxMods(TopPlays[i].mods)}\`\n> **▸ PP:** \`${TopPlays[i].pp.toFixed(2)}\` **• Rating:** ${PlayEmoList.rating[TopPlays[i].rank]}\n> **▸ Score:** \`${TopPlays[i].score}\` **• Accuracy: ** \`${TopPlays[i].acc.toFixed(2)}%\`\n> **▸ Combo:** \`${TopPlays[i].combo}x/${Result[1]}x\`\n${PlayEmoList.hits.hit300} \`${TopPlays[i].hit300}\` | ${PlayEmoList.hits.hit100} \`${TopPlays[i].hit100}\` | ${PlayEmoList.hits.hit50} \`${TopPlays[i].hit50}\` | ${PlayEmoList.hits.hitmiss} \`${TopPlays[i].hitmiss}\`\n> **▸ Submitted At:** <t:${Math.floor(TopPlays[i].date / 1000)}> (<t:${Math.floor(TopPlays[i].date / 1000)}:R>)\n\n`)
         }
 
