@@ -4,30 +4,27 @@ const DrxUsers = require('../../Database/DroidRx/drxuserdata')
 const { request } = require('undici')
 const { DroidRxMods } = require('../../Functions/DroidRx/Get/dr_Mods')
 const PlayEmoList = require('../../Assets/DroidRx/Texts/play_emo')
+const { getMap } = require('../../Functions/DroidRx/Get/dr_GetMap')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('recent5')
-        .setDescription('Show the user\'s recent plays (max limit: 100 plays)')
-        .addUserOption(option =>
-            option.setName('user')
-                .setDescription('The user you want to get recent plays')
-                .setRequired(false))
-        .addIntegerOption(option =>
-            option.setName('id')
-                .setDescription('The id of a player (in case they haven\'t bound)')
-                .setMinValue(1)
-                .setRequired(false))
-        .addIntegerOption(option =>
-            option.setName('page')
-                .setDescription('The page to display their recent plays')
-                .setMinValue(1)
-                .setMaxValue(20)
-                .setRequired(false)),
+        .setName('pp-check')
+        .setDescription('Check a user\'s top plays, or yours')
+        .addUserOption(option => option.setName('user')
+            .setDescription('The user you wanted to get top plays')
+            .setRequired(false))
+        .addIntegerOption(option => option.setName('id')
+            .setDescription('The user\'s in game id')
+            .setMinValue(1)
+            .setRequired(false))
+        .addIntegerOption(option => option.setName('page')
+            .setDescription('The page to display their top plays')
+            .setMinValue(1)
+            .setMaxValue(20)
+            .setRequired(false)),
 
     async execute(interaction) {
         await interaction.deferReply()
-
         let UserID = interaction.options.getInteger('id')
         const guser = interaction.options.getUser('user') || interaction.user
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
@@ -66,23 +63,24 @@ module.exports = {
             })
         }
 
-        const TotalPlays = (ProfileResult.stats.plays >= 100) ? 100 : ProfileResult.stats.plays
-
         const AvtUrl = `https://v4rx.me/user/avatar/${UserID}.png/`
-        const b = await request(`https://v4rx.me/api/get_scores/?limit=${TotalPlays}&id=${UserID}`)
-        const OverallList = await b.body.json()
-        const PlaysDescArr = []
-        for (var i in OverallList) {
-            PlaysDescArr.push(`### \`${Number(i) + 1}\` **${OverallList[i].beatmap.artist} - ${OverallList[i].beatmap.title} [${OverallList[i].beatmap.version}]**\n▸ **Mods:** \`${DroidRxMods(OverallList[i].mods)}\`\n> **▸ PP:** \`${OverallList[i].pp.toFixed(2)}\` **• Rating:** ${PlayEmoList.rating[OverallList[i].rank]}\n> **▸ Score:** \`${OverallList[i].score}\` **• Accuracy: ** \`${OverallList[i].acc.toFixed(2)}%\`\n> **▸ Combo:** \`${OverallList[i].combo}x/${OverallList[i].beatmap.max_combo}x\`\n${PlayEmoList.hits.hit300} \`${OverallList[i].hit300}\` | ${PlayEmoList.hits.hit100} \`${OverallList[i].hit100}\` | ${PlayEmoList.hits.hit50} \`${OverallList[i].hit50}\` | ${PlayEmoList.hits.hitmiss} \`${OverallList[i].hitmiss}\`\n> **▸ Submitted At:** **<t:${Math.floor(OverallList[i].date / 1000)}> (<t:${Math.floor(OverallList[i].date / 1000)}:R>)**\n\n`)
+        const b = await request(`https://v4rx.me/api/top_scores/?id=${UserID}`)
+        const TopPlays = await b.body.json()
+        const PlaysLimit = ProfileResult.stats.plays
+
+        const DescList = []
+        for (var i in TopPlays) {
+            const Result = await getMap(UserID, TopPlays[i].pp, PlaysLimit)
+            DescList.push(`### \`${Number(i) + 1}\` ${Result[0]}\n **▸ Mods:** \`${DroidRxMods(TopPlays[i].mods)}\`\n> **▸ PP:** \`${TopPlays[i].pp.toFixed(2)}\` **• Rating:** ${PlayEmoList.rating[TopPlays[i].rank]}\n> **▸ Score:** \`${TopPlays[i].score}\` **• Accuracy: ** \`${TopPlays[i].acc.toFixed(2)}%\`\n> **▸ Combo:** \`${TopPlays[i].combo}x/${Result[1]}x\`\n${PlayEmoList.hits.hit300} \`${TopPlays[i].hit300}\` | ${PlayEmoList.hits.hit100} \`${TopPlays[i].hit100}\` | ${PlayEmoList.hits.hit50} \`${TopPlays[i].hit50}\` | ${PlayEmoList.hits.hitmiss} \`${TopPlays[i].hitmiss}\`\n> **▸ Submitted At:** <t:${Math.floor(TopPlays[i].date / 1000)}> (<t:${Math.floor(TopPlays[i].date / 1000)}:R>)\n\n`)
         }
 
         const EmbedDesc = []
-        let tempstr = ''
-        for (var i in PlaysDescArr) {
-            tempstr += PlaysDescArr[i]
-            if (i > 0 && i % 5 === 4 || i == PlaysDescArr.length - 1) {
+        let tempstr = `\n> **Total PP:** \`${ProfileResult.stats.pp}\`\n> **Ranking:** \`${ProfileResult.stats.rank}\`\n\n`
+        for (var i in DescList) {
+            tempstr += DescList[i]
+            if (i > 0 && i % 5 === 4 || i == DescList.length - 1) {
                 EmbedDesc.push(tempstr)
-                tempstr = ''
+                tempstr = `\n> **Total PP:** \`${ProfileResult.stats.pp}\`\n> **Ranking:** \`${ProfileResult.stats.rank}\`\n\n`
             }
         }
 
@@ -94,7 +92,7 @@ module.exports = {
             EmbedList[i] = new EmbedBuilder()
                 .setColor('Aqua')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle(`<:seiaconcerned:1244129048494473246> • Recent Plays Of: \`${ProfileResult.name}\` \`[${ProfileResult.id}]\``)
+                .setTitle(`<:seiaconcerned:1244129048494473246> • Top Plays Of: \`${ProfileResult.name}\` \`[${ProfileResult.id}]\``)
                 .setDescription(`${EmbedDesc[i]}`)
                 .setThumbnail(AvtUrl)
                 .setTimestamp()
@@ -186,5 +184,4 @@ module.exports = {
             }
         })
     }
-
 }

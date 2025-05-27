@@ -30,7 +30,12 @@ function DroidRxMods(str) {
             }
         }
     }
-    if (Substr[1].length > 0) Mods += ` ${Substr[1]}`
+    
+    if (Substr[1].length > 0) {
+        for (var i = 1; i < Substr.length; i++) {
+            Mods += ` ${Substr[i]}`
+        }
+    }
     if (Substr[0].length === 0) Mods = 'No Mod'
     return Mods
 }
