@@ -24,7 +24,7 @@ const Cluster2_Assets = [
         '#b84dff',
         'https://cdn.discordapp.com/emojis/1360440195966570701.png?size=512&quality=lossless',
         '<:CastoriceSip:1360440195966570701>',
-        'Armphoreus - Castorice (@nekorin727)'
+        'Amphoreus - Castorice (@nekorin727)'
     ]
 ]
 
