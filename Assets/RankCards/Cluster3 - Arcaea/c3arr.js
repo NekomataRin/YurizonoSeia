@@ -42,7 +42,7 @@ const Cluster3_Assets = [
         '#6370c9',
         'https://cdn.discordapp.com/emojis/1375541130476650600.png?size=512&quality=lossless',
         '<:TairitsuLast:1375541130476650600>',
-        'Arcaea - Tairitsu (Grievous Lady) (200 Members Special)',
+        'Arcaea - Tairitsu (Grievous Lady) (200 Mem Special)',
     ],
     [
         51,
