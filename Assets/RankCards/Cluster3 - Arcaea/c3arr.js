@@ -17,7 +17,6 @@ const Cluster3_Assets = [
         '<:lagrange_think:1365984635531690044>',
         'Arcaea - Lagrange (@cryoblossom)',
     ],
-    /*
     [
         49,
         'hikatai-re',
@@ -45,7 +44,15 @@ const Cluster3_Assets = [
         '<:TairitsuLast:1375541130476650600>',
         'Arcaea - Tairitsu (Grievous Lady) (200 Members Special)',
     ],
-    */
+    [
+        51,
+        'acid',
+        './Assets/RankCards/Cluster3 - Arcaea/Images/RankCard_52.png',
+        '#727272',
+        'https://cdn.discordapp.com/emojis/1378759706863997038.png?size=512&quality=lossless',
+        '<:AcidHmmm:1378759706863997038>',
+        'Arcaea - Acid (maimai Collab) (1st Challenger)',
+    ],
 ]
 
 /*
