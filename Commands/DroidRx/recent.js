@@ -4,6 +4,7 @@ const { request } = require('undici')
 const FooterEmbeds = require('../../Utils/embed')
 const { DroidRxMods } = require('../../Functions/DroidRx/Get/dr_Mods')
 const PlayEmoList = require('../../Assets/DroidRx/Texts/play_emo')
+//const { GetSR } = require('../../Functions/DroidRx/Get/dr_SR')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -95,6 +96,9 @@ module.exports = {
 
         const e = await request(`https://osu.direct/api/v2/b/${MapID}`)
         const MapResult = await e.body.json()
+
+        //console.log(await GetSR(MapID, Mods[0]))
+
         const MapUrl = MapResult.url
         const ResultEmbed = new EmbedBuilder()
             .setColor('Yellow')
