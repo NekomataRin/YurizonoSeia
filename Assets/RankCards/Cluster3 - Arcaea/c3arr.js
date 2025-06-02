@@ -22,8 +22,8 @@ const Cluster3_Assets = [
         'hikatai-re',
         './Assets/RankCards/Cluster3 - Arcaea/Images/RankCard_49.png',
         '#fffaeb',
-        'https://cdn.discordapp.com/emojis/1365984635531690044.png?size=512&quality=lossless',
-        '<:lagrange_think:1365984635531690044>',
+        'https://cdn.discordapp.com/emojis/1375534650331496550.png?size=512&quality=lossless',
+        '<:HikaTaiNeko:1375534650331496550>',
         'Arcaea - Hikari & Tairitsu (Reunion) (@cleosagaming)',
     ],
     [
