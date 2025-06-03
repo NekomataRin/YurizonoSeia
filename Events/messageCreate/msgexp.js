@@ -4,7 +4,7 @@ const cd = new Set()
 const WhiteListedChannel = require('../../Utils/Ranking/rankchannels')
 const LevelCalc = require('../../Utils/Ranking/lvlcalc')
 const FooterEmbeds = require('../../Utils/embed')
-    
+
 module.exports = async (client, message) => {
     if (message.author.bot) return
     if (message.channel.type === ChannelType.DM || message.channel.type === ChannelType.GroupDM) return
@@ -29,7 +29,7 @@ module.exports = async (client, message) => {
     let expCD = Random(15, 5) * 1000
 
     if (WhiteListedChannel[1].indexOf(message.channel.id) !== -1) {
-        if (Date.now() < 1743724799 * 1000) {
+        if (Date.now() < 1749574799 * 1000) {
             xpToGive = Random(15, 3)
             expCD = Random(25, 10) * 1000
         } //Event Exp Lol */
