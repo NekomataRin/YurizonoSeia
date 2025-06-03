@@ -1,30 +1,32 @@
-const { MapInfo, ModUtil } = require('@rian8337/osu-base')
-const { MapStars } = require('@rian8337/osu-difficulty-calculator')
+const { MapInfo, ModUtil, OsuAPIRequestBuilder, ModCustomSpeed } = require('@rian8337/osu-base')
+const { OsuDifficultyCalculator } = require('@rian8337/osu-difficulty-calculator')
 const chalk = require('chalk')
 
-async function GetSR(a, b) {
+
+async function GetSR(mapid, mods) {
+    OsuAPIRequestBuilder.setAPIKey(process.env.OSU_API_KEY)
     //console.log(`${chalk.greenBright(`[DEBUG]`)} Function: (GetSR) String Input: ${a}`)
     let ErrKey = true, StopKey = false
-    if (!isNaN(Number(a)) && a > 74) ErrKey = false
+    if (!isNaN(Number(mapid)) && mapid > 74) ErrKey = false
 
-    if(ErrKey) return StopKey = true
+    if (ErrKey) return StopKey = true
 
-    const beatmapInfo = await MapInfo.getInformation(Number(a));
+    const beatmapInfo = await MapInfo.getInformation(Number(mapid));
 
     if (!beatmapInfo.title) {
         return console.log("Beatmap not found");
     }
 
-    const Mods = ModUtil.pcStringToMods(b)
+    const Mods = ModUtil.pcStringToMods(mods)
+    const substr = mods.split(' ')
 
+    if (substr.length > 1) {
+        Mods.set(new ModCustomSpeed(Number(substr[1].slice(1))))
+    }
 
-    const rating = new MapStars(beatmapInfo.beatmap, {
-        mods: Mods
-    })
+    const rating = new OsuDifficultyCalculator().calculate(beatmapInfo.beatmap, Mods).starRating.toFixed(2)
 
-    const SR = rating.osu.attributes.starRating
-    
-    return SR.toFixed(2)
+    return rating
 }
 
 module.exports = { GetSR }

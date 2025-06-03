@@ -4,6 +4,7 @@ const DrxUsers = require('../../Database/DroidRx/drxuserdata')
 const { request } = require('undici')
 const { DroidRxMods } = require('../../Functions/DroidRx/Get/dr_Mods')
 const PlayEmoList = require('../../Assets/DroidRx/Texts/play_emo')
+const { GetSR } = require('../../Functions/DroidRx/Get/dr_SR')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -73,7 +74,8 @@ module.exports = {
         const OverallList = await b.body.json()
         const PlaysDescArr = []
         for (var i in OverallList) {
-            PlaysDescArr.push(`### \`${Number(i) + 1}\` **${OverallList[i].beatmap.artist} - ${OverallList[i].beatmap.title} [${OverallList[i].beatmap.version}]**\n▸ **Mods:** \`${DroidRxMods(OverallList[i].mods)}\`\n> **▸ PP:** \`${OverallList[i].pp.toFixed(2)}\` **• Rating:** ${PlayEmoList.rating[OverallList[i].rank]}\n> **▸ Score:** \`${OverallList[i].score}\` **• Accuracy: ** \`${OverallList[i].acc.toFixed(2)}%\`\n> **▸ Combo:** \`${OverallList[i].combo}x/${OverallList[i].beatmap.max_combo}x\`\n${PlayEmoList.hits.hit300} \`${OverallList[i].hit300}\` | ${PlayEmoList.hits.hit100} \`${OverallList[i].hit100}\` | ${PlayEmoList.hits.hit50} \`${OverallList[i].hit50}\` | ${PlayEmoList.hits.hitmiss} \`${OverallList[i].hitmiss}\`\n> **▸ Submitted At:** **<t:${Math.floor(OverallList[i].date / 1000)}> (<t:${Math.floor(OverallList[i].date / 1000)}:R>)**\n\n`)
+            const SR = `${await GetSR(OverallList[i].beatmap.id, DroidRxMods(OverallList[i].mods))}★`
+            PlaysDescArr.push(`### \`${Number(i) + 1}\` **${SR} | ${OverallList[i].beatmap.artist} - ${OverallList[i].beatmap.title} [${OverallList[i].beatmap.version}]**\n▸ **Mods:** \`${DroidRxMods(OverallList[i].mods)}\`\n> **▸ PP:** \`${OverallList[i].pp.toFixed(2)}\` **• Rating:** ${PlayEmoList.rating[OverallList[i].rank]}\n> **▸ Score:** \`${OverallList[i].score}\` **• Accuracy: ** \`${OverallList[i].acc.toFixed(2)}%\`\n> **▸ Combo:** \`${OverallList[i].combo}x/${OverallList[i].beatmap.max_combo}x\`\n${PlayEmoList.hits.hit300} \`${OverallList[i].hit300}\` | ${PlayEmoList.hits.hit100} \`${OverallList[i].hit100}\` | ${PlayEmoList.hits.hit50} \`${OverallList[i].hit50}\` | ${PlayEmoList.hits.hitmiss} \`${OverallList[i].hitmiss}\`\n> **▸ Submitted At:** **<t:${Math.floor(OverallList[i].date / 1000)}> (<t:${Math.floor(OverallList[i].date / 1000)}:R>)**\n\n`)
         }
 
         const EmbedDesc = []

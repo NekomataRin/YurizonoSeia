@@ -5,6 +5,7 @@ const { request } = require('undici')
 const { DroidRxMods } = require('../../Functions/DroidRx/Get/dr_Mods')
 const PlayEmoList = require('../../Assets/DroidRx/Texts/play_emo')
 const { getMap } = require('../../Functions/DroidRx/Get/dr_GetMap')
+const { GetSR } = require('../../Functions/DroidRx/Get/dr_SR')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -73,7 +74,8 @@ module.exports = {
         const DescList = []
         for (var i in TopPlays) {
             const Result = await getMap(TopPlays[i].pp, MapScoresInfo)
-            DescList.push(`### \`${Number(i) + 1}\` ${Result[0]}\n **▸ Mods:** \`${DroidRxMods(TopPlays[i].mods)}\`\n> **▸ PP:** \`${TopPlays[i].pp.toFixed(2)}\` **• Rating:** ${PlayEmoList.rating[TopPlays[i].rank]}\n> **▸ Score:** \`${TopPlays[i].score}\` **• Accuracy: ** \`${TopPlays[i].acc.toFixed(2)}%\`\n> **▸ Combo:** \`${TopPlays[i].combo}x/${Result[1]}x\`\n${PlayEmoList.hits.hit300} \`${TopPlays[i].hit300}\` | ${PlayEmoList.hits.hit100} \`${TopPlays[i].hit100}\` | ${PlayEmoList.hits.hit50} \`${TopPlays[i].hit50}\` | ${PlayEmoList.hits.hitmiss} \`${TopPlays[i].hitmiss}\`\n> **▸ Submitted At:** <t:${Math.floor(TopPlays[i].date / 1000)}> (<t:${Math.floor(TopPlays[i].date / 1000)}:R>)\n\n`)
+            const SR = `${await GetSR(Result[2], DroidRxMods(TopPlays[i].mods))}★`
+            DescList.push(`### \`${Number(i) + 1}\` **${SR} | ${Result[0]}**\n **▸ Mods:** \`${DroidRxMods(TopPlays[i].mods)}\`\n> **▸ PP:** \`${TopPlays[i].pp.toFixed(2)}\` **• Rating:** ${PlayEmoList.rating[TopPlays[i].rank]}\n> **▸ Score:** \`${TopPlays[i].score}\` **• Accuracy: ** \`${TopPlays[i].acc.toFixed(2)}%\`\n> **▸ Combo:** \`${TopPlays[i].combo}x/${Result[1]}x\`\n${PlayEmoList.hits.hit300} \`${TopPlays[i].hit300}\` | ${PlayEmoList.hits.hit100} \`${TopPlays[i].hit100}\` | ${PlayEmoList.hits.hit50} \`${TopPlays[i].hit50}\` | ${PlayEmoList.hits.hitmiss} \`${TopPlays[i].hitmiss}\`\n> **▸ Submitted At:** <t:${Math.floor(TopPlays[i].date / 1000)}> (<t:${Math.floor(TopPlays[i].date / 1000)}:R>)\n\n`)
         }
 
         const EmbedDesc = []
