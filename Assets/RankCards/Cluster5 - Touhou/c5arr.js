@@ -15,7 +15,7 @@ const Cluster5_Assets = [
         '#00d309',
         'https://cdn.discordapp.com/emojis/1165494255733715007.png?size=512&quality=lossless',
         '<:OkuuFlare:1165494255733715007>',
-        'Touhou 11 - Reiuji Utshuho',
+        'Touhou 11 - Reiuji Utsuho',
     ],
     [
         39,
