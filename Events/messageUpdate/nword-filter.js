@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
     if (EditedContent === PreContent) return
     const NWords = [
         'nigger', 'nigga', 'niga', 'nigg', 'nig', 'nega', 'negga', 'negger',
-        'niggers', 'niggas', 'neggas', 'negas', 'neggers', 'niggerian', 'ních gờ', 'níc gờ'
+        'niggers', 'niggas', 'neggas', 'negas', 'neggers', 'niggerian', 'ᴺᴵᴳᴳᴱᴿ', 'ᴺᴵᴳᴳᴬ'
     ];
 
     const FalseAlarms = [
