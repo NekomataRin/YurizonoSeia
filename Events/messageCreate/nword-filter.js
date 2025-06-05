@@ -41,7 +41,7 @@ module.exports = async (client, message) => {
 
     const NWords = [
         'nigger', 'nigga', 'niga', 'nigg', 'nig', 'nega', 'negga', 'negger',
-        'niggers', 'niggas', 'neggas', 'negas', 'neggers', 'niggerian', 'ᴺᴵᴳᴳᴱᴿ', 'ᴺᴵᴳᴳᴬ'
+        'niggers', 'niggas', 'neggas', 'negas', 'neggers', 'niggerian'
     ];
 
     const FalseAlarms = [
@@ -113,7 +113,8 @@ module.exports = async (client, message) => {
     function isOffensive(content) {
         const normalized = normalizeContent(content);
         const collapsed = collapseForOffensiveCheck(normalized);
-
+        if (['ᴺᴵᴳᴳᴱᴿ', 'ᴺᴵᴳᴳᴬ'].includes(word)) return true
+        
         // Check partial censorship patterns first
         for (const pattern of PartialCensorshipPatterns) {
             if (pattern.test(collapsed)) {
