@@ -1,36 +1,5 @@
 const unhomoglyph = require('unhomoglyph');
 
-const morseMap = {
-    '.-': 'a', '-...': 'b', '-.-.': 'c', '-..': 'd',
-    '.': 'e', '..-.': 'f', '--.': 'g', '....': 'h',
-    '..': 'i', '.---': 'j', '-.-': 'k', '.-..': 'l',
-    '--': 'm', '-.': 'n', '---': 'o', '.--.': 'p',
-    '--.-': 'q', '.-.': 'r', '...': 's', '-': 't',
-    '..-': 'u', '...-': 'v', '.--': 'w', '-..-': 'x',
-    '-.--': 'y', '--..': 'z'
-};
-
-function decodeMorseIfDetected(text) {
-    if (/^[\s.\-]+$/.test(text)) {
-        return text
-            .trim()
-            .split(/\s+/)
-            .map(code => morseMap[code] || '')
-            .join('');
-    }
-    return text;
-}
-
-// Map for superscript and subscript characters to their base equivalents
-const scriptMap = {
-    '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9',
-    'ᵃ': 'a', 'ᵇ': 'b', 'ᶜ': 'c', 'ᵈ': 'd', 'ᵉ': 'e', 'ᶠ': 'f', 'ᵍ': 'g', 'ʰ': 'h', 'ⁱ': 'i', 'ʲ': 'j',
-    'ᵏ': 'k', 'ˡ': 'l', 'ᵐ': 'm', 'ⁿ': 'n', 'ᵒ': 'o', 'ᵖ': 'p', 'ʳ': 'r', 'ˢ': 's', 'ᵗ': 't', 'ᵘ': 'u',
-    'ᵛ': 'v', 'ʷ': 'w', 'ˣ': 'x', 'ʸ': 'y', 'ᶻ': 'z',
-    '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4', '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9',
-    'ₐ': 'a', 'ₑ': 'e', 'ₒ': 'o', 'ᵢ': 'i', 'ᵣ': 'r', 'ᵤ': 'u', 'ᵥ': 'v'
-};
-
 function regionalIndicatorToLetter(char) {
     const code = char.codePointAt(0);
     if (code >= 0x1F1E6 && code <= 0x1F1FF) {
@@ -51,8 +20,7 @@ module.exports = async (client, message) => {
 
     let n = await message.fetch();
     let EditedContent = n.content;
-    let PreContent = message.content;
-    if (EditedContent === PreContent) return;
+    console.log(`Processing updated message from ${message.author.tag}: "${EditedContent}"`);
 
     const NWords = [
         'nigger', 'nigga', 'niga', 'nigg', 'nig', 'nega', 'negga', 'negger',
@@ -87,41 +55,44 @@ module.exports = async (client, message) => {
         '0': 'o', '1': 'i', '!': 'i', '3': 'e', '4': 'a', '@': 'a',
         '5': 's', '7': 't', '$': 's', '+': 't', '|': 'i', '¡': 'i',
         '¥': 'y', '%': 'a', '6': 'g', '9': 'g', '^': 'a', '=': 'e',
-        '(': 'c', ')': 'o', '#': 'h', '8': 'b', '2': 'z'
+        '(': 'c', ')': 'o', '#': 'h', '8': 'b', '2': 'z', 'l': 'i'
+    };
+
+    const scriptMap = {
+        '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9',
+        'ᵃ': 'a', 'ᵇ': 'b', 'ᶜ': 'c', 'ᵈ': 'd', 'ᵉ': 'e', 'ᶠ': 'f', 'ᵍ': 'g', 'ʰ': 'h', 'ⁱ': 'i', 'ʲ': 'j',
+        'ᵏ': 'k', 'ˡ': 'l', 'ᵐ': 'm', 'ⁿ': 'n', 'ᵒ': 'o', 'ᵖ': 'p', 'ʳ': 'r', 'ˢ': 's', 'ᵗ': 't', 'ᵘ': 'u',
+        'ᵛ': 'v', 'ʷ': 'w', 'ˣ': 'x', 'ʸ': 'y', 'ᶻ': 'z',
+        '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4', '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9',
+        'ₐ': 'a', 'ₑ': 'e', 'ₒ': 'o', 'ᵢ': 'i', 'ᵣ': 'r', 'ᵤ': 'u', 'ᵥ': 'v'
     };
 
     const PartialCensorshipPatterns = [
-        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[g6]+[\W_]*[e3]+[\W_]*[r2]+[\W_]*[s5]?\W*$/i, // Matches n*i*g*g*e*r, n1ggers, etc.
-        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[a4@]+\W*$/i, // Matches n*i*g*g*a, n1gga, etc.
-        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[g6]*[\W_]*[a4@e3r2s5]*\W*$/i // Matches nig, nigg, n1g, etc.
+        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[g6]+[\W_]*[e3]+[\W_]*[r2]+[\W_]*[s5]?\W*$/i,
+        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[a4@]+\W*$/i,
+        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[g6]*[\W_]*[a4@e3r2s5]*\W*$/i
     ];
 
     function normalizeContent(text) {
-        // Decode Morse code if detected
-        text = decodeMorseIfDetected(text);
-
-        // Normalize Unicode, remove diacritics, and apply unhomoglyph
         let cleaned = unhomoglyph(
             text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
         ).toLowerCase();
 
-        // Remove invisible characters and emojis
         cleaned = cleaned.replace(/[\u200B-\u200D\u2060\u00A0\u180E\uFEFF]/g, '');
         cleaned = cleaned.replace(/[\uD83C-\uDBFF\uDC00-\uDFFF]+/g, '');
 
-        // Map superscripts, subscripts, regional indicators, and leet speak
         cleaned = [...cleaned]
             .map(c => scriptMap[c] || leetMap[c] || regionalIndicatorToLetter(c) || c)
             .join('');
 
-        // Remove all non-alphanumeric characters except spaces and hyphens
         cleaned = cleaned.replace(/[^a-z0-9\s-]/g, '');
+        console.log(`Normalized content: "${cleaned}"`);
 
         return cleaned;
     }
 
     function generateRegex(word) {
-        const separator = `[\\s-]*`; // Allow space, hyphen, or nothing between characters
+        const separator = `[\\s-]*`;
         const pattern = word
             .split('')
             .map(c => `${c}${separator}`)
@@ -130,57 +101,122 @@ module.exports = async (client, message) => {
     }
 
     function collapseForOffensiveCheck(text) {
-        // Collapse repeated consonants and vowels for offensive word matching
         return text.replace(/([gri])\1+|([aeiou])\1+/gi, '$1$2');
+    }
+
+    function splitRepeats(word, target) {
+        const segments = [];
+        let current = word;
+        const targetLen = target.length;
+
+        while (current.length >= targetLen) {
+            if (current.startsWith(target)) {
+                segments.push(target);
+                current = current.slice(targetLen);
+            } else {
+                break;
+            }
+        }
+
+        if (current.length > 0) {
+            segments.push(current);
+        }
+
+        return segments;
     }
 
     function isOffensive(content) {
         const normalized = normalizeContent(content);
         const collapsed = collapseForOffensiveCheck(normalized);
+        let offensiveCount = 0;
+        const offensiveWordsFound = [];
 
-        // Check specific superscript/subscript bypasses
         const scriptBypasses = ['ᴺᴵᴳᴳᴱᴿ', 'ᴺᴵᴳᴳᴬ', 'ₙᵢ₉₉ₑᵣ', 'ⁿⁱᵍᵍᵉʳ'];
-        if (scriptBypasses.includes(content)) {
-            console.log(`Flagged by script bypass: ${content} -> ${normalized} -> ${collapsed}`);
+        const words = normalized.split(/\s+/).filter(Boolean);
+        //console.log(`Checking words: ${words.join(', ')}`);
+
+        for (let word of words) {
+            let collapsedWord = collapseForOffensiveCheck(word);
+            //console.log(`Checking word "${word}" (collapsed: "${collapsedWord}")`);
+
+            let segmentsToCheck = [word];
+
+            for (const bypass of scriptBypasses) {
+                if (word.includes(bypass)) {
+                    const segments = splitRepeats(word, bypass);
+                    //console.log(`Split "${word}" into segments for script bypass "${bypass}": ${segments.join(', ')}`);
+                    segmentsToCheck = segments;
+                    break;
+                }
+            }
+
+            for (const nWord of NWords) {
+                if (collapsedWord.includes(nWord)) {
+                    const segments = splitRepeats(collapsedWord, nWord);
+                    //console.log(`Split "${collapsedWord}" into segments for NWord "${nWord}": ${segments.join(', ')}`);
+                    segmentsToCheck = segments;
+                    break;
+                }
+            }
+
+            for (const segment of segmentsToCheck) {
+                const collapsedSegment = collapseForOffensiveCheck(segment);
+                //console.log(`Checking segment "${segment}" (collapsed: "${collapsedSegment}")`);
+
+                if (scriptBypasses.includes(segment)) {
+                    //console.log(`Flagged by script bypass: ${segment} -> ${collapsedSegment}`);
+                    offensiveWordsFound.push(segment);
+                    offensiveCount++;
+                    continue;
+                }
+
+                for (const pattern of PartialCensorshipPatterns) {
+                    if (pattern.test(collapsedSegment)) {
+                        //console.log(`Flagged by partial censorship pattern: ${segment} -> ${collapsedSegment}`);
+                        offensiveWordsFound.push(segment);
+                        offensiveCount++;
+                        continue;
+                    }
+                }
+
+                if (collapsedSegment.length < 3) continue;
+
+                if (FalseAlarms.includes(collapsedSegment.toLowerCase())) {
+                    //console.log(`Skipped due to false alarm word: ${segment} -> ${collapsedSegment}`);
+                    continue;
+                }
+
+                const isMatch = NWords.some(nWord => {
+                    const regex = generateRegex(nWord);
+                    const match = regex.test(collapsedSegment);
+                    if (match) {
+                        //console.log(`Flagged by regex for word "${nWord}": ${segment} -> ${collapsedSegment}`);
+                        offensiveWordsFound.push(segment);
+                        offensiveCount++;
+                    }
+                    return match;
+                });
+
+                if (isMatch) continue;
+            }
+        }
+
+        if (offensiveCount > 0) {
+            //console.log(`Found ${offensiveCount} offensive word(s): ${offensiveWordsFound.join(', ')}`);
             return true;
         }
 
-        // Check partial censorship patterns
-        for (const pattern of PartialCensorshipPatterns) {
-            if (pattern.test(collapsed)) {
-                console.log(`Flagged by partial censorship pattern: ${content} -> ${normalized} -> ${collapsed}`);
-                return true;
-            }
-        }
-
-        // Skip short content to avoid false positives
-        if (normalized.length < 3) return false;
-
-        // Check if normalized content contains any false alarm words
-        const normalizedWords = normalized.split(/\b\W*\b/g).filter(Boolean);
-        for (const safe of FalseAlarms) {
-            if (normalizedWords.includes(safe.toLowerCase())) {
-                console.log(`Skipped due to false alarm word: ${safe} in ${content} -> ${normalized}`);
-                return false;
-            }
-        }
-
-        // Check for offensive words
-        const allWords = [...NWords];
-        const isMatch = allWords.some(word => {
-            const regex = generateRegex(word);
-            const match = regex.test(collapsed);
-            if (match) {
-                console.log(`Flagged by regex for word "${word}": ${content} -> ${normalized} -> ${collapsed}`);
-            }
-            return match;
-        });
-
-        return isMatch;
+        //console.log('No offensive words found.');
+        return false;
     }
 
     if (isOffensive(EditedContent)) {
-        await message.delete().catch(err => console.error(`Failed to delete message: ${err}`));
-        await message.channel.send('<:SeiaMuted:1244890584276008970> • Oi! That word is offensive, you know? You cannot say the **N-Word** HERE!');
+        try {
+            await message.delete();
+            //console.log(`Deleted message from ${message.author.tag}`);
+        } catch (err) {
+            console.error(`Failed to delete message: ${err}`);
+        }
+        await message.channel.send(`<:SeiaMuted:1244890584276008970> • ${message.author} That word is offensive, you know? You cannot say the **N-Word** HERE!`);
     }
 };
