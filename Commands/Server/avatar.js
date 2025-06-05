@@ -154,7 +154,7 @@ module.exports = {
                                 if (BannerURL !== null) {
                                     const BannerAvt = new EmbedBuilder()
                                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                        .setTitle(`<:seiaehem:1244128370669650060> **Banner Displayer** (Global)`)
+                                        .setTitle(`<:seiaehem:1244128370669650060> **Banner Displayer** (Guild)`)
                                         .setDescription(`[Banner_URL](${BannerURL})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
                                         .setColor('Blue')
                                         .setTimestamp()
