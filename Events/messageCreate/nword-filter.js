@@ -71,13 +71,23 @@ module.exports = async (client, message) => {
     const leetMap = {
         '0': 'o', '1': 'i', '!': 'i', '3': 'e', '4': 'a', '@': 'a',
         '5': 's', '7': 't', '$': 's', '+': 't', '|': 'i', '¡': 'i',
-        '¥': 'y', '%': 'a', '6': 'g', '9': 'g',
-        '^': 'a', '=': 'e', '(': 'c', ')': 'o'
+        '¥': 'y', '%': 'a', '6': 'g', '9': 'g', '^': 'a', '=': 'e',
+        '(': 'c', ')': 'o', '#': 'h', '8': 'b', '2': 'z'
+    };
+
+    const scriptMap = {
+        '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9',
+        'ᵃ': 'a', 'ᵇ': 'b', 'ᶜ': 'c', 'ᵈ': 'd', 'ᵉ': 'e', 'ᶠ': 'f', 'ᵍ': 'g', 'ʰ': 'h', 'ⁱ': 'i', 'ʲ': 'j',
+        'ᵏ': 'k', 'ˡ': 'l', 'ᵐ': 'm', 'ⁿ': 'n', 'ᵒ': 'o', 'ᵖ': 'p', 'ʳ': 'r', 'ˢ': 's', 'ᵗ': 't', 'ᵘ': 'u',
+        'ᵛ': 'v', 'ʷ': 'w', 'ˣ': 'x', 'ʸ': 'y', 'ᶻ': 'z',
+        '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4', '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9',
+        'ₐ': 'a', 'ₑ': 'e', 'ₒ': 'o', 'ᵢ': 'i', 'ᵣ': 'r', 'ᵤ': 'u', 'ᵥ': 'v'
     };
 
     const PartialCensorshipPatterns = [
-        /^\W*n[i1!|\*]+[g6]+[g6]+[e3]+[r2]+[s5]?\W*$/i, // Matches (nigger), n*ggers, n1gggerrrr, etc.
-        /^\W*n[i1!|\*]+[g6]+[a4@]+\W*$/i,               // Matches (nigga), n*gga, n1gggaaaa, etc.
+        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[g6]+[\W_]*[e3]+[\W_]*[r2]+[\W_]*[s5]?\W*$/i, // Matches n*i*g*g*e*r, n1ggers
+        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[a4@]+\W*$/i, // Matches n*i*g*a, n1gga
+        /^\W*n[\W_]*[i1!|\*]+[\W_]*[g6]+[\W_]*[g6]*[\W_]*[a4@e3r2s5]*\W*$/i // Matches nig, nigg, n1g
     ];
 
     function normalizeContent(text) {
@@ -87,17 +97,20 @@ module.exports = async (client, message) => {
             text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
         ).toLowerCase();
 
-        cleaned = cleaned.replace(/[\u200B-\u200D\u2060\u00A0\u180E]/g, '');
+        cleaned = cleaned.replace(/[\u200B-\u200D\u2060\u00A0\u180E\uFEFF]/g, '');
+        cleaned = cleaned.replace(/[\uD83C-\uDBFF\uDC00-\uDFFF]+/g, '');
 
         cleaned = [...cleaned]
-            .map(c => leetMap[c] || regionalIndicatorToLetter(c) || c)
+            .map(c => scriptMap[c] || leetMap[c] || regionalIndicatorToLetter(c) || c)
             .join('');
+
+        cleaned = cleaned.replace(/[^a-z0-9\s-]/g, '');
 
         return cleaned;
     }
 
     function generateRegex(word) {
-        const separator = `[\\s-]?`; // Allow only space, hyphen, or nothing
+        const separator = `[\\s-]*`;
         const pattern = word
             .split('')
             .map(c => `${c}${separator}`)
@@ -106,16 +119,19 @@ module.exports = async (client, message) => {
     }
 
     function collapseForOffensiveCheck(text) {
-        // Collapse repeated consonants and vowels for offensive word matching
         return text.replace(/([gri])\1+|([aeiou])\1+/gi, '$1$2');
     }
 
     function isOffensive(content) {
         const normalized = normalizeContent(content);
         const collapsed = collapseForOffensiveCheck(normalized);
-        if (['ᴺᴵᴳᴳᴱᴿ', 'ᴺᴵᴳᴳᴬ'].includes(word)) return true
-        
-        // Check partial censorship patterns first
+
+        const scriptBypasses = ['ᴺᴵᴳᴳᴱᴿ', 'ᴺᴵᴳᴳᴬ', 'ₙᵢ₉₉ₑᵣ', 'ⁿⁱᵍᵍᵉʳ'];
+        if (scriptBypasses.includes(content)) {
+            console.log(`Flagged by script bypass: ${content} -> ${normalized} -> ${collapsed}`);
+            return true;
+        }
+
         for (const pattern of PartialCensorshipPatterns) {
             if (pattern.test(collapsed)) {
                 console.log(`Flagged by partial censorship pattern: ${content} -> ${normalized} -> ${collapsed}`);
@@ -123,10 +139,8 @@ module.exports = async (client, message) => {
             }
         }
 
-        // Skip short content to avoid false positives
-        if (normalized.length < 4) return false;
+        if (normalized.length < 3) return false;
 
-        // Check if normalized content contains any false alarm words
         const normalizedWords = normalized.split(/\b\W*\b/g).filter(Boolean);
         for (const safe of FalseAlarms) {
             if (normalizedWords.includes(safe.toLowerCase())) {
@@ -135,7 +149,6 @@ module.exports = async (client, message) => {
             }
         }
 
-        // Check for offensive words
         const allWords = [...NWords];
         const isMatch = allWords.some(word => {
             const regex = generateRegex(word);
