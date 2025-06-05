@@ -20,7 +20,7 @@ module.exports = async (client, message) => {
 
     let n = await message.fetch();
     let EditedContent = n.content;
-    console.log(`Processing updated message from ${message.author.tag}: "${EditedContent}"`);
+    //console.log(`Processing updated message from ${message.author.tag}: "${EditedContent}"`);
 
     const NWords = [
         'nigger', 'nigga', 'niga', 'nigg', 'nig', 'nega', 'negga', 'negger',
@@ -86,7 +86,7 @@ module.exports = async (client, message) => {
             .join('');
 
         cleaned = cleaned.replace(/[^a-z0-9\s-]/g, '');
-        console.log(`Normalized content: "${cleaned}"`);
+        //console.log(`Normalized content: "${cleaned}"`);
 
         return cleaned;
     }
