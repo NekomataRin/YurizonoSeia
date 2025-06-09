@@ -4,12 +4,9 @@ module.exports = async (client, message) => {
   if (message.author.bot || message.guild.id !== process.env.GUILD_ID) return;
   if (["1201818078711918602", "1152527869533229126"].includes(message.channel.id)) return;
 
-  let n = await message.fetch();
-  let EditedContent = n.content, PreContent = message.content;
-  if (EditedContent === PreContent) return;
+  const cleanedText = ultraCleanText(message.content);
 
-  EditedContent = ultraCleanText(EditedContent);
-  if (isNWords(EditedContent)) {
+  if (isNWords(cleanedText)) {
     await message.delete();
     await message.channel.send(
       `<:SeiaMuted:1250945238378221658> • ${message.author} That word is offensive, you know? You cannot say the **N-Word** HERE!`
@@ -17,32 +14,40 @@ module.exports = async (client, message) => {
   }
 };
 
+function ultraCleanText(text) {
+  return unhomoglyph(
+    text
+      .normalize('NFKC')
+      .replace(/[\p{Diacritic}\u0300-\u036f]/gu, '')
+      .replace(/[^\p{L}\p{N}]/gu, '')
+      .replace(/\s+/g, '')
+      .toLowerCase()
+  );
+}
+
 function isNWords(text) {
-  // Base patterns (now includes "niga", "nega", etc.)
-  const basePatterns = [
-    'n[1i!|l][gq69]{1,2}[a4@]?r?s?',  // Original base
-    'n[1i!|l][gq69]?[a4@]s?',         // "niga", "n1ga"
-    'n[e3][gq69][a4@]s?',             // "nega", "n3ga"
-    'n[i1][b8][a4@]s?'                // "niba", "n1b@"
-  ];
+  // 1. Base & leetspeak detection (with optional plural "s")
+  const baseRegex = /\bn[1i!|l][gq69]{1,2}[a4@]?[r][s]?\b/gi;
+  const extendedRegex = /\bn[1i!|l][gq69]{1,2}[a4@]?[r]?[s]?\b/gi;
 
-  // Combined regex components
-  const regexComponents = [
-    // 1. Base/leet detection
-    new RegExp(`\\b(?:${basePatterns.join('|')})\\b`, 'gi'),
-    
-    // 2. Unicode homoglyphs
-    /[n𝐧𝕟ńηŋոṅṇ𝗇Ⓝ][ií1ⁱ𝒊ᵢ𝗂ⓘ!|l][gɡℊ𝓰ǵ𝗀ⓖq69][gɡℊ𝓰ǵ𝗀ⓖq69]?[aₐ𝒂åâá𝗮ⓐ4@]?[r𝗋ⓡ]?[s𝗌ⓢ]?/gi,
-    
-    // 3. Zero-width/hyphen/spaced
-    /n[\s\u200B-\u200D\-_]*[i1e3][\s\u200B-\u200D\-_]*[gqb8][\s\u200B-\u200D\-_]*[gqb8]?[\s\u200B-\u200D\-_]*[a4@]?[\s\u200B-\u200D\-_]*[rs]?/gi,
-    
-    // 4. Partial censorship (improved)
-    /n[^\p{L}\p{N}]{0,2}[i1e3][^\p{L}\p{N}]{0,2}[gqb8][^\p{L}\p{N}]{0,2}[gqb8]?[^\p{L}\p{N}]{0,2}[a4@]?[^\p{L}\p{N}]{0,2}[rs]?/giu,
-    
-    // 5. Partial detection
-    /\bn[i1e3][gqb8]/gi
-  ];
+  // 2. Unicode homoglyph variants (plurals supported)
+  const unicodeRegex = /[n𝐧𝕟ńηŋոṅṇ𝗇Ⓝ][iíⁱ𝒊ᵢ𝗂ⓘ][gɡℊ𝓰ǵ𝗀ⓖ][gɡℊ𝓰ǵ𝗀ⓖ][aₐ𝒂åâá𝗮ⓐ]?[r𝗋ⓡ]?[s𝗌ⓢ]?/gi;
 
-  return regexComponents.some(regex => regex.test(text));
+  // 3. Zero-width/hyphen/spaced variant detection
+  const hiddenRegex = /n[\s\u200B\u200C\u200D\-_]*i[\s\u200B\u200C\u200D\-_]*g[\s\u200B\u200C\u200D\-_]*g?[\s\u200B\u200C\u200D\-_]*[a@4]?[\s\u200B\u200C\u200D\-_]*r?[\s\u200B\u200C\u200D\-_]*s?/gi;
+
+  // 4. Partial censorship (symbols between letters)
+  const censorshipRegex = /n[^\p{L}\p{N}]{0,3}i[^\p{L}\p{N}]{0,3}g[^\p{L}\p{N}]{0,3}g?[^\p{L}\p{N}]{0,3}a?[^\p{L}\p{N}]{0,3}r?[^\p{L}\p{N}]{0,3}s?/giu;
+
+  // 5. Partial detection (trigger base prefix)
+  const partialRegex = /\bn[1i!|l][gq69]/gi;
+
+  return (
+    baseRegex.test(text) ||
+    extendedRegex.test(text) ||
+    unicodeRegex.test(text) ||
+    hiddenRegex.test(text) ||
+    censorshipRegex.test(text) ||
+    partialRegex.test(text)
+  );
 }
