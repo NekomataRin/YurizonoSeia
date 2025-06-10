@@ -59,7 +59,7 @@ function normalizeIndicators(text) {
 function ultraCleanText(text) {
     const emojiStripped = replaceDiscordEmoji(text);
     const normalized = normalizeIndicators(emojiStripped)
-        .normalize('NFKC')
+        .normalize('NFD')
         .replace(/[\p{Diacritic}\u0300-\u036f]/gu, '')
         .replace(/[^\p{L}\p{N}x]/gu, '') // keep letters, numbers, emoji placeholder
         .toLowerCase();
