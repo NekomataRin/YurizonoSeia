@@ -29,7 +29,7 @@ const WhitelistedWords = [
   "recognition", "regional", "reign", "render", "reunion", "rigging", "ringing", "running", "senior", "sign",
   "sign-in", "signal", "signature", "significant", "signify", "singing", "single", "something", "spring", "strong",
   "string", "technique", "terminal", "thing", "tingle", "tonight", "training", "turning", "union", "wing",
-  "winning", "wrong", "young"
+  "winning", "wrong", "young", "uhm"
 ]
 
 const superscriptMap = {
