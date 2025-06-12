@@ -77,7 +77,7 @@ const precomposedMap = {
     'ọ': 'o', 'ỏ': 'o', 'õ': 'o', 'ố': 'o', 'ồ': 'o', 'ỗ': 'o', 'ổ': 'o', 'ộ': 'o', 'ớ': 'o', 'ờ': 'o', 'ỡ': 'o', 'ở': 'o', 'ợ': 'o', // Vietnamese o variants
 
     // Mappings for 'm'
-    'ｍ': 'm' // Explicitly map full-width m to preserve m
+    'ｍ': 'm', 'm': 'm' // Explicitly preserve 'm' and full-width 'm'
 };
 
 function replaceDiscordEmoji(text) {
