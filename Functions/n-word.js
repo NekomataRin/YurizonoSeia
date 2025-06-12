@@ -1,8 +1,9 @@
 const unhomoglyph = require("unhomoglyph");
+const fs = require('node:fs');
+const path = require('path');
 
-const WhitelistedWords = [
-    // ... (same as above, omitted for brevity)
-];
+const wpath = path.join(__dirname, "..", "Assets", "words.txt");
+const WhitelistedWords = fs.readFileSync(wpath, "utf-8").split('\n').map(word => word.trim()).concat(["nier", "nia"]); // Add safe words
 
 const superscriptMap = {
     'ⁿ': 'n', 'ⁱ': 'i', 'ᵍ': 'g', 'ᵃ': 'a', 'ʳ': 'r', 'ˢ': 's',
@@ -12,23 +13,17 @@ const subscriptMap = {
     'ₙ': 'n', 'ᵢ': 'i', '₉': 'g', 'ₐ': 'a', 'ᵣ': 'r', 'ₛ': 's',
     'ₑ': 'e', 'ₒ': 'o', 'ᵦ': 'b'
 };
-const emojiLetterMap = {
-    '🅽': 'n', '🅘': 'i', '🅖': 'g', '🅐': 'a', '🅡': 'r', '🅢': 's',
-    '🇳': 'n', '🇮': 'i', '🇬': 'g', '🇦': 'a', '🇷': 'r', '🇸': 's',
-    '🇪': 'e', '🇴': 'o', '🇧': 'b'
-};
 
 function normalizeUnicode(char) {
     const codePoint = char.codePointAt(0);
-    let normalized = char.normalize('NFKD'); // Decompose into base + diacritics
-    let baseChar = [...normalized].find(c => /[a-zA-Z]/.test(c)) || char; // Take first letter, fallback to original
+    let normalized = char.normalize('NFKD');
+    let baseChar = [...normalized].find(c => /[a-zA-Z]/.test(c)) || char;
 
-    // Adjust based on specific Unicode blocks
-    if (codePoint >= 0x00A0 && codePoint <= 0x00FF) { // Latin-1 Supplement
+    if (codePoint >= 0x00A0 && codePoint <= 0x00FF) {
         return baseChar.toLowerCase();
-    } else if (codePoint >= 0x0100 && codePoint <= 0x024F) { // Latin Extended-A/B
+    } else if (codePoint >= 0x0100 && codePoint <= 0x024F) {
         return baseChar.toLowerCase();
-    } else if (codePoint >= 0x0400 && codePoint <= 0x04FF) { // Cyrillic
+    } else if (codePoint >= 0x0400 && codePoint <= 0x04FF) {
         const cyrillicMap = {
             'А': 'a', 'Б': 'b', 'В': 'v', 'Г': 'g', 'Д': 'd', 'Е': 'e', 'Ё': 'e', 'Ж': 'zh',
             'З': 'z', 'И': 'i', 'Й': 'y', 'К': 'k', 'Л': 'l', 'М': 'm', 'Н': 'n', 'О': 'o',
@@ -37,22 +32,22 @@ function normalizeUnicode(char) {
             'Я': 'ya'
         };
         return cyrillicMap[char.toUpperCase()] || baseChar.toLowerCase();
-    } else if (codePoint >= 0x0370 && codePoint <= 0x03FF) { // Greek
+    } else if (codePoint >= 0x0370 && codePoint <= 0x03FF) {
         const greekMap = {
             'Α': 'a', 'Β': 'b', 'Γ': 'g', 'Δ': 'd', 'Ε': 'e', 'Ζ': 'z', 'Η': 'h', 'Θ': 'th',
             'Ι': 'i', 'Κ': 'k', 'Λ': 'l', 'Μ': 'm', 'Ν': 'n', 'Ξ': 'x', 'Ο': 'o', 'Π': 'p',
             'Ρ': 'r', 'Σ': 's', 'Τ': 't', 'Υ': 'u', 'Φ': 'ph', 'Χ': 'ch', 'Ψ': 'ps', 'Ω': 'o'
         };
         return greekMap[char.toUpperCase()] || baseChar.toLowerCase();
-    } else if (codePoint >= 0x1D400 && codePoint <= 0x1D7FF) { // Mathematical Alphanumeric Symbols
-        if (codePoint >= 0x1D400 && codePoint <= 0x1D419) { // Uppercase A-Z
+    } else if (codePoint >= 0x1D400 && codePoint <= 0x1D7FF) {
+        if (codePoint >= 0x1D400 && codePoint <= 0x1D419) {
             return String.fromCharCode(codePoint - 0x1D38F).toLowerCase();
-        } else if (codePoint >= 0x1D422 && codePoint <= 0x1D43B) { // Lowercase a-z
+        } else if (codePoint >= 0x1D422 && codePoint <= 0x1D43B) {
             return String.fromCharCode(codePoint - 0x1D361).toLowerCase();
         }
-    } else if (codePoint >= 0x2070 && codePoint <= 0x209F) { // Superscripts
+    } else if (codePoint >= 0x2070 && codePoint <= 0x209F) {
         return superscriptMap[char] || baseChar.toLowerCase();
-    } else if (codePoint >= 0x2080 && codePoint <= 0x208E) { // Subscripts
+    } else if (codePoint >= 0x2080 && codePoint <= 0x208E) {
         return subscriptMap[char] || baseChar.toLowerCase();
     }
 
@@ -60,11 +55,7 @@ function normalizeUnicode(char) {
 }
 
 function replaceDiscordEmoji(text) {
-    return text.replace(/<a?:[a-zA-Z0-9_]+:\d+>|<emoji>/g, '');
-}
-
-function removeTags(text) {
-    return text.replace(/<[^>]+>/g, '');
+    return text.replace(/<a?:[a-zA-Z0-9_]+:\d+>|<emoji>/g, 'x');
 }
 
 function normalizeIndicators(text) {
@@ -75,12 +66,11 @@ function normalizeIndicators(text) {
 }
 
 function ultraCleanText(text) {
-    const tagStripped = removeTags(text);
-    const emojiStripped = replaceDiscordEmoji(tagStripped);
-    const normalized = normalizeIndicators(emojiStripped)
+    const emojiStripped = replaceDiscordEmoji(text);
+    const preCleaned = emojiStripped.replace(/[^a-zA-Z0-9\s*_\-]/gu, ''); // Preserve *, -, _ for censored patterns
+    const normalized = normalizeIndicators(preCleaned)
         .normalize('NFKD')
         .replace(/[\u0300-\u036F\u1AB0-\u1AFF\u1DC0-\u1DFF]/gu, '') // Remove diacritics
-        .replace(/[^a-zA-Z0-9\s]/gu, '')
         .toLowerCase();
     return normalized;
 }
@@ -98,9 +88,9 @@ function isNWords(message) {
             return true;
         }
         for (let j = i + 1; j < words.length; j++) {
-            combinedWord += words[j];
+            combinedWord += ' ' + words[j];
             const finalCombinedWord = unhomoglyph(combinedWord) || combinedWord;
-            if (WhitelistedWords.includes(finalCleanedWord)) {
+            if (WhitelistedWords.includes(finalCombinedWord)) {
                 break;
             }
             if (nwordPatterns.some(pattern => pattern.test(finalCombinedWord))) {
@@ -109,7 +99,7 @@ function isNWords(message) {
         }
     }
     const allText = partiallyCleaned.replace(/\s+/g, '');
-    const wordsInText = allText.split(/[^a-zA-Z0-9]+/);
+    const wordsInText = allText.split(/\s+/);
     for (const word of wordsInText) {
         if (!WhitelistedWords.includes(word) && nwordPatterns.some(pattern => pattern.test(word))) {
             return true;
@@ -119,16 +109,20 @@ function isNWords(message) {
 }
 
 const nwordPatterns = [
-    /n[1il!]*[i1l!][g96qɢԌ]+[ae3@4αаåâá]*(?:r[s]*)?/iu,
-    /n[1il!]*[i1l!][g96qɢԌ]*[-–—]/iu,
-    /n[1il!]+[i1l!]+[g96qɢԌ]+/iu,
-    /n[1il!]*[e3@4αаåâá][g96qɢԌ]+[a3@4αаåâá](?:r[s]*)?/iu,
-    /n[1il!]*[i1l!][cс][hɦ][g96qɢԌ]+[a3@4αаåâá]/iu,
-    /n[1il!]*[e3@4αаåâá][g96qɢԌ]+[a3@4αаåâá]/iu,
-    /n[1il!]*[i1l!][b6]+[b6][a3@4αаåâá]/iu,
-    /n[1il!]*[i1l!m]*er/iu,
-    /n[1il!]*[i1l!][cс][hɦ][goóòôõōŏőơọỏõốồỗổộớờỡởợ]/iu,
-    /er\b/iu
+    /n(?:[*_\-]|[*-_])*([i1l!][*_\-]*)*[g96qɢԌ](?:[*_\-]*[ae3@4αаåâá])+(?:[*_\-]*[rs])?/iu, // "n*gga", "n-gga", "n_gga"
+    /n(?:[*_\-]|[*-_])*[i1l!][*_\-]*[g96qɢԌ][*_\-]*[-–—]/iu,
+    /n(?:[*_\-]|[*-_])+[i1l!]+[*_\-]+[g96qɢԌ]+/iu,
+    /n(?:[*_\-]|[*-_])*[e3@4αаåâá][*_\-]*[g96qɢԌ][*_\-]*[a3@4αаåâá](?:[*_\-]*[rs])?/iu, // "n*e-gga"
+    /n(?:[*_\-]|[*-_])*[i1l!][*_\-]*[cс][*_\-]*[hɦ][*_\-]*[g96qɢԌ][*_\-]*[a3@4αаåâá]/iu, // "n*i-ch-ga"
+    /n(?:[*_\-]|[*-_])*[e3@4αаåâá][*_\-]*[g96qɢԌ][*_\-]*[a3@4αаåâá]/iu, // "n*e-ga"
+    /n(?:[*_\-]|[*-_])*[i1l!][*_\-]*[b6][*_\-]*[b6][*_\-]*[a3@4αаåâá]/iu, // "n*i-b-b-a"
+    /n(?:[*_\-]|[*-_])*([i1l!][*_\-]*)+[e3@4αаåâá]?r[*_\-]*[bcdfgjklmnpqrstvwxyz]/iu, // "ni**er" with consonant
+    /n(?:[*_\-]|[*-_])+[i1l!][*_\-]*[g96qɢԌ]?[e3@4αаåâá][*_\-]*r[*_\-]*[bcdfgjklmnpqrstvwxyz]\b/iu,
+    /n(?:[*_\-]|[*-_])*[i1l!][*_\-]*[cс][*_\-]*[hɦ][*_\-]*[goóòôõōŏőơọỏõốồỗổộớờỡởợ]/iu, // "n*i-ch-go"
+    /n(?:[*_\-]|[*-_])*[i1l!][*_\-]*[g96qɢԌ]?[ae3@4αаåâá][*_\-]*[bcdfgjklmnpqrstvwxyz]/iu, // "n*a" with consonant
+    /n(?:[*_\-]|[*-_])+[i1l!][*_\-]*[g96qɢԌ]?[ae3@4αаåâá][*_\-]*[bcdfgjklmnpqrstvwxyz]\b/iu,
+    /n(?:[*_\-]|[*-_])+er\b(?!(?:\s|$)nier)/iu, // Fallback for "n*er" excluding "nier"
+    /n(?:[*_\-]|[*-_])+a\b(?!(?:\s|$)nia)/iu   // Fallback for "n*a" excluding "nia"
 ];
 
 module.exports = { isNWords, ultraCleanText };
