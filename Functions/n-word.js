@@ -33,14 +33,17 @@ const WhitelistedWords = [
 ];
 
 const superscriptMap = {
-    'ⁿ': 'n', 'ⁱ': 'i', 'ᵍ': 'g', 'ᵃ': 'a', 'ʳ': 'r', 'ˢ': 's'
+    'ⁿ': 'n', 'ⁱ': 'i', 'ᵍ': 'g', 'ᵃ': 'a', 'ʳ': 'r', 'ˢ': 's',
+    'ᵉ': 'e', 'ᵒ': 'o', 'ᵇ': 'b' // Added 'e', 'o', 'b' variants
 };
 const subscriptMap = {
-    'ₙ': 'n', 'ᵢ': 'i', '₉': 'g', 'ₐ': 'a', 'ᵣ': 'r', 'ₛ': 's'
+    'ₙ': 'n', 'ᵢ': 'i', '₉': 'g', 'ₐ': 'a', 'ᵣ': 'r', 'ₛ': 's',
+    'ₑ': 'e', 'ₒ': 'o', 'ᵦ': 'b' // Added 'e', 'o', 'b' variants
 };
 const emojiLetterMap = {
     '🅽': 'n', '🅘': 'i', '🅖': 'g', '🅐': 'a', '🅡': 'r', '🅢': 's',
-    '🇳': 'n', '🇮': 'i', '🇬': 'g', '🇦': 'a', '🇷': 'r', '🇸': 's'
+    '🇳': 'n', '🇮': 'i', '🇬': 'g', '🇦': 'a', '🇷': 'r', '🇸': 's',
+    '🇪': 'e', '🇴': 'o', '🇧': 'b' // Added 'e', 'o', 'b' emoji variants
 };
 const precomposedMap = {
     // Mappings for 'i'
@@ -64,17 +67,23 @@ const precomposedMap = {
 
     // Mappings for 'r'
     'ɾ': 'r', 'ɹ': 'r', 'ʀ': 'r', 'ｒ': 'r',
+    'ř': 'r', 'ŕ': 'r', 'ŗ': 'r', 'ȑ': 'r', // Added more 'r' variants
 
     // Mappings for 's'
     'ß': 's', 'ʂ': 's', 'ｓ': 's',
 
     // Mappings for 'e'
     'é': 'e', 'è': 'e', 'ê': 'e', 'ẽ': 'e', 'ē': 'e', 'ę': 'e', 'ě': 'e', 'ë': 'e',
-    'ẹ': 'e', 'ẻ': 'e', 'ẽ': 'e', 'ế': 'e', 'ề': 'e', 'ễ': 'e', 'ể': 'e', 'ệ': 'e', 'ê': 'e', 'ệ': 'e', 'ề': 'e', // Vietnamese e variants
+    'ẹ': 'e', 'ẻ': 'e', 'ẽ': 'e', 'ế': 'e', 'ề': 'e', 'ễ': 'e', 'ể': 'e', 'ệ': 'e', 'ê': 'e', 'ệ': 'e', 'ề': 'e',
+    'ė': 'e', 'ě': 'e', 'ȩ': 'e', 'ɇ': 'e', // Added more 'e' variants
 
     // Mappings for 'o'
     'ó': 'o', 'ò': 'o', 'ô': 'o', 'õ': 'o', 'ō': 'o', 'ŏ': 'o', 'ő': 'o', 'ơ': 'o',
     'ọ': 'o', 'ỏ': 'o', 'õ': 'o', 'ố': 'o', 'ồ': 'o', 'ỗ': 'o', 'ổ': 'o', 'ộ': 'o', 'ớ': 'o', 'ờ': 'o', 'ỡ': 'o', 'ở': 'o', 'ợ': 'o', // Vietnamese o variants
+    'ö': 'o', 'ő': 'o', 'ȯ': 'o', 'ɔ': 'o', // Added more 'o' variants
+
+    // Mappings for 'b'
+    'ḃ': 'b', 'ḇ': 'b', 'ɓ': 'b', 'ｂ': 'b', // Added more 'b' variants
 
     // Mappings for 'm'
     'ｍ': 'm', 'm': 'm' // Explicitly preserve 'm' and full-width 'm'
@@ -132,10 +141,11 @@ function isNWords(message) {
             }
         }
     }
-    // Check for substring matches within the entire message
+    // Check for substring matches within the entire message, skipping whitelisted words
     const allText = partiallyCleaned.replace(/\s+/g, '');
-    for (const pattern of nwordPatterns) {
-        if (pattern.test(allText)) {
+    const wordsInText = allText.split(/[^a-zA-Z0-9]+/); // Split by non-alphanumeric to check word boundaries
+    for (const word of wordsInText) {
+        if (!WhitelistedWords.includes(word) && nwordPatterns.some(pattern => pattern.test(word))) {
             return true;
         }
     }
@@ -150,8 +160,9 @@ const nwordPatterns = [
     /n[1il!]*[i1l!][cс][hɦ][g96qɢԌ]+[a3@4αаåâá]/iu, // Handles "nichga" (substring)
     /n[1il!]*[e3@4αаåâá][g96qɢԌ]+[a3@4αаåâá]/iu, // Handles "nega" (substring)
     /n[1il!]*[i1l!][b6]+[b6][a3@4αаåâá]/iu, // Handles "nibba" (substring)
-    /n[1il!]*[i1l!][e3@4αаåâá](?:r[s]*)?/iu, // Handles "nier" and variants (substring)
-    /n[1il!]*[i1l!][cс][hɦ][goóòôõōŏőơọỏõốồỗổộớờỡởợ]/iu // Handles "nichgo" with Vietnamese o variants
+    /n[1il!]*[i1l!m]*er/iu, // Handles "nier", "my<emoji>er", and "<emoji>er" variants (substring)
+    /n[1il!]*[i1l!][cс][hɦ][goóòôõōŏőơọỏõốồỗổộớờỡởợ]/iu, // Handles "nichgo" with Vietnamese o variants
+    /er\b/iu // Handles "<emoji>er" as a standalone or word-ending variant
 ];
 
 module.exports = { isNWords, ultraCleanText };
