@@ -59,7 +59,7 @@ module.exports = {
             '<:SerikaPray:1242841678214205451>',
             '<:Shirokope:1240988164512809040>',
             '<:WakamoCoffee:1259326736240214097>',
-            '<:HinaMoyai:1244964434963857499>'
+            '<:HinaMoyai:1260865660347744326>'
         ]
         const ColorList = [
             '#038cfc',
