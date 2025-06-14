@@ -52,3 +52,5 @@ const Blacklisted = [
     "908943289925906432",
     "900759057835622513"
 ]
+
+module.exports = (Blacklisted)
