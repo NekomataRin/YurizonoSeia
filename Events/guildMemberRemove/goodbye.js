@@ -18,7 +18,7 @@ module.exports = async (client, member) => {
     console.log(vmember, totalmember)
 
     //const channel = await client.channels.fetch('1084992874212495393')
-    const channel = await client.channels.fetch('900760471517429781')
+    const channel = await client.channels.fetch('1383346672100315146')
 
     const uavt = member.user.avatarURL({ dynamic: true, size: 512, extension: 'png' })
 

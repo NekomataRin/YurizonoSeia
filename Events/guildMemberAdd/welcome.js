@@ -21,7 +21,7 @@ module.exports = async (client, member) => {
     console.log(vmember, totalmember)
 
     //const channel = await client.channels.fetch('1084992874212495393')
-    const channel = await client.channels.fetch('900760399018864720')
+    const channel = await client.channels.fetch('1383346586087719003')
 
     let checkkey = false
     let key = await ServerData.findOne({ GuildID: process.env.GUILD_ID }).select('-_id MemberList')
