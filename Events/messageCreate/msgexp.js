@@ -1,7 +1,7 @@
 const { ChannelType, EmbedBuilder } = require('discord.js')
 const Level = require('../../Database/Ranking/Leveling')
 const cd = new Set()
-const Blacklisted = require('../../Utils/Ranking/rankchannels')
+const Blacklisted = require('../../Utils/Ranking/unranked')
 const LevelCalc = require('../../Utils/Ranking/lvlcalc')
 const FooterEmbeds = require('../../Utils/embed')
 
