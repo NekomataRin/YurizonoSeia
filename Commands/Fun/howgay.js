@@ -325,6 +325,7 @@ module.exports = {
                                 if (UserRecordsArr.length > 0) {
                                     let index = 0
                                     for (var i in UserRecordsArr) {
+                                        //console.log(UserRecordsArr[i].id)
                                         if (UserRecordsArr[i].id === target.id) {
                                             let key = (AvgChr) ? 'avg' : 'nonavg'
                                             UserRecordsArr[i].values.run[key].unshift(Number(finalvalue))
@@ -365,7 +366,8 @@ module.exports = {
                                                 special: (spkey) ? 1 : 0
                                             }
                                         }
-                                        if (Obj.UserID !== UserRecordsArr[index].UserID) {
+                                        
+                                        if (Obj.id !== UserRecordsArr[index].id) {
                                             UserRecordsArr.push(Obj)
                                             UserRecordsArr[UserRecordsArr.length - 1].values.run[key].unshift(Number(finalvalue))
                                             UserRecordsArr[UserRecordsArr.length - 1].values.max = Math.max(...UserRecordsArr[UserRecordsArr.length - 1].values.run.nonavg)
@@ -376,25 +378,24 @@ module.exports = {
                                     }
                                 } else {
                                     let key = (AvgChr) ? 'avg' : 'nonavg'
-                                    UserRecordsArr.push(
-                                        {
-                                            id: target.id,
-                                            values: {
-                                                run: {
-                                                    nonavg: [],
-                                                    avg: []
-                                                },
-                                                max: 0,
-                                                min: 0,
-                                                maxavg: 0,
-                                                minavg: 0
+                                    const obj = {
+                                        id: target.id,
+                                        values: {
+                                            run: {
+                                                nonavg: [],
+                                                avg: []
                                             },
-                                            total: {
-                                                normal: 1,
-                                                special: (spkey) ? 1 : 0
-                                            }
+                                            max: 0,
+                                            min: 0,
+                                            maxavg: 0,
+                                            minavg: 0
+                                        },
+                                        total: {
+                                            normal: 1,
+                                            special: (spkey) ? 1 : 0
                                         }
-                                    )
+                                    }
+                                    UserRecordsArr.push(obj)
                                     UserRecordsArr[0].values.run[key].unshift(Number(finalvalue))
                                     UserRecordsArr[0].values.max = Math.max(...UserRecordsArr[0].values.run.nonavg)
                                     UserRecordsArr[0].values.min = Math.min(...UserRecordsArr[0].values.run.nonavg)
@@ -402,7 +403,7 @@ module.exports = {
                                     UserRecordsArr[0].values.minavg = Math.min(...UserRecordsArr[0].values.run.avg)
                                 }
 
-
+                                //console.log(UserRecordsArr)
                                 //Log Generated
                                 const TypeRecordsArr = TypeRecords
                                 const NormalCasesList = {
@@ -476,13 +477,13 @@ module.exports = {
                                 TypeRecordsArr[1] = SpecialCasesList
 
                                 data1.UserRecords = [], data1.TypeRecords = []
-                                
+
 
                                 for (var i in UserRecordsArr) {
                                     data1.UserRecords.push(UserRecordsArr[i])
                                 }
 
-                                for(var j in TypeRecords) {
+                                for (var j in TypeRecords) {
                                     data1.TypeRecords.push(TypeRecords[j])
                                 }
                                 data1.save()
