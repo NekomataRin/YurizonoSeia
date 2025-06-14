@@ -1,7 +1,7 @@
 const { ChannelType, EmbedBuilder } = require('discord.js')
 const Level = require('../../Database/Ranking/Leveling')
 const cd = new Set()
-const WhiteListedChannel = require('../../Utils/Ranking/rankchannels')
+const Blacklisted = require('../../Utils/Ranking/rankchannels')
 const LevelCalc = require('../../Utils/Ranking/lvlcalc')
 const FooterEmbeds = require('../../Utils/embed')
 
@@ -12,28 +12,24 @@ module.exports = async (client, message) => {
     if ((message.content.length) <= 1) return
 
     const iuser = await message.guild.members.fetch(message.author.id)
-    const Channel = client.channels.cache.get('1152752837298765845')
+    const Channel = client.channels.cache.get('900760973953093664')
 
     function Random(max, min) {
         return Math.floor(Math.random() * (max - min)) + min
     }
 
-    let key = false
-    for (i in WhiteListedChannel[0]) {
-        if (message.channel.id === WhiteListedChannel[0][i])
-            key = true
-    }
+    let key = true
+    if (Blacklisted.includes(message.channel.id)) key = false
     if (!key) { return }
 
     let xpToGive = Random(5, 1)
     let expCD = Random(15, 5) * 1000
 
-    if (WhiteListedChannel[1].indexOf(message.channel.id) !== -1) {
-        if (Date.now() < 1749574799 * 1000) {
-            xpToGive = Random(15, 3)
-            expCD = Random(25, 10) * 1000
-        } //Event Exp Lol */
-    }
+    if (Date.now() < 1749574799 * 1000) {
+        xpToGive = Random(15, 3)
+        expCD = Random(25, 10) * 1000
+    } //Event Exp Lol */
+
     console.log(`User: ${message.author.id} | Channel: ${message.channel.id} | Exp: ${xpToGive}`)
 
     Level.findOne({ UserID: message.author.id, GuildID: message.guild.id }, async (err, data) => {
