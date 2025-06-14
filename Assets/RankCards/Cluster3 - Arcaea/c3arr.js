@@ -4,8 +4,8 @@ const Cluster3_Assets = [
         'maya-167',
         './Assets/RankCards/Cluster3 - Arcaea/Images/RankCard_32.png',
         '#cf3723',
-        'https://cdn.discordapp.com/emojis/1360650163663667387.png?size=512&quality=lossless',
-        '<:MayaXD:1360650163663667387>',
+        'https://cdn.discordapp.com/emojis/1383359425749844070.png?size=512&quality=lossless',
+        '<:MayaXD:1383359425749844070>',
         'Arcaea - Maya <MISSING>',
     ],
     [

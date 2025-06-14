@@ -4,8 +4,8 @@ const Cluster4_Assets = [
         'neuro',
         './Assets/RankCards/Cluster4 - VTubers/Images/RankCard_34.png',
         '#ffed9e',
-        'https://cdn.discordapp.com/emojis/1366058494071148625.png?size=512&quality=lossless',
-        '<:neurogun:1366058494071148625>',
+        'https://cdn.discordapp.com/emojis/1383359463351779338.png?size=512&quality=lossless',
+        '<:neurogun:1383359463351779338>',
         'Neuro-sama',
     ],
     [
@@ -13,8 +13,8 @@ const Cluster4_Assets = [
         'evil-neuro',
         './Assets/RankCards/Cluster4 - VTubers/Images/RankCard_35.png',
         '#8a0010',
-        'https://cdn.discordapp.com/emojis/1366058498143555584.png?size=512&quality=lossless',
-        '<:evilharpoon:1366058498143555584>',
+        'https://cdn.discordapp.com/emojis/1383359507081728154.png?size=512&quality=lossless',
+        '<:evilharpoon:1383359507081728154> ',
         'Evil Neuro',
     ],
     [
