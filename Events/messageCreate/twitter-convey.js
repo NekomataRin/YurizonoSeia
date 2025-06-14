@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
     message.channel.type === ChannelType.DM ||
     message.channel.type === ChannelType.GroupDM
   ) return;
-  if (message.guild.id !== '1095653998389907468') return;
+  if (message.guild.id !== process.env.GUILD_ID) return;
 
   const matches = message.content.match(twitterLinkGlobalRegex);
 
