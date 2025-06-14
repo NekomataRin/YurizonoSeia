@@ -18,7 +18,7 @@ module.exports = async (client, member) => {
     console.log(vmember, totalmember)
 
     //const channel = await client.channels.fetch('1084992874212495393')
-    const channel = await client.channels.fetch('1152531283860279326')
+    const channel = await client.channels.fetch('900760471517429781')
 
     const uavt = member.user.avatarURL({ dynamic: true, size: 512, extension: 'png' })
 
@@ -74,7 +74,7 @@ module.exports = async (client, member) => {
     const WelcomeEmbed = new EmbedBuilder()
         .setAuthor({ name: `${vmember}`, iconURL: `${uavt}` })
         .setTitle('<:SerikaZad:1230835627080286300> **Member Just Left The Server!**')
-        .setDescription(`### <:CastoriceBlush:1360457584309440563> **<@${member.user.id}> Just left the server \`${guild.name}\`...**\n\n▸ <:seiaconcerned:1244128341540208793> Though you may be stepping away from this server, the melodies you've shared and the incredible skills you've displayed here will remain cherished memories for us all. Thank you, for all the wonderful moments we've had together on this server. We hope that someday in the future, our paths will cross again, and we can hang out once more!\n-# <:CastoriceAngy:1360440200966176878> Unless you were banned or kicked by the Tea Party a.k.a the Staff Team of the server - Castorice.`)
+        .setDescription(`### <:CastoriceBlush:1360457584309440563> **<@${member.user.id}> Just left the server \`${guild.name}\n> Looks like they are not slacking anymore, or just got kicked by the server's owner lmao...`)
         .setImage('attachment://welcome.png')
         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
         .setColor('#cae1ff')

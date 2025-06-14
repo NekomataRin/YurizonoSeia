@@ -7,7 +7,7 @@ const Cluster1_Assets =
             '#aff5f6',
             'https://cdn.discordapp.com/emojis/1206633868271030332.png?size=512&quality=lossless',
             '<:ShirokoSip:1206633868271030332>',
-            'Abydos - Shiroko (@nekorin727)',
+            'Abydos - Shiroko',
         ],
         [
             2,
@@ -16,7 +16,7 @@ const Cluster1_Assets =
             '#f2abf5',
             'https://cdn.discordapp.com/emojis/1229126728417280050.png?size=512&quality=lossless',
             '<:HoshinoSleep:1229126728417280050>',
-            'Abydos - Hoshino (@ruikurenaii)',
+            'Abydos - Hoshino',
         ],
         [
             3,
@@ -25,7 +25,7 @@ const Cluster1_Assets =
             '#ff7073',
             'https://cdn.discordapp.com/emojis/1012752122363785279.png?size=512&quality=lossless',
             '<:SerikaPray:1242841678214205451>',
-            'Abydos - Serika (@shirakami.tohru)',
+            'Abydos - Serika',
         ],
         [
             4,
@@ -34,7 +34,7 @@ const Cluster1_Assets =
             '#d9d3f6',
             'https://cdn.discordapp.com/emojis/1244667503657881693.png?size=512&quality=lossless',
             '<:ReisaStare:1244667503657881693>',
-            'Trinity - Reisa (@welpyes)',
+            'Trinity - Reisa',
         ],
         [
             5,
@@ -43,7 +43,7 @@ const Cluster1_Assets =
             '#fff598',
             'https://cdn.discordapp.com/emojis/1244128244664504392.png?size=512&quality=lossless',
             '<:seiaheh:1244128244664504392>',
-            'Trinity - Seia (1st Tourney Champion)',
+            'Trinity - Seia (v1)',
         ],
         [
             6,
@@ -52,7 +52,7 @@ const Cluster1_Assets =
             '#ffc7f3',
             'https://cdn.discordapp.com/emojis/1245234978522923028.png?size=512&quality=lossless',
             '<:mikahappy:1245234978522923028>',
-            'Trinity - Mika (1st Tourney Runner-Up)',
+            'Trinity - Mika (v1)',
         ],
         [
             7,
@@ -61,7 +61,7 @@ const Cluster1_Assets =
             '#e9ebcd',
             'https://cdn.discordapp.com/emojis/1245235614274555914.png?size=512&quality=lossless',
             '<:NagisaTea:1245235614274555914>',
-            'Trinity - Nagisa (1st Tourney #3 - #4)',
+            'Trinity - Nagisa (v1)',
         ],
         [
             8,
@@ -70,7 +70,7 @@ const Cluster1_Assets =
             '#b0b8ff',
             'https://cdn.discordapp.com/emojis/1245237990108696667.png?size=512&quality=lossless',
             '<:KazusaThumbsup:1245237990108696667>',
-            'Trinity - Kazusa (Streamers/Commentators)',
+            'Trinity - Kazusa',
         ],
         [
             9,
@@ -79,7 +79,7 @@ const Cluster1_Assets =
             '#50ffff',
             'https://cdn.discordapp.com/emojis/1245354648651563101.png?size=512&quality=lossless',
             '<:arona:1245354648651563101>',
-            'S.C.H.A.L.E - Arona (@lucy.isnothere727)',
+            'S.C.H.A.L.E - Arona',
         ],
         [
             10,
@@ -88,7 +88,7 @@ const Cluster1_Assets =
             '#018f8c',
             'https://cdn.discordapp.com/emojis/1245950012815310949.png?size=512&quality=lossless',
             '<:KikyouStare:1245950012815310949>',
-            'Hyakkaryouran - Kikyou (@nekorin727)',
+            'Hyakkaryouran - Kikyou',
         ],
         [
             11,
@@ -97,7 +97,7 @@ const Cluster1_Assets =
             '#ff2b2b',
             'https://cdn.discordapp.com/emojis/1245952444106543124.png?size=512&quality=lossless',
             '<:RengeConfident:1245952444106543124>',
-            'Hyakkaryouran - Renge (@welpyes)',
+            'Hyakkaryouran - Renge',
         ],
         [
             12,
@@ -106,7 +106,7 @@ const Cluster1_Assets =
             '#a67dff',
             'https://cdn.discordapp.com/emojis/1245953558117879848.png?size=512&quality=lossless',
             '<:YukariPast:1245953558117879848>',
-            'Hyakkaryouran - Yukari (@ruikurenaii)',
+            'Hyakkaryouran - Yukari',
         ],
         [
             13,
@@ -115,7 +115,7 @@ const Cluster1_Assets =
             '#edffff',
             'https://cdn.discordapp.com/emojis/1245954205328478300.png?size=512&quality=lossless',
             '<:NagusaChill:1245954205328478300>',
-            'Hyakkaryouran - Nagusa (@hyanna.)',
+            'Hyakkaryouran - Nagusa',
         ],
         [
             14,
@@ -124,7 +124,7 @@ const Cluster1_Assets =
             '#92e4ff',
             'https://cdn.discordapp.com/emojis/1247028261847040050.png?size=512&quality=lossless',
             '<:NoaNoted:1247028261847040050>',
-            'Millennium - Noa (@decayachilles)',
+            'Millennium - Noa',
         ],
         [
             15,
@@ -133,7 +133,7 @@ const Cluster1_Assets =
             '#a9a7d8',
             'https://cdn.discordapp.com/emojis/1253900720219099228.png?size=512&quality=lossless',
             '<:IchikaHi:1253900720219099228>',
-            'Trinity - Ichika (1st Tourney Tester)',
+            'Trinity - Ichika',
         ],
         [
             16,
@@ -142,7 +142,7 @@ const Cluster1_Assets =
             '#ffc7f3',
             'https://cdn.discordapp.com/emojis/1254109761125875802.png?size=512&quality=lossless',
             '<:mikalove:1254109761125875802>',
-            'Trinity - Mika (@megaminxup)',
+            'Trinity - Mika (v2)',
         ],
         [
             17,
@@ -151,7 +151,7 @@ const Cluster1_Assets =
             '#fff598',
             'https://cdn.discordapp.com/emojis/1250945393370333214.png?size=512&quality=lossless',
             '<:SeiaSmug:1250945393370333214>',
-            'Trinity - Seia (@nekorin727)',
+            'Trinity - Seia (v2)',
         ],
         [
             18,
@@ -160,7 +160,7 @@ const Cluster1_Assets =
             '#e9ebcd',
             'https://cdn.discordapp.com/emojis/1254453616320708710.png?size=512&quality=lossless',
             '<:NagisaHmm:1254453616320708710>',
-            'Trinity - Nagisa (@welpyes)',
+            'Trinity - Nagisa (v2)',
         ],
         [
             19,
@@ -169,7 +169,7 @@ const Cluster1_Assets =
             '#edb19f',
             'https://cdn.discordapp.com/emojis/1254645986190430309.png?size=512&quality=lossless',
             '<:hifumiperoro:1254645986190430309>',
-            'Trinity - Hifumi (@ruikurenaii)',
+            'Trinity - Hifumi',
         ],
         [
             20,
@@ -178,7 +178,7 @@ const Cluster1_Assets =
             '#c073ff',
             'https://cdn.discordapp.com/emojis/1257280218612371518.png?size=512&quality=lossless',
             '<:HinaDressPerformance:1257280218612371518>',
-            'Gehenna - Hina (Dress) (Our Beloved Goat)',
+            'Gehenna - Hina (Dress)',
         ],
         [
             21,
@@ -187,7 +187,7 @@ const Cluster1_Assets =
             '#f2abf5',
             'https://cdn.discordapp.com/emojis/1230898571197546568.png?size=512&quality=lossless',
             '<:hoshinoyawn:1230898571197546568>',
-            'Abydos - Hoshino (@sailyncaenfer)',
+            'Abydos - Hoshino',
         ],
         [
             22,
@@ -196,7 +196,7 @@ const Cluster1_Assets =
             '#e8b1fc',
             'https://cdn.discordapp.com/emojis/1262257895282573313.png?size=512&quality=lossless',
             '<:atsukohappy:1262257895282573313>',
-            'Arius - Atsuko (100 Members Special)',
+            'Arius - Atsuko',
         ],
         [
             23,
@@ -205,7 +205,7 @@ const Cluster1_Assets =
             '#5d5d5d',
             'https://cdn.discordapp.com/emojis/1262266983739691138.png?size=512&quality=lossless',
             '<:KayokoConfused:1262266983739691138>',
-            'Gehenna - Kayoko (Tourney Referee)',
+            'Gehenna - Kayoko',
         ],
         [
             24,
@@ -214,7 +214,7 @@ const Cluster1_Assets =
             '#afb0b1',
             'https://cdn.discordapp.com/emojis/1262268455499862036.png?size=512&quality=lossless',
             '<:KayokoThinking:1262268455499862036>',
-            'Gehenna - Kayoko (NY) (OG 2nd Testers)',
+            'Gehenna - Kayoko (NY)',
         ],
         [
             25,
@@ -223,7 +223,7 @@ const Cluster1_Assets =
             '#ff4343',
             'https://cdn.discordapp.com/emojis/1259326736240214097.png?size=512&quality=lossless',
             '<:WakamoCoffee:1259326736240214097>',
-            'Hyakkiyako - Wakamo (@shirakami.tohru)',
+            'Hyakkiyako - Wakamo',
         ],
         [
             28,
@@ -232,7 +232,7 @@ const Cluster1_Assets =
             '#ffe770',
             'https://cdn.discordapp.com/emojis/1269887207993512008.png?size=512&quality=lossless',
             '<:Mari_Water:1269887207993512008>',
-            'Trinity - Mari (Track) (Partner Mem - LYG)',
+            'Trinity - Mari (Track)',
         ],
         [
             29,
@@ -241,7 +241,7 @@ const Cluster1_Assets =
             '#ffe770',
             'https://cdn.discordapp.com/emojis/1269896593554018314.png?size=512&quality=lossless',
             '<:Mari_Pray:1269896593554018314>',
-            'Trinity - Mari (@marilemonbr)'
+            'Trinity - Mari'
         ],
         [
             30,
@@ -250,7 +250,7 @@ const Cluster1_Assets =
             '#7069f5',
             'https://cdn.discordapp.com/emojis/1360424442420924539.png?size=512&quality=lossless',
             '<:YuukaPyjama:1360424442420924539>',
-            'Millennium - Yuuka (Pyjama) (@witwickj)'
+            'Millennium - Yuuka (Pyjama)'
         ],
         [
             45,
@@ -259,7 +259,7 @@ const Cluster1_Assets =
             '#b4b5d6',
             'https://cdn.discordapp.com/emojis/1375525818696077362.png?size=512&quality=lossless',
             '<:Kisaki_Tada:1375525818696077362>',
-            'Genryuumon - Kisaki (@rimcie)'
+            'Genryuumon - Kisaki'
         ],
     ]
 

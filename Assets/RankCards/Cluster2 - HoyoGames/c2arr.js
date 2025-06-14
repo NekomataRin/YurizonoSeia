@@ -6,7 +6,7 @@ const Cluster2_Assets = [
         '#75cfff',
         'https://cdn.discordapp.com/emojis/1262716341270347787.png?size=512&quality=lossless',
         '<:FurinaNews:1262716341270347787>',
-        'Fontaine - Furina (@operagx0535)',
+        'Fontaine - Furina',
     ],
     [
         27,
@@ -15,7 +15,7 @@ const Cluster2_Assets = [
         '#9ad9f5',
         'https://cdn.discordapp.com/emojis/1267546596791291998.png?size=512&quality=lossless',
         '<:ayakachibi:1267546596791291998>',
-        'Inazuma - Ayaka (--)'
+        'Inazuma - Ayaka'
     ],
     [
         31,
@@ -24,7 +24,7 @@ const Cluster2_Assets = [
         '#b84dff',
         'https://cdn.discordapp.com/emojis/1360440195966570701.png?size=512&quality=lossless',
         '<:CastoriceSip:1360440195966570701>',
-        'Amphoreus - Castorice (@nekorin727)'
+        'Amphoreus - Castorice'
     ]
 ]
 

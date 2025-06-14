@@ -20,12 +20,6 @@ const Denied_Cases = [
         ctx: ImgList.Rejected.None.ctx
     },
     {
-        id: '732131110255067198', //paytouse
-        desc: `<:MomoiNi:1243212431661076520> You wanna test the \`/howgay\` command on <@732131110255067198>? My big brother? You can't do that! Big bro is not gay!`,
-        img: ImgList.Rejected.None.value,
-        ctx: ImgList.Rejected.None.ctx
-    },
-    {
         id: '999614067322925087', //welpyes
         desc: `<a:YaeSlap:1251733720600412240> Oi, you can't check \`/howgay\` command on <@999614067322925087>, please go check someone else!`,
         img: ImgList.Rejected.None.value,

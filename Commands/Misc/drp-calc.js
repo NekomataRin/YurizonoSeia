@@ -80,6 +80,8 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
+        return editReply('This command is NO LONGER Supported, Sorry!')
+
 
         const MapString = interaction.options.getString('map-string'),
             Accuracy = interaction.options.getNumber('accuracy'),
@@ -579,21 +581,21 @@ module.exports = {
         function MaxComboScaling(combo) {
             combo = Number(combo)
             let Multipliers = 1
-            if(combo > 4000) {
+            if (combo > 4000) {
                 Multipliers = 1.25
-                return (combo/4000) * 12 * Multipliers
+                return (combo / 4000) * 12 * Multipliers
             }
             else if (combo < 1000) {
                 Multipliers = 1.06
-                return (combo/1000) * 7 * Multipliers
+                return (combo / 1000) * 7 * Multipliers
             }
-            else return (combo/1500) * 7.5
+            else return (combo / 1500) * 7.5
         }
         console.log(MaxComboScaling(max_combo))
 
         function LengthScaling(n) {
             if (n < 6 * 60) return n = 1
-            if (n < 12 * 60) return n = 1 - 0.005 * (n / 75) 
+            if (n < 12 * 60) return n = 1 - 0.005 * (n / 75)
             else return n = 1 - 0.01 * (n / 60)
         }
 

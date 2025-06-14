@@ -19,11 +19,11 @@ module.exports = async (client) => {
 
     var i = 0, a = 1
     b = [
-        'v0.6.5 - Yurizono Seia, Prepare To Run!',
-        'Added A Bunch Of Rank Cards (Specific Requirements From NekoRin)',
-        'N-Word Filter: Observing, and fixing bugs',
+        'v1.3.0 - Yurizono Seia, Prepare To Run!',
+        'Replace Old IochiMari Lmao',
         'Popular commands: /howgay | /quickmath | /omikuji',
-        'Osudroid!relax Community - Official Mascot!'
+        'Now Only For LazyGang Server, Of Course!',
+        '@nekorin727 - My Dad!',
     ], 
     c = [
         '/howgay and /howgay-stats are under maintenance, please do not use those commands until the maintenance has been done.'

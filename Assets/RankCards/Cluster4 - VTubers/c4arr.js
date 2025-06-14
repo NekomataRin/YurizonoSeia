@@ -6,7 +6,7 @@ const Cluster4_Assets = [
         '#ffed9e',
         'https://cdn.discordapp.com/emojis/1366058494071148625.png?size=512&quality=lossless',
         '<:neurogun:1366058494071148625>',
-        'Neuro-sama (@imhira)',
+        'Neuro-sama',
     ],
     [
         35,
@@ -15,7 +15,7 @@ const Cluster4_Assets = [
         '#8a0010',
         'https://cdn.discordapp.com/emojis/1366058498143555584.png?size=512&quality=lossless',
         '<:evilharpoon:1366058498143555584>',
-        'Evil Neuro (@ruikurenaii)',
+        'Evil Neuro',
     ],
     [
         36,

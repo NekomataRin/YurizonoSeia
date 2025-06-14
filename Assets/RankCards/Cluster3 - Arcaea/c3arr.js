@@ -6,7 +6,7 @@ const Cluster3_Assets = [
         '#cf3723',
         'https://cdn.discordapp.com/emojis/1360650163663667387.png?size=512&quality=lossless',
         '<:MayaXD:1360650163663667387>',
-        'Arcaea - Maya <MISSING> (@tacos727)',
+        'Arcaea - Maya <MISSING>',
     ],
     [
         33,
@@ -15,7 +15,7 @@ const Cluster3_Assets = [
         '#d8a1ff',
         'https://cdn.discordapp.com/emojis/1365984635531690044.png?size=512&quality=lossless',
         '<:lagrange_think:1365984635531690044>',
-        'Arcaea - Lagrange (@cryoblossom)',
+        'Arcaea - Lagrange',
     ],
     [
         49,
@@ -24,7 +24,7 @@ const Cluster3_Assets = [
         '#fffaeb',
         'https://cdn.discordapp.com/emojis/1375534650331496550.png?size=512&quality=lossless',
         '<:HikaTaiNeko:1375534650331496550>',
-        'Arcaea - Hikari & Tairitsu (Reunion) (@cleosagaming)',
+        'Arcaea - Hikari & Tairitsu (Reunion)',
     ],
     [
         50,
@@ -33,7 +33,7 @@ const Cluster3_Assets = [
         '#f2e9c9',
         'https://cdn.discordapp.com/emojis/1375539003167608853.png?size=512&quality=lossless',
         '<:HikariOk:1375539003167608853>',
-        'Arcaea - Hikari (Fracture) (200 Members Special)',
+        'Arcaea - Hikari (Fracture)',
     ],
     [
         51,
@@ -42,7 +42,7 @@ const Cluster3_Assets = [
         '#6370c9',
         'https://cdn.discordapp.com/emojis/1375541130476650600.png?size=512&quality=lossless',
         '<:TairitsuLast:1375541130476650600>',
-        'Arcaea - Tairitsu (Grievous Lady) (200 Mem Special)',
+        'Arcaea - Tairitsu (Grievous Lady)',
     ],
     [
         51,
@@ -51,7 +51,7 @@ const Cluster3_Assets = [
         '#727272',
         'https://cdn.discordapp.com/emojis/1378759706863997038.png?size=512&quality=lossless',
         '<:AcidHmmm:1378759706863997038>',
-        'Arcaea - Acid (maimai Collab) (1st Challenger)',
+        'Arcaea - Acid (maimai Collab)',
     ],
 ]
 
