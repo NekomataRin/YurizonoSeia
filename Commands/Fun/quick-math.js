@@ -166,7 +166,7 @@ module.exports = {
         }
 
         let ChannelKey = false
-        const MathChannel = '1152752837298765845'
+        const MathChannel = '1195982067780042863'
         if (interaction.channel.id === MathChannel) ChannelKey = true
         if (!ChannelKey) {
             return interaction.editReply(`<:SeiaMuted:1244890584276008970> Oi! You can't use this command here!`)

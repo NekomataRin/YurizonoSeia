@@ -35,7 +35,7 @@ module.exports = {
         }
         const Daily_CD = DailyCD()
 
-        const channelid = '1358995524551839805' //'1356147272030879885' //Debug: Only Remove When Testing 
+        const channelid = '1084370333622083624' //'1356147272030879885' //Debug: Only Remove When Testing 
         if (interaction.channel.id !== channelid) {
             const ErrEmbed = new EmbedBuilder()
                 .setColor('Red')
