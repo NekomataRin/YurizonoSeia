@@ -49,7 +49,6 @@ module.exports = {
     async autocomplete(interaction) {
         const Focused = interaction.options.getFocused(true)
         let room_id = interaction.options.getNumber('room-id') || 1
-        return editReply('This command is NO LONGER Supported, Sorry!')
 
         const LinkReq = await request(`https://droidpp.osudroid.moe/api/tournament/getrooms_history?id=${room_id}`)
         const Result = await LinkReq.body.json()
@@ -70,6 +69,8 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply()
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
+
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
         const room_id = interaction.options.getNumber('room-id')
@@ -81,7 +82,7 @@ module.exports = {
             const ErrEmbed = new EmbedBuilder()
                 .setColor('Red')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244129048494473246> • Error - Room Not Found')
+                .setTitle('<:seiaconcerned:1244128341540208793> • Error - Room Not Found')
                 .setDescription(`<:seiaehem:1244129111169826829> • I cannot retrieve the history of this room id (${room_id}) for you because there's no data from the link.`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -239,7 +240,7 @@ module.exports = {
                 HistoryEmbed[count_1] = new EmbedBuilder()
                     .setColor('Yellow')
                     .setAuthor({ name: `${interaction.user.username} `, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })} ` })
-                    .setTitle('<:seiaconcerned:1244129048494473246> • Match Room History - Data Retrieved')
+                    .setTitle('<:seiaconcerned:1244128341540208793> • Match Room History - Data Retrieved')
                     .setDescription(`▸ ** Room ID:** \`${room_id}\` ▸ **Referee:** \`${RefName}\`\n▸ **Match Type:** \`${DescMethod[1]}\` ▸ **Sorting Method:** \`${DescMethod[0]}\` \n${MapDetailsDesc}`)
                     .setTimestamp()
                     .setThumbnail(BackgroundLink[i])

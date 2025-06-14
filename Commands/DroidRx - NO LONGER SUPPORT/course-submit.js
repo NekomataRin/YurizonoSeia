@@ -84,7 +84,7 @@ module.exports = {
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
         const DanKey = interaction.options.getString('course')
 
-        return editReply('This command is NO LONGER Supported, Sorry!')
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
         let UserID
         const GetID = await DrxUsers.findOne({ DiscordID: interaction.user.id })
         if (!GetID) {

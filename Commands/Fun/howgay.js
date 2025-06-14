@@ -234,7 +234,7 @@ module.exports = {
                     UserID: interaction.user.id,
                     HowGay: Date.now()
                 })
-                await interaction.editReply('<:seiaconcerned:1244129048494473246> Well, since you haven\'t in cooldown database yet... now you can try again')
+                await interaction.editReply('<:seiaconcerned:1244128341540208793> Well, since you haven\'t in cooldown database yet... now you can try again')
             }
             else {
                 const cduser = data.UserID
@@ -246,7 +246,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244129048494473246> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
+                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
@@ -340,12 +340,12 @@ module.exports = {
                                             UserRecordsArr[i].total.normal += 1
                                             UserRecordsArr[i].total.special += (spkey) ? 1 : 0
 
-                                            console.log(UserRecordsArr[i].values.max, UserRecordsArr[i].values.min, UserRecordsArr[i].values.maxavg, UserRecordsArr[i].values.minavg)
+                                            //console.log(UserRecordsArr[i].values.max, UserRecordsArr[i].values.min, UserRecordsArr[i].values.maxavg, UserRecordsArr[i].values.minavg)
                                             break
                                         }
                                         index = i
                                     }
-
+                                    //console.log(index, Number(index) === UserRecordsArr.length - 1)
                                     if (Number(index) === UserRecordsArr.length - 1) {
                                         let key = (AvgChr) ? 'avg' : 'nonavg'
                                         const Obj = {
@@ -454,9 +454,9 @@ module.exports = {
                                 }
 
                                 //Normal Cases
-                                console.log(typeindex)
+                                //console.log(typeindex)
                                 const NormalIndexes = Object.keys(NormalCasesList)
-                                console.log(NormalIndexes)
+                                //console.log(NormalIndexes)
                                 for (var i in NormalIndexes) {
                                     if (NormalIndexes[i] === typeindex) {
                                         NormalCasesList[i].value += 1
@@ -476,17 +476,14 @@ module.exports = {
                                 TypeRecordsArr[1] = SpecialCasesList
 
                                 data1.UserRecords = [], data1.TypeRecords = []
-                                function ArrPush(arr = [], item = []) {
-                                    for (var i in arr) {
-                                        item.push(arr[i])
-                                    }
-                                    return arr
-                                }
-                                const GeneralArr = [UserRecordsArr, TypeRecordsArr],
-                                    ItemArr = [data1.UserRecords, data1.TypeRecords]
+                                
 
-                                for (var i in GeneralArr) {
-                                    ArrPush(GeneralArr[i], ItemArr[i])
+                                for (var i in UserRecordsArr) {
+                                    data1.UserRecords.push(UserRecordsArr[i])
+                                }
+
+                                for(var j in TypeRecords) {
+                                    data1.TypeRecords.push(TypeRecords[j])
                                 }
                                 data1.save()
                             }

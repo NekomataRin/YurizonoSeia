@@ -11,7 +11,7 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
-        return editReply('This command is NO LONGER Supported, Sorry!')
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
 
         const RefereeList = await interaction.guild.roles.cache.get('1240650723860156466').members.map(m => m.user.id)
 
@@ -21,7 +21,7 @@ module.exports = {
             const NoPerm = new EmbedBuilder()
                 .setColor('Red')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244129048494473246> • No permissions')
+                .setTitle('<:seiaconcerned:1244128341540208793> • No permissions')
                 .setDescription('<:seiaehem:1244129111169826829> • You do not have enough permissions to run this command...')
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -44,7 +44,7 @@ module.exports = {
                     const PendingMatchesEmbed = new EmbedBuilder()
                         .setColor('Blue')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setTitle('<:seiaconcerned:1244129048494473246> • Pending Matches List')
+                        .setTitle('<:seiaconcerned:1244128341540208793> • Pending Matches List')
                         .setDescription(`<:seiaehem:1244129111169826829> • ${MatchDesc}`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })

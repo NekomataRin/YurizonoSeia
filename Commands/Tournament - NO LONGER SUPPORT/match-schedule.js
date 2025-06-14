@@ -44,7 +44,7 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
-        return editReply('This command is NO LONGER Supported, Sorry!')
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
 
         const timereg = /\b(2[0-3]|[01]?[0-9]):([0-5]?[0-9])\b/g
         const datereg = /^\d{4}[-/](0[1-9]|1[012])[-/](0[1-9]|[12][0-9]|3[01])$/g
@@ -116,7 +116,7 @@ module.exports = {
         if (errcode.indexOf(1) !== -1) {
             const ErrorEmbed = new EmbedBuilder()
                 .setColor('Red')
-                .setTitle(`<:seiaconcerned:1244129048494473246> **Error while executing command**`)
+                .setTitle(`<:seiaconcerned:1244128341540208793> **Error while executing command**`)
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setDescription(`<:seiaehem:1244129111169826829> ${ErrorDesc}`)
                 .setTimestamp()
@@ -142,7 +142,7 @@ module.exports = {
 
             const ScheduleEmbed = new EmbedBuilder()
                 .setColor('Yellow')
-                .setTitle(`<:seiaconcerned:1244129048494473246> **Match Schedule - Disscussing Time**`)
+                .setTitle(`<:seiaconcerned:1244128341540208793> **Match Schedule - Disscussing Time**`)
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setDescription(`<:seiaehem:1244129111169826829> **Match Name:** \`${MatchName}\`\n\n> **Players:** ${interaction.user} - ${MatchUser}\n> **Scheduled Time:** <t:${MatchTimeString}> (<t:${MatchTimeString}:R>)\n\n> ${MatchUser} will have \`3 Minutes\` to respond to this message by clicking one of those two buttons below.\n-# Notice: After the given time, if the user hasn't showed up yet, the schedule will be automatically discarded without logs. -Nekomata Rin`)
                 .setTimestamp()
@@ -164,7 +164,7 @@ module.exports = {
                         {
                             const ScheduleEmbedStatus = new EmbedBuilder()
                                 .setColor('Yellow')
-                                .setTitle(`<:seiaconcerned:1244129048494473246> **Match Schedule - Status - PENDING**`)
+                                .setTitle(`<:seiaconcerned:1244128341540208793> **Match Schedule - Status - PENDING**`)
                                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                 .setDescription(`<:seiaehem:1244129111169826829> **Match Name:** \`${MatchName}\`\n\n> **Players:** ${interaction.user} - ${MatchUser}\n> **Scheduled Time:** <t:${MatchTimeString}> (<t:${MatchTimeString}:R>)`)
                                 .setTimestamp()
@@ -195,7 +195,7 @@ module.exports = {
                         {
                             const ScheduleEmbedStatus = new EmbedBuilder()
                                 .setColor('Red')
-                                .setTitle(`<:seiaconcerned:1244129048494473246> **Match Schedule - Status - DENIED**`)
+                                .setTitle(`<:seiaconcerned:1244128341540208793> **Match Schedule - Status - DENIED**`)
                                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                 .setDescription(`<:seiaehem:1244129111169826829> **Match Name:** \`${MatchName}\`\n\n> **Players:** ${interaction.user} - ${MatchUser}\n> **Scheduled Time:** <t:${MatchTimeString}> (<t:${MatchTimeString}:R>)`)
                                 .setTimestamp()

@@ -21,7 +21,7 @@ module.exports = {
             if (!data) {
                 const NoData = new EmbedBuilder()
                     .setColor('DarkGreen')
-                    .setTitle(`<:seiaconcerned:1244129048494473246> **No data provided**`)
+                    .setTitle(`<:seiaconcerned:1244128341540208793> **No data provided**`)
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setDescription(`<:seiaehem:1244129111169826829> Unfortunately, ${user} has no rank cards other than \`none\`, heh...`)
                     .setTimestamp()
@@ -37,7 +37,7 @@ module.exports = {
                 }
                 const ViewKey = new EmbedBuilder()
                     .setColor('DarkGreen')
-                    .setTitle(`<:seiaconcerned:1244129048494473246> **Rank Cards Data**`)
+                    .setTitle(`<:seiaconcerned:1244128341540208793> **Rank Cards Data**`)
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setDescription(`<:seiaehem:1244129111169826829> Rank Card List Of User: ${user}\nRank Cards: \`none\`, ${n}`)
                     .setTimestamp()

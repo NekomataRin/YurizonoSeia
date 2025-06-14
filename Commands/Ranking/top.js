@@ -78,7 +78,7 @@ module.exports = {
             Desc += m
         }
         if (Desc === '') {
-            Desc += '<:seiaconcerned:1244129048494473246> Hmm... looks like this page\'s so empty right now... Maybe time will tell the answer?'
+            Desc += '<:seiaconcerned:1244128341540208793> Hmm... looks like this page\'s so empty right now... Maybe time will tell the answer?'
         } 
         if (ResultList.length === 10) {
             Desc += `\n\n<:seiaheh:1244128244664504392> Use command \`/top page:${Page + 1}\` to see page ${Page + 1}, if you liked please!`
@@ -101,7 +101,7 @@ module.exports = {
                     UserID: interaction.user.id,
                     Top: Date.now()
                 })
-                await interaction.editReply('<:seiaconcerned:1244129048494473246> Well, since you haven\'t in cooldown database yet... now you can try again')
+                await interaction.editReply('<:seiaconcerned:1244128341540208793> Well, since you haven\'t in cooldown database yet... now you can try again')
             } else {
                 const cduser = data.UserID
                 const CDTime = data.Top
@@ -112,7 +112,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244129048494473246> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime/1000)}:R>`)
+                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime/1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })

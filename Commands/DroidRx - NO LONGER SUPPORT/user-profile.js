@@ -20,7 +20,7 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply()
-        return editReply('This command is NO LONGER Supported, Sorry!')
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
 
         let UserID = interaction.options.getInteger('id')
         const guser = interaction.options.getUser('user') || interaction.user

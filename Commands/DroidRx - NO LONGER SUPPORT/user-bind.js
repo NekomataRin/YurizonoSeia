@@ -21,7 +21,7 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply()
-        return editReply('This command is NO LONGER Supported, Sorry!')
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
 
         const DevList = await interaction.guild.roles.cache.get('1095655182852968518').members.map(m => m.user.id)
         const RunKey = (DevList.includes(interaction.user.id)) ? true : false

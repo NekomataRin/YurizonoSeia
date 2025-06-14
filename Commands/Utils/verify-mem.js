@@ -13,7 +13,7 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply()
-
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
         const user = interaction.options.getUser('user')
@@ -28,7 +28,7 @@ module.exports = {
             const NoPerm = new EmbedBuilder()
                 .setColor('Red')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244129048494473246> • No permissions')
+                .setTitle('<:seiaconcerned:1244128341540208793> • No permissions')
                 .setDescription('<:seiaehem:1244129111169826829> • You do not have enough permissions to run this command...')
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })

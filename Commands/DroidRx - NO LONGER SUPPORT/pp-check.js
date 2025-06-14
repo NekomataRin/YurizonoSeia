@@ -30,7 +30,7 @@ module.exports = {
         const guser = interaction.options.getUser('user') || interaction.user
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
-        return editReply('This command is NO LONGER Supported, Sorry!')
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
         const GetID = await DrxUsers.findOne({ DiscordID: guser.id })
         if (!GetID && !UserID) {
             const InvalidID = new EmbedBuilder()

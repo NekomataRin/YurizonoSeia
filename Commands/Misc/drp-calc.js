@@ -80,7 +80,7 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
-        return editReply('This command is NO LONGER Supported, Sorry!')
+        return interaction.editReply('This command is NO LONGER Supported, Sorry!')
 
 
         const MapString = interaction.options.getString('map-string'),
@@ -139,7 +139,7 @@ module.exports = {
             const ErrEmbed = new EmbedBuilder()
                 .setColor('Red')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244129048494473246> • Cannot execute this command')
+                .setTitle('<:seiaconcerned:1244128341540208793> • Cannot execute this command')
                 .setDescription('<:seiaehem:1244129111169826829> • You had provided the invalid beatmap so I cannot run this command for you, sorry...')
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
