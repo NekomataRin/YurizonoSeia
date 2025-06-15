@@ -12,7 +12,7 @@ module.exports = async (client, message) => {
     let n = await message.fetch()
     let EditedContent = n.content, PreContent = message.content
     if (EditedContent === PreContent) return
-    let desc = `Ufufu~ Looks like someone edited their message! Are they hiding something? Or maybe they just made a typo / mistake?\n<:seiaehem:1244129111169826829> Message Author: ${message.member}\n> Channel: ${message.channel}`
+    let desc = `Ufufu~ Looks like someone edited their message! Are they hiding something? Or maybe they just made a typo / mistake?\n<:seiaehem:1244128370669650060> Message Author: ${message.member}\n> Channel: ${message.channel}`
     if (EditedContent.length > 1024 || PreContent.length > 1024) {
         const EditEmbed = new EmbedBuilder()
             .setColor('Blue')

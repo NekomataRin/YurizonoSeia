@@ -63,7 +63,7 @@ module.exports = {
                 .setColor('DarkGreen')
                 .setTitle(`<:seiaconcerned:1244128341540208793> **No ranking data provided**`)
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setDescription(`<:seiaehem:1244129111169826829> Unfortunately, ${user} has no ranking data, please try again later...`)
+                .setDescription(`<:seiaehem:1244128370669650060> Unfortunately, ${user} has no ranking data, please try again later...`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             await interaction.editReply({

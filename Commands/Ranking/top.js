@@ -83,7 +83,7 @@ module.exports = {
         if (ResultList.length === 10) {
             Desc += `\n\n<:seiaheh:1244128244664504392> Use command \`/top page:${Page + 1}\` to see page ${Page + 1}, if you liked please!`
         } else if(Desc !== '') {
-            Desc +=`\n\n<:seiaehem:1244129111169826829> Alright, this is the end of the list... Only time will tell for the future of the leaderboard...`
+            Desc +=`\n\n<:seiaehem:1244128370669650060> Alright, this is the end of the list... Only time will tell for the future of the leaderboard...`
         }
 
         const TopEmbed = new EmbedBuilder()

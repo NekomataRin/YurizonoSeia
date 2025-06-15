@@ -38,7 +38,7 @@ module.exports = {
             .setColor('Red')
             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
             .setTitle('<:seiaconcerned:1244128341540208793> • No permissions')
-            .setDescription('<:seiaehem:1244129111169826829> • You do not have enough permissions to run this command...')
+            .setDescription('<:seiaehem:1244128370669650060> • You do not have enough permissions to run this command...')
             .setTimestamp()
             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 

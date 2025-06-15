@@ -11,7 +11,7 @@ module.exports = async (client, message) => {
     const Channel = client.channels.cache.get('1165537322943643678')
 
     let DelContent = message.content
-    let desc = `Oh my~ Looks like someone deleted their message! What does it contain anyway? <:seiaheh:1244128244664504392>\n<:seiaehem:1244129111169826829> Message Author: ${message.member}\n> Channel: ${message.channel}`
+    let desc = `Oh my~ Looks like someone deleted their message! What does it contain anyway? <:seiaheh:1244128244664504392>\n<:seiaehem:1244128370669650060> Message Author: ${message.member}\n> Channel: ${message.channel}`
 
     let AttachedFiles = message.attachments.map(att => att.url)
     console.log(AttachedFiles)

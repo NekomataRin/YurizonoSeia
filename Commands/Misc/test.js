@@ -56,7 +56,7 @@ module.exports = {
                 .setColor('Yellow')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setTitle('<:seiaconcerned:1244128341540208793> • No Data')
-                .setDescription(`<:seiaehem:1244129111169826829> • Well, ${interaction.user}... you ran out of time to submit this form... please try again...`)
+                .setDescription(`<:seiaehem:1244128370669650060> • Well, ${interaction.user}... you ran out of time to submit this form... please try again...`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             interaction.followUp({
@@ -73,7 +73,7 @@ module.exports = {
                 .setColor('Yellow')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setTitle('<:seiaconcerned:1244128341540208793> • Player\'s Info')
-                .setDescription(`<:seiaehem:1244129111169826829> • Form details:\n> <:SeiaPeek:1244890461592621147> **Username:** \`${UserName}\`\n> <:SeiaSip:1244890166116618340> **In Game Name:** \`${UserInGameName}\`\n> <:seiaheh:1244128244664504392> **User's Opinions:** ${UserOpinions}`)
+                .setDescription(`<:seiaehem:1244128370669650060> • Form details:\n> <:SeiaPeek:1244890461592621147> **Username:** \`${UserName}\`\n> <:SeiaSip:1244890166116618340> **In Game Name:** \`${UserInGameName}\`\n> <:seiaheh:1244128244664504392> **User's Opinions:** ${UserOpinions}`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 

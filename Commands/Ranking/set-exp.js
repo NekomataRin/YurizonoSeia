@@ -35,7 +35,7 @@ module.exports = {
             .setColor('Red')
             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
             .setTitle('<:seiaconcerned:1244128341540208793> • No permissions')
-            .setDescription('<:seiaehem:1244129111169826829> • You do not have enough permissions to run this command...')
+            .setDescription('<:seiaehem:1244128370669650060> • You do not have enough permissions to run this command...')
             .setTimestamp()
             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 
@@ -75,7 +75,7 @@ module.exports = {
                         .setColor('Green')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setTitle('<:seiaconcerned:1244128341540208793> • New Rank Data')
-                        .setDescription(`<:seiaehem:1244129111169826829> • User: ${user} | Total Exp: ${Total_Exp} | Level: ${ReturnExp(Total_Exp)[0]} | Exp: ${ReturnExp(Total_Exp)[1]}`)
+                        .setDescription(`<:seiaehem:1244128370669650060> • User: ${user} | Total Exp: ${Total_Exp} | Level: ${ReturnExp(Total_Exp)[0]} | Exp: ${ReturnExp(Total_Exp)[1]}`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({
@@ -96,7 +96,7 @@ module.exports = {
                         .setColor('Blue')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setTitle('<:seiaconcerned:1244128341540208793> • Edited Rank Data')
-                        .setDescription(`<:seiaehem:1244129111169826829> • User: ${user} | Total Exp: ${preTotal} >> ${Total_Exp} | Level: ${preLevel} >> ${ReturnExp(Total_Exp)[0]} | Exp: ${preExp} >> ${ReturnExp(Total_Exp)[1]}`)
+                        .setDescription(`<:seiaehem:1244128370669650060> • User: ${user} | Total Exp: ${preTotal} >> ${Total_Exp} | Level: ${preLevel} >> ${ReturnExp(Total_Exp)[0]} | Exp: ${preExp} >> ${ReturnExp(Total_Exp)[1]}`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({
