@@ -4,10 +4,10 @@ const FooterEmbeds = require('../../Utils/embed')
 module.exports = async (client, message) => {
     if (message.author.bot) return
     if (message.channel.type === ChannelType.DM || message.channel.type === ChannelType.GroupDM) return
-    if (message.guild.id !== '1095653998389907468') return
+    if (message.guild.id !== process.env.GUILD_ID) return
 
     const iuser = await message.guild.members.fetch(message.author.id)
-    const Channel = client.channels.cache.get('1244996189510697043')
+    const Channel = client.channels.cache.get('1165537322943643678')
     
     let n = await message.fetch()
     let EditedContent = n.content, PreContent = message.content
