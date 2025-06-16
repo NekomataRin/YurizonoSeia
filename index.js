@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, Partials } = require('discord.js');
 
 const { REST, Routes } = require('discord.js');
 const fs = require('node:fs');
@@ -20,6 +20,8 @@ const client = new Client({
     intents: Object.keys(GatewayIntentBits).map((a) => {
         return GatewayIntentBits[a]
     }),
+    partials: Object.keys(Partials).map((b) => { 
+        return Partials[b] })
 });
 
 eventHandler(client)

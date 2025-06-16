@@ -2,6 +2,7 @@ const { ChannelType, EmbedBuilder } = require('discord.js')
 const FooterEmbeds = require('../../Utils/embed')
 
 module.exports = async (client, message) => {
+    if (message.partial) return
     if (message.author.bot) return
     if (!message.content) return
     if (message.channel.type === ChannelType.DM || message.channel.type === ChannelType.GroupDM) return
@@ -24,10 +25,10 @@ module.exports = async (client, message) => {
     const DelEmbed = new EmbedBuilder()
         .setColor('Blue')
         .setAuthor({ name: `${message.author.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-        .setTitle('<:seiaconcerned:1244129048494473246> • Log Action: Delete Message')
+        .setTitle('<:seiaconcerned:1244128341540208793> • Log Action: Delete Message')
         .setDescription(desc)
         .addFields({
-            name: '<:seiaehem:1244129111169826829> Deleted Message Content',
+            name: '<:seiaehem:1244128370669650060> Deleted Message Content',
             value: DelContent,
             inline: true
         })
@@ -43,7 +44,7 @@ module.exports = async (client, message) => {
             DelEmbed_List[i] = new EmbedBuilder()
                 .setColor('Blue')
                 .setAuthor({ name: `${message.author.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244129048494473246> • Log Action: Delete Message')
+                .setTitle('<:seiaconcerned:1244128341540208793> • Log Action: Delete Message')
                 .setDescription(desc)
                 .addFields(
                     {
