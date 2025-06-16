@@ -141,7 +141,7 @@ module.exports = {
             for (var i = 0; i <= level; i++) {
                 if (i % 2 === 1 && i > 2 && i < 12) {
                     input++
-                } else if(i >= 12 && i % 3 === 0 && i <= 21) {
+                } else if(i >= 12 && i % 3 === 0 && i < 21) {
                     input++
                 } else if(i >= 21 && i % 5 === 0) {
                     input++
