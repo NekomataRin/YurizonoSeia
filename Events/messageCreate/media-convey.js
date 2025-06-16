@@ -61,14 +61,14 @@ module.exports = async (client, message) => {
 
   // Facebook Conversion with vanity
   if (facebookLinks.length === 1) {
-    const [vanity, videoId1, reelId, watchId] = facebookLinks[0]
+    const [fullMatch, vanity, videoId1, reelId, watchId] = facebookLinks[0]
     let videoId = videoId1 || reelId || watchId
 
     if (!videoId) {
       await message.channel.send(`${EMOJI_ERROR} There is an invalid video ID, so I cannot do it for you!`)
       await message.delete()
       return
-    } // safety fallback
+    }  // safety fallback
 
     let converted = `https://facebed.com/watch/?v=${videoId}`
     if (vanity && vanity !== 'watch' && vanity !== 'reel') {
