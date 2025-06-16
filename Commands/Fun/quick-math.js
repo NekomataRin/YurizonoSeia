@@ -115,7 +115,23 @@ module.exports = {
             var numRight = Math.ceil(numNodes / 2);
             var rightSubTree = buildTree(numRight);
 
-            var m = Random(0, x.length);
+            var m
+            if (level >= 3)
+                m = Random(0, x.length);
+            else {
+                let rate = {
+                    3: [40, 3],
+                    2: [80, 2],
+                    1: [90, 1],
+                    0: [100, 0],
+                }
+                let rng = Math.floor(Math.random()*100)
+                for(var i in Object.keys(rate)) {
+                    if(rng <= rate[Object.keys(rate)[i]][0]) {
+                        m = rate[Object.keys(rate)[i]][1]
+                    }
+                }
+            }
             var str = x[m];
             return new TreeNode(leftSubTree, rightSubTree, str);
         }
@@ -190,7 +206,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime/1000)}:R>`)
+                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
@@ -286,12 +302,12 @@ module.exports = {
                                     const collector = await interaction.channel.awaitMessages({ msg, filter, time: Number(RunTime) * 1000, errors: ['time'], max: 1 })
                                     let Result = Number(collector.first().content)
                                     if (Result.toFixed(2) === OfficialEqt[1]) {
-                                        
+
                                         eqtcount++
                                         TimeResult = (Date.now() - QstTime) / 1000
                                         let TimeScore = TimeResult.toFixed(2)
                                         TimeResult = TimeResult.toFixed(2) + 's'
-                                        scoreadd = Math.max(Number(eqtcount + (1-(TimeScore/RunTime)) * Number(Difficulties.indexOf(Difficulty) + 1) * AttemptsCalc(MsgCount)), 0)
+                                        scoreadd = Math.max(Number(eqtcount + (1 - (TimeScore / RunTime)) * Number(Difficulties.indexOf(Difficulty) + 1) * AttemptsCalc(MsgCount)), 0)
                                         scoreadd = scoreadd.toFixed(1)
                                         score += Number(scoreadd)
                                         score = Number(score.toFixed(1))
