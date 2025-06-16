@@ -80,8 +80,8 @@ module.exports = {
         function GetDiffValue(level, Difficulty) {
             level = Number(level)
             let DiffValue = Number(Difficulties.indexOf(Difficulty) + 1)
-            const value = (level ** 3) + (2 * DiffValue ** 2) + (3 * level) + (4 * DiffValue)
-            return Number(value)
+            const value = 2.7 * level ** 2.25 + 6.5 * DiffValue ** 1.5
+            return Math.floor(Number(value))
         }
 
         function Random(min, max) {
@@ -125,9 +125,9 @@ module.exports = {
                     1: [90, 1],
                     0: [100, 0],
                 }
-                let rng = Math.floor(Math.random()*100)
-                for(var i in Object.keys(rate)) {
-                    if(rng <= rate[Object.keys(rate)[i]][0]) {
+                let rng = Math.floor(Math.random() * 100)
+                for (var i in Object.keys(rate)) {
+                    if (rng <= rate[Object.keys(rate)[i]][0]) {
                         m = rate[Object.keys(rate)[i]][1]
                     }
                 }
@@ -141,9 +141,9 @@ module.exports = {
             for (var i = 0; i <= level; i++) {
                 if (i % 2 === 1 && i > 2 && i < 12) {
                     input++
-                } else if(i >= 12 && i % 3 === 0 && i < 21) {
+                } else if (i >= 12 && i % 3 === 0 && i < 21) {
                     input++
-                } else if(i >= 21 && i % 5 === 0) {
+                } else if (i >= 21 && i % 5 === 0) {
                     input++
                 }
             }
