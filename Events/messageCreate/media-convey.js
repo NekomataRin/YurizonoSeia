@@ -13,7 +13,7 @@ const twitterRegex = /https?:\/\/(?:www\.|mobile\.)?x\.com\/[a-zA-Z0-9_]+\/statu
 const facebookRedirectRegex = /https?:\/\/(?:www\.|web\.|m\.)?facebook\.com\/share\/(?:v|r)\/[\w-]+(?:\/text)?\/?/gi
 
 // All Facebook links matcher
-const facebookLinkRegex = /https?:\/\/(?:www\.|web\.|m\.)?facebook\.com\/[^\s]+|https?:\/\/fb\.watch\/[^\s]+/gi
+const facebookLinkRegex = /https?:\/\/(?:www\.|m\.)?facebook\.com\/(?!(?:share\/[vr]\/))(?:(?:[^\/\s]+\/videos\/(\d+))|reel\/(\d+)|watch\/\?v=(\d+)|fb\.watch\/[\w-]+|[^\/]+\/posts\/[\w-]+|permalink\.php\?story_fbid=\d+&id=\d+|story\.php\?story_fbid=\d+&id=\d+|groups\/\d+\/posts\/[\w-]+)(?:[/?&][^\s]*)?/gi
 
 module.exports = async (client, message) => {
   if (message.author.bot) return
