@@ -107,8 +107,8 @@ module.exports = {
                     const index = Math.floor(Math.random() * ImgList.GigaChad.length)
                     ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
                     ImgCtx = ImgList.GigaChad[index].ctx
-                    if (tuser.roles.cache.has("1356679121996087487")) {
-                        DescArr[0] += `\n-# > Successfully removed <@&1356679121996087487> to ${target}, well then, since they proved themselves to be a real person.`
+                    if (tuser.roles.cache.has("1162944612508377088")) {
+                        DescArr[0] += `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
                     } else if (!tuser.roles.cache.has("1162944612508377088")) {
                         DescArr[0] += `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, you're the real chad here!`
                     } else {
@@ -121,8 +121,8 @@ module.exports = {
                     ImgCtx = ImgList.Gay[index].ctx
                     if (tuser.roles.cache.has("1162944612508377088")) {
                         DescArr[0] += `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well too bad, bro lost your title lol.`
-                    } else if (!tuser.roles.cache.has("1356679121996087487")) {
-                        DescArr[0] += `\n-# > Successfully added <@&1356679121996087487> to ${target}. Congratulations, now everyone knows that you are GAY`
+                    } else if (!tuser.roles.cache.has("1162944612508377088")) {
+                        DescArr[0] += `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
                     } else {
                         DescArr[0] += `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
                     }
@@ -192,12 +192,12 @@ module.exports = {
                     const index = Math.floor(Math.random() * ImgList.GigaChad.length)
                     ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
                     ImgCtx = ImgList.GigaChad[index].ctx
-                    if (tuser.roles.cache.has("1356679121996087487")) {
-                        tuser.roles.remove('1356679121996087487')
-                        DescArr[3] += `\n-# > Successfully removed <@&1356679121996087487> to ${target}, well then, since they proved themselves to be a real person.`
-                    } else if (!tuser.roles.cache.has("1162944612508377088")) {
-                        tuser.roles.add('1162944612508377088')
-                        DescArr[3] += `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, you're the real chad here!`
+                    if (tuser.roles.cache.has("1162944612508377088")) {
+                        tuser.roles.remove('11162944612508377088')
+                        DescArr[3] += `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
+                    } else if (!tuser.roles.cache.has("1171750121109733438")) {
+                        tuser.roles.add('1171750121109733438')
+                        DescArr[3] += `\n-# > Successfully added <@&1171750121109733438> to ${target}. Congratulations, you're the real chad here!`
                     } else {
                         DescArr[3] += `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
                     }
@@ -206,10 +206,10 @@ module.exports = {
                     const index = Math.floor(Math.random() * ImgList.Gay.length)
                     ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
                     ImgCtx = ImgList.Gay[index].ctx
-                    if (tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[3] += `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well too bad, bro lost your title lol.`
-                    } else if (!tuser.roles.cache.has("1356679121996087487")) {
-                        DescArr[3] += `\n-# > Successfully added <@&1356679121996087487> to ${target}. Congratulations, now everyone knows that you are GAY`
+                    if (tuser.roles.cache.has("1171750121109733438")) {
+                        DescArr[3] += `\n-# > Successfully removed <@&1171750121109733438> to ${target}, well too bad, bro lost your title lol.`
+                    } else if (!tuser.roles.cache.has("1162944612508377088")) {
+                        DescArr[3] += `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
                     } else {
                         DescArr[3] += `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
                     }
@@ -295,18 +295,18 @@ module.exports = {
                     if (RoleKey) {
                         finalvalue = rng || avgrng
                         if (finalvalue <= 1) {
-                            if (tuser.roles.cache.has("1356679121996087487")) {
-                                await tuser.roles.remove('1356679121996087487')
-                            } else if (!tuser.roles.cache.has("1162944612508377088")) {
-                                await tuser.roles.add('1162944612508377088')
+                            if (tuser.roles.cache.has("1162944612508377088")) {
+                                await tuser.roles.remove('1162944612508377088')
+                            } else if (!tuser.roles.cache.has("1171750121109733438")) {
+                                await tuser.roles.add('1171750121109733438')
                             }
                         }
 
                         if (finalvalue >= 100) {
-                            if (tuser.roles.cache.has("1162944612508377088")) {
-                                await tuser.roles.remove('1162944612508377088')
-                            } else if (!tuser.roles.cache.has("1356679121996087487")) {
-                                await tuser.roles.add('1356679121996087487')
+                            if (tuser.roles.cache.has("1171750121109733438")) {
+                                await tuser.roles.remove('1171750121109733438')
+                            } else if (!tuser.roles.cache.has("1162944612508377088")) {
+                                await tuser.roles.add('1162944612508377088')
                             }
                         }
 

@@ -102,7 +102,7 @@ module.exports = async (client, member) => {
 
     const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), { name: `welcome.png` })
 
-    const title = (!checkkey) ? `<:MomoiHug:1255720676149428316> **Welcome To The Server!**` : `<:CastoriceSip:1360440195966570701> **Welcome Back To The Server!**`
+    const title = (!checkkey) ? `<:CastoriceMelon:1384990166619394089> **Welcome To The Server!**` : `<:CastoriceSip:1360440195966570701> **Welcome Back To The Server!**`
     const desc = (!checkkey) ? `**Welcome <@${member.user.id}> to server \`${guild.name}\`**` : `**Welcome back <@${member.user.id}> to server \`${guild.name}\`**`
     const WelcomeEmbed = new EmbedBuilder()
         .setAuthor({ name: `${vmember}`, iconURL: `${uavt}` })
