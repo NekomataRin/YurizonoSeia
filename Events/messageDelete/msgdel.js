@@ -48,7 +48,7 @@ module.exports = async (client, message) => {
                 .setDescription(desc)
                 .addFields(
                     {
-                        name: '<:seiaehem:1244129111169826829> Deleted Message Content',
+                        name: '<:seiaehem:1244128370669650060> Deleted Message Content',
                         value: DelContent,
                         inline: true
                     },

@@ -74,7 +74,7 @@ module.exports = async (client, member) => {
     const WelcomeEmbed = new EmbedBuilder()
         .setAuthor({ name: `${vmember}`, iconURL: `${uavt}` })
         .setTitle('<:SerikaZad:1230835627080286300> **Member Just Left The Server!**')
-        .setDescription(`### <:castoricetired:1384989806593048727> **<@${member.user.id}> Just left the server \`${guild.name}\n> Looks like they are not slacking anymore, or just got kicked by the server's owner lmao...`)
+        .setDescription(`### <:CastoriceTired:1384989806593048727> **<@${member.user.id}> Just left the server** \`${guild.name}\`\n> Looks like they are not slacking anymore, or just got kicked by the server's owner lmao...`)
         .setImage('attachment://welcome.png')
         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
         .setColor('#cae1ff')

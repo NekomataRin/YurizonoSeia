@@ -3,24 +3,36 @@ const FooterEmbeds = require('../../Utils/embed')
 
 const ImgList = require('../../Assets/Howgay/Texts/imglist')
 const Denied_Cases = require('../../Assets/Howgay/Texts/denied')
+const Denied_CasesVN = require('../../Assets/Howgay/Texts/denied-vn')
+
 const Cases = require('../../Assets/Howgay/Texts/allcases')
+const CasesVN = require('../../Assets/Howgay/Texts/allcases-vn')
+
 const wait = require('node:timers/promises').setTimeout
 const cdSchema = require('../../Database/cooldown')
 const HowgayList = require('../../Database/Fun/howgay')
 const chalk = require('chalk')
 
+const cdtxts = require('../../Assets/Defaults/cooldown')
+const Language = require('../../Database/lang-setup')
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('howgay')
         .setDescription('Checking a user is gay or not in the server')
+        .setDescriptionLocalizations({
+            vi: "Kiểm tra người dùng nào đó có bị gay hay không trong server"
+        })
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user you want to check')
+                .setDescriptionLocalizations({ vi: 'Người dùng mà bạn muốn kiểm tra' })
                 .setRequired(false)
         )
         .addBooleanOption(option =>
             option.setName('avg')
                 .setDescription('Check average on how gay (3 times), this is optional')
+                .setDescriptionLocalizations({ vi: "Kiểm tra độ gay trung bình (3 lần), cái này tuỳ chọn" })
                 .setRequired(false)
         ),
     async execute(interaction) {
@@ -29,29 +41,63 @@ module.exports = {
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
         const cdtime = 20000 //0 //Debug
 
+        //Language Setup
+        let LangKey
+        const LanguageKey = await Language.findOne({ UserID: interaction.user.id }).select('-_id Lang')
+        if (!LanguageKey) {
+            const ResponseEmbed = new EmbedBuilder()
+                .setColor("Yellow")
+                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                .setTitle(`<:seiaconcerned:1244128341540208793> • **Language Is Not Set**`)
+                .setDescription(`<:seiaehem:1244128370669650060> • Sensei! Please use \`/setup-language\` command in order to use the command! Since v1.4.0, my dad updated my code and added Vietnamese language for this!\n-# > And he is too lazy to add proper vietnamese embed for this lmao`)
+                .setTimestamp()
+                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+            return interaction.editReply({
+                embeds: [ResponseEmbed]
+            })
+        }
+
+        LangKey = LanguageKey.Lang
+        
+        let HowGayCases = {}, RejectedCases = {}
+        switch (LangKey) {
+            case "vi":
+                {
+                    HowGayCases = CasesVN
+                    RejectedCases = Denied_CasesVN
+                    break
+                }
+            case "en-US":
+            default:
+                {
+                    HowGayCases = Cases
+                    RejectedCases = Denied_Cases
+                    break
+                }
+        }
         const target = await interaction.options.getUser('user') || interaction.user
         const tuser = await interaction.guild.members.fetch(target.id)
 
         const AvgChr = await interaction.options.getBoolean('avg') || false
-        const NumEntry = Cases.Ranges.NormalCases
-        const SpecialEntry = Cases.Ranges.SpecialCases
+        const NumEntry = HowGayCases.Ranges.NormalCases
+        const SpecialEntry = HowGayCases.Ranges.SpecialCases
 
         let Desc, Color, RunKey, ImgLink, ImgCtx
-        //Bypassed Cases
-        for (var i in Denied_Cases) {
-            if (target.id === Denied_Cases[i].id) {
-                Color = Cases.Colors.Rejected
-                Desc = Denied_Cases[i].desc
-                ImgLink = new AttachmentBuilder(Denied_Cases[i].img)
-                ImgCtx = Denied_Cases[i].ctx
+        //Bypassed HowGayCases
+        for (var i in RejectedCases) {
+            if (target.id === RejectedCases[i].id) {
+                Color = HowGayCases.Colors.Rejected
+                Desc = RejectedCases[i].desc
+                ImgLink = new AttachmentBuilder(RejectedCases[i].img)
+                ImgCtx = RejectedCases[i].ctx
                 RunKey = 'Denied'
                 break
             }
         }
 
         if (target.bot && target.id !== '1244213929438089286') {
-            Desc = `<a:YaeSlap:1251733720600412240> Oi, you can't check \`/howgay\` command on a bot! (${target}), please go check someone else!`
-            Color = Cases.Colors.Rejected
+            Desc = (LangKey === 'vi') ? `<a:YaeSlap:1251733720600412240> Oi, bạn không thể dùng lệnh \`/howgay\` lên bot! (${target}), làm ơn hãy check người khác đi!` : `<a:YaeSlap:1251733720600412240> Oi, you can't check \`/howgay\` command on a bot! (${target}), please go check someone else!`
+            Color = HowGayCases.Colors.Rejected
             ImgLink = new AttachmentBuilder(ImgList.Rejected.None.value)
             ImgCtx = ImgList.Rejected.None.ctx
             RunKey = 'Denied'
@@ -60,7 +106,7 @@ module.exports = {
         if (RunKey === 'Denied') {
             const DeniedEmbed = new EmbedBuilder()
                 .setColor(Color)
-                .setTitle(`🏳️‍🌈 Checking gayness of a user`)
+                .setTitle((LangKey === 'vi') ? `🏳️‍🌈 Kiểm tra độ gay của ai đó` : `🏳️‍🌈 Checking gayness of a user`)
                 .setThumbnail(tuser.displayAvatarURL({ dynamic: true, size: 512 }))
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setDescription(Desc)
@@ -81,38 +127,43 @@ module.exports = {
                 //Normal Entry
                 for (var i in NumEntry) {
                     if (rng < NumEntry[i]) {
-                        Color = Cases.Colors.NormalCases[i]
-                        Emoji = Cases.EmojisNormal[i]
+                        Color = HowGayCases.Colors.NormalCases[i]
+                        Emoji = HowGayCases.EmojisNormal[i]
                         ImgLink = new AttachmentBuilder(ImgList.Default.value)
                         ImgCtx = ImgList.Default.ctx
-                        Comment = Cases.NormalCases[`Case-${i}`][Math.floor(Math.random() * Cases.NormalCases[`Case-${i}`].length)]
+                        Comment = HowGayCases.NormalCases[`Case-${i}`][Math.floor(Math.random() * HowGayCases.NormalCases[`Case-${i}`].length)]
                         typeindex = i
                         break
                     }
                 }
 
-                //Special Cases
+                //Special HowGayCases
                 if (SpecialEntry.includes(Number(rng))) {
-                    ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${rng}`].img)
-                    ImgCtx = Cases.SpecialCases[`Case${rng}`].ctx
-                    Emoji = Cases.SpecialCases[`Case${rng}`].emoji
-                    Color = Cases.Colors.SpecialCases
-                    Comment = Cases.SpecialCases[`Case${rng}`].desc
+                    ImgLink = new AttachmentBuilder(HowGayCases.SpecialCases[`Case${rng}`].img)
+                    ImgCtx = HowGayCases.SpecialCases[`Case${rng}`].ctx
+                    Emoji = HowGayCases.SpecialCases[`Case${rng}`].emoji
+                    Color = HowGayCases.Colors.SpecialCases
+                    Comment = HowGayCases.SpecialCases[`Case${rng}`].desc
                     specialnum = rng
                     spkey = true
                 }
 
-                DescArr.push(`## ${Emoji} - Gayness Test Result\n▸ The gayness of ${target} is \`${rng}%\`\n### > Comments:\n\n ${Comment}`)
+                const ResultArr = {
+                    "vi": ["Kết Quả Kiểm Tra Độ Gay", "Độ gay của", "là", "Nhận xét:"],
+                    "en-US": ["Gayness Test Result", "The gayness of", "is", "Comments:"]
+                }
+                DescArr.push(`## ${Emoji} - ${ResultArr[LangKey][0]}\n▸ ${ResultArr[LangKey][1]} ${target} ${ResultArr[LangKey][2]} \`${rng}%\`\n### > ${ResultArr[LangKey][3]}\n\n ${Comment}`)
+
                 if (rng <= 1) {
                     const index = Math.floor(Math.random() * ImgList.GigaChad.length)
                     ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
                     ImgCtx = ImgList.GigaChad[index].ctx
                     if (tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[0] += `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
+                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1162944612508377088> cho ${target}, well, vì chính bản thân họ đã chứng minh họ là con người chính hiệu.` : `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
                     } else if (!tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[0] += `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, you're the real chad here!`
+                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng anh bạn nhá, giờ đã là GIGA CHAD rôi đấy!` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, you're the real chad here!`
                     } else {
-                        DescArr[0] += `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
+                        DescArr[0] += (LangKey === 'vi') ? `\n-# Anh bạn à, kĩ năng rizz của ngài cao quá so với chúng sinh rồi, chả lẽ phải gọi ngài là TERACHAD?` : `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
                     }
                 }
                 if (rng >= 100) {
@@ -120,16 +171,16 @@ module.exports = {
                     ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
                     ImgCtx = ImgList.Gay[index].ctx
                     if (tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[0] += `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well too bad, bro lost your title lol.`
+                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1162944612508377088> cho ${target}, well tệ đấy, anh bạn mất đi danh hiệu rồi còn dâu, lol.` : `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well too bad, bro lost your title lol.`
                     } else if (!tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[0] += `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
+                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng, giờ thì mọi anh em trong làng biết là bạn bị GAY` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
                     } else {
-                        DescArr[0] += `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
+                        DescArr[0] += (LangKey === 'vi') ? `\n-# Lmao, Bạn đã gay rồi, giờ lại còn nhận cái chỉ số này nữa, thật đáng xấu hổ mà.` : `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
                     }
                 }
                 GayEmbeds[0] = new EmbedBuilder()
                     .setColor(Color)
-                    .setTitle(`🏳️‍🌈 Checking gayness of a user`)
+                    .setTitle((LangKey === 'vi') ? `🏳️‍🌈 Kiểm tra độ gay của ai đó` : `🏳️‍🌈 Checking gayness of a user`)
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setDescription(DescArr[0])
                     .setTimestamp()
@@ -143,7 +194,7 @@ module.exports = {
                     let temp = Math.random() * 101.1
                     temp = (Math.floor(temp * 10) / 10).toFixed(1)
                     rnglist.push(temp)
-                    DescArr.push(`▸ **Attempt ${i + 1}:** The gayness of ${target} is \`${rnglist[i]}%\`\n`)
+                    DescArr.push((LangKey === 'vi') ? `▸ **Lần ${i + 1}:** Chỉ số gay của ${target} là \`${rnglist[i]}%\`\n` : `▸ **Attempt ${i + 1}:** The gayness of ${target} is \`${rnglist[i]}%\`\n`)
                     avgrng += Number(rnglist[i])
                 }
 
@@ -154,33 +205,37 @@ module.exports = {
                 //Normal Entry
                 for (var i in NumEntry) {
                     if (avgrng < NumEntry[i]) {
-                        Color = Cases.Colors.NormalCases[i]
-                        Emoji = Cases.EmojisNormal[i]
+                        Color = HowGayCases.Colors.NormalCases[i]
+                        Emoji = HowGayCases.EmojisNormal[i]
                         ImgLink = new AttachmentBuilder(ImgList.Default.value)
                         ImgCtx = ImgList.Default.ctx
-                        Comment = Cases.NormalCases[`Case-${i}`][Math.floor(Math.random() * Cases.NormalCases[`Case-${i}`].length)]
+                        Comment = HowGayCases.NormalCases[`Case-${i}`][Math.floor(Math.random() * HowGayCases.NormalCases[`Case-${i}`].length)]
                         typeindex = i
                         break
                     }
                 }
                 //Special Cases
                 if (SpecialEntry.includes(Number(avgrng))) {
-                    ImgLink = new AttachmentBuilder(Cases.SpecialCases[`Case${avgrng}`].img)
-                    ImgCtx = Cases.SpecialCases[`Case${avgrng}`].ctx
-                    Emoji = Cases.SpecialCases[`Case${avgrng}`].emoji
-                    Color = Cases.Colors.SpecialCases
-                    Comment = Cases.SpecialCases[`Case${avgrng}`].desc
+                    ImgLink = new AttachmentBuilder(HowGayCases.SpecialCases[`Case${avgrng}`].img)
+                    ImgCtx = HowGayCases.SpecialCases[`Case${avgrng}`].ctx
+                    Emoji = HowGayCases.SpecialCases[`Case${avgrng}`].emoji
+                    Color = HowGayCases.Colors.SpecialCases
+                    Comment = HowGayCases.SpecialCases[`Case${avgrng}`].desc
                     specialnum = avgrng
                     spkey = true
                 }
 
-                DescArr.push(`## ${Emoji} - Gayness test result\n▸ The calculated gayness of ${target} is \`${avgrng}%\`\n\n### > Comments:\n ${Comment}`)
+                const ResultArr = {
+                    "vi": ["Kết Quả Kiểm Tra Độ Gay", "Độ gay sau khi tính toán của", "là", "Nhận xét:"],
+                    "en-US": ["Gayness Test Result", "The calculated gayness of", "is", "Comments:"]
+                }
+                DescArr.push(`## ${Emoji} - ${ResultArr[LangKey][0]}\n▸ ${ResultArr[LangKey][1]} ${target} ${ResultArr[LangKey][2]} \`${avgrng}%\`\n\n### > ${ResultArr[LangKey][3]}\n ${Comment}`)
                 let OfficialDesc = ''
                 for (var i = 0; i < 3; i++) {
                     OfficialDesc += DescArr[i]
                     GayEmbeds[i] = new EmbedBuilder()
                         .setColor('White')
-                        .setTitle(`🏳️‍🌈 Checking gayness of a user`)
+                        .setTitle((LangKey === 'vi') ? `🏳️‍🌈 Kiểm tra độ gay của ai đó` : `🏳️‍🌈 Checking gayness of a user`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setDescription(OfficialDesc)
                         .setTimestamp()
@@ -193,13 +248,11 @@ module.exports = {
                     ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
                     ImgCtx = ImgList.GigaChad[index].ctx
                     if (tuser.roles.cache.has("1162944612508377088")) {
-                        tuser.roles.remove('11162944612508377088')
-                        DescArr[3] += `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
+                        DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1162944612508377088> cho ${target}, well, vì chính bản thân họ đã chứng minh họ là con người chính hiệu.` : `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
                     } else if (!tuser.roles.cache.has("1171750121109733438")) {
-                        tuser.roles.add('1171750121109733438')
-                        DescArr[3] += `\n-# > Successfully added <@&1171750121109733438> to ${target}. Congratulations, you're the real chad here!`
+                        DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng anh bạn nhá, giờ đã là GIGA CHAD rôi đấy!` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, you're the real chad here!`
                     } else {
-                        DescArr[3] += `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
+                        DescArr[3] += (LangKey === 'vi') ? `\n-# Anh bạn à, kĩ năng rizz của ngài cao quá so với chúng sinh rồi, chả lẽ phải gọi ngài là TERACHAD?` : `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
                     }
                 }
                 if (avgrng >= 100) {
@@ -207,18 +260,18 @@ module.exports = {
                     ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
                     ImgCtx = ImgList.Gay[index].ctx
                     if (tuser.roles.cache.has("1171750121109733438")) {
-                        DescArr[3] += `\n-# > Successfully removed <@&1171750121109733438> to ${target}, well too bad, bro lost your title lol.`
+                        DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1162944612508377088> cho ${target}, well tệ đấy, anh bạn mất đi danh hiệu rồi còn dâu, lol.` : `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well too bad, bro lost your title lol.`
                     } else if (!tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[3] += `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
+                        DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng, giờ thì mọi anh em trong làng biết là bạn bị GAY` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
                     } else {
-                        DescArr[3] += `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
+                        DescArr[3] += (LangKey === 'vi') ? `\n-# Lmao, Bạn đã gay rồi, giờ lại còn nhận cái chỉ số này nữa, thật đáng xấu hổ mà.` : `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
                     }
                 }
 
                 OfficialDesc += DescArr[3]
                 GayEmbeds[3] = new EmbedBuilder()
                     .setColor(Color)
-                    .setTitle(`🏳️‍🌈 Checking gayness of a user`)
+                    .setTitle((LangKey === 'vi') ? `🏳️‍🌈 Kiểm tra độ gay của ai đó` : `🏳️‍🌈 Checking gayness of a user`)
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setDescription(OfficialDesc)
                     .setTimestamp()
@@ -234,7 +287,7 @@ module.exports = {
                     UserID: interaction.user.id,
                     HowGay: Date.now()
                 })
-                await interaction.editReply('<:seiaconcerned:1244128341540208793> Well, since you haven\'t in cooldown database yet... now you can try again')
+                await interaction.editReply(cdtxts[LangKey].new)
             }
             else {
                 const cduser = data.UserID
@@ -246,7 +299,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
+                        .setDescription(`${cdtxts[LangKey].cd[0]} ${interaction.user} ${cdtxts[LangKey].cd[1]} <t:${Math.floor(CDTime / 1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
@@ -257,9 +310,9 @@ module.exports = {
                     let RoleKey = false
                     const WaitingEmbed = new EmbedBuilder()
                         .setColor('White')
-                        .setTitle(`🏳️‍🌈 Checking gayness of a user`)
+                        .setTitle((LangKey === 'vi') ? `🏳️‍🌈 Kiểm tra độ gay của ai đó` : `🏳️‍🌈 Checking gayness of a user`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(`<:SeiaSip:1244890166116618340> The system is checking the gayness of ${target}... Please wait...`)
+                        .setDescription((LangKey === 'vi') ? `<:SeiaSip:1244890166116618340> Hệ thống đang kiểm tra độ gay của ${target}... Xin vui lòng chờ...` : `<:SeiaSip:1244890166116618340> The system is checking the gayness of ${target}... Please wait...`)
                         .setTimestamp()
                         .setThumbnail(tuser.displayAvatarURL({ dynamic: true, size: 512 }))
                         .setImage(ImgCtx)
@@ -366,7 +419,7 @@ module.exports = {
                                                 special: (spkey) ? 1 : 0
                                             }
                                         }
-                                        
+
                                         if (Obj.id !== UserRecordsArr[index].id) {
                                             UserRecordsArr.push(Obj)
                                             UserRecordsArr[UserRecordsArr.length - 1].values.run[key].unshift(Number(finalvalue))

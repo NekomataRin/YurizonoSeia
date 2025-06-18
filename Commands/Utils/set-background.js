@@ -35,7 +35,7 @@ module.exports = {
                 .setColor('Red')
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                 .setTitle('Error - Invalid Key')
-                .setDescription(`<:seiaehem:1244129111169826829> • I cannot set this key because it is invalid from the database, sorry!`)
+                .setDescription(`<:seiaehem:1244128370669650060> • I cannot set this key because it is invalid from the database, sorry!`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 
@@ -54,7 +54,7 @@ module.exports = {
                         .setColor('DarkButNotBlack')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setTitle('<:seiaheh:1244128244664504392> • Key skipped')
-                        .setDescription(`<:seiaehem:1244129111169826829> • Since you wrote '\`${key}\`', I skipped this for you then...`)
+                        .setDescription(`<:seiaehem:1244128370669650060> • Since you wrote '\`${key}\`', I skipped this for you then...`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 
@@ -74,7 +74,7 @@ module.exports = {
                         .setColor('Yellow')
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully set.')
-                        .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
+                        .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 

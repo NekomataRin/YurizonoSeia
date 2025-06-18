@@ -91,7 +91,7 @@ module.exports = {
             .setColor('Red')
             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
             .setTitle('<:seiaconcerned:1244128341540208793> • No permissions')
-            .setDescription('<:seiaehem:1244129111169826829> • You do not have enough permissions to run this command...')
+            .setDescription('<:seiaehem:1244128370669650060> • You do not have enough permissions to run this command...')
             .setTimestamp()
             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 
@@ -101,7 +101,7 @@ module.exports = {
                     .setColor('Red')
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setTitle('<:seiaconcerned:1244128341540208793> • Invaid Key')
-                    .setDescription(`<:seiaehem:1244129111169826829> • You provided an invalid ranking keyword \`${key}\`... It's not in the key list provided...`)
+                    .setDescription(`<:seiaehem:1244128370669650060> • You provided an invalid ranking keyword \`${key}\`... It's not in the key list provided...`)
                     .setTimestamp()
                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                 return interaction.editReply({
@@ -120,7 +120,7 @@ module.exports = {
                             .setColor('DarkButNotBlack')
                             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                             .setTitle('<:seiaheh:1244128244664504392> • Key skipped')
-                            .setDescription(`<:seiaehem:1244129111169826829> • Since you wrote '\`${key}\`', I skipped this for <@${user}> for now...`)
+                            .setDescription(`<:seiaehem:1244128370669650060> • Since you wrote '\`${key}\`', I skipped this for <@${user}> for now...`)
                             .setTimestamp()
                             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 
@@ -140,7 +140,7 @@ module.exports = {
                             .setColor('Yellow')
                             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                             .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully set.')
-                            .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
+                            .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)
                             .setTimestamp()
                             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
 
@@ -163,7 +163,7 @@ module.exports = {
                                         .setColor('Yellow')
                                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                         .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully added.')
-                                        .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
+                                        .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)
                                         .setTimestamp()
                                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                     await interaction.editReply({
@@ -188,7 +188,7 @@ module.exports = {
                                                     .setColor('Yellow')
                                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                                     .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully added.')
-                                                    .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
+                                                    .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)
                                                     .setTimestamp()
                                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                                 return interaction.editReply({
@@ -201,7 +201,7 @@ module.exports = {
                                                     .setColor('Yellow')
                                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                                     .setTitle('<:seiaheh:1244128244664504392> • The key has been ignored.')
-                                                    .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
+                                                    .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)
                                                     .setTimestamp()
                                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                                 await interaction.editReply({
@@ -221,7 +221,7 @@ module.exports = {
                                                     .setColor('Yellow')
                                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                                     .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully removed.')
-                                                    .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
+                                                    .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)
                                                     .setTimestamp()
                                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                                 return interaction.editReply({
@@ -233,7 +233,7 @@ module.exports = {
                                                     .setColor('Yellow')
                                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                                     .setTitle('<:seiaheh:1244128244664504392> • The key has been ignored.')
-                                                    .setDescription(`<:seiaehem:1244129111169826829> • ${desc}`)
+                                                    .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)
                                                     .setTimestamp()
                                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                                 await interaction.editReply({

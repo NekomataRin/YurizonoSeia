@@ -6,7 +6,9 @@ const cdSchema = require('../../Database/cooldown')
 const Omikuji = require('../../Database/Fun/omikuji')
 const OmikujiBonus = require('../../Database/Fun/omikuji-bonus')
 const chalk = require('chalk')
-const { Key } = require('../../Assets/Omikuji/Texts/cases')
+
+const cdtxts = require('../../Assets/Defaults/cooldown')
+const Language = require('../../Database/lang-setup')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,6 +19,24 @@ module.exports = {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
+        //Language Setup
+        let LangKey
+        const LanguageKey = await Language.findOne({ UserID: interaction.user.id }).select('-_id Lang')
+        if (!LanguageKey) {
+            const ResponseEmbed = new EmbedBuilder()
+                .setColor("Yellow")
+                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                .setTitle(`<:seiaconcerned:1244128341540208793> • **Language Is Not Set**`)
+                .setDescription(`<:seiaehem:1244128370669650060> • Sensei! Please use \`/setup-language\` command in order to use the command! Since v1.4.0, my dad updated my code and added Vietnamese language for this!\n-# > And he is too lazy to add proper vietnamese embed for this lmao`)
+                .setTimestamp()
+                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+            return interaction.editReply({
+                embeds: [ResponseEmbed]
+            })
+        }
+
+        LangKey = LanguageKey.Lang
+
         function DailyCD() {
             const nowUtc = new Date()
             const currentYearUtc = nowUtc.getUTCFullYear()
@@ -26,7 +46,7 @@ module.exports = {
             const cooldownTimeUtc = Date.UTC(
                 currentYearUtc,
                 currentMonthUtc,
-                currentDayUtc,
+                currentDayUtc + 1,
                 22, 0, 0, 0
             )
             console.log(cooldownTimeUtc)
@@ -35,13 +55,13 @@ module.exports = {
         }
         const Daily_CD = DailyCD()
 
-        const channelid = '1084370333622083624' //'1356147272030879885' //Debug: Only Remove When Testing 
+        const channelid = '1084370333622083624' //'<channel_id_here>' //Debug: Only Remove When Testing 
         if (interaction.channel.id !== channelid) {
             const ErrEmbed = new EmbedBuilder()
                 .setColor('Red')
                 .setTitle(`Err - Wrong Channel`)
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setDescription(`<:SeiaMuted:1244890584276008970> Oi, this isn't the channel for you to use this command, please go to <#${channelid}> to use it!`)
+                .setDescription((LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Oi, đây không phải là kênh chat cho bạn dùng, làm ơn qua <#${channelid}> để dùng nhá!` : `<:SeiaMuted:1244890584276008970> Oi, this isn't the channel for you to use this command, please go to <#${channelid}> to use it!`)
                 .setTimestamp(Date.now())
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             return interaction.editReply({
@@ -118,7 +138,7 @@ module.exports = {
                     UserID: interaction.user.id,
                     Omikuji: "0"
                 })
-                return interaction.editReply('<:seiaconcerned:1244128341540208793> Well, since you haven\'t in cooldown database yet... now you can try again')
+                await interaction.editReply(cdtxts[LangKey].new)
             } else {
                 const cduser = data.UserID
                 const CDTime = data.Omikuji
@@ -142,19 +162,19 @@ module.exports = {
                 //let cdkey = (Bypass) ? Bypass : CDTime < Date.now()
                 //cdkey = true //Debug: Only remove when testing
                 if (Date.now() < CDTime) {
-                //if (!cdkey) {
+                    //if (!cdkey) {
                     const cdembed = new EmbedBuilder()
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
+                        .setDescription(`${cdtxts[LangKey].cd[0]} ${interaction.user} ${cdtxts[LangKey].cd[1]} <t:${Math.floor(CDTime / 1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
                 } else {
                     data.Omikuji = Daily_CD
                     data.save()
-                    const Data = await GetOmikujiCard(interaction.user.id)
+                    const Data = await GetOmikujiCard(LangKey)
                     if (['SS-Tier', 'EX-Tier'].includes(Data[1])) {
                         await interaction.editReply({
                             embeds: [Data[2].setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })],
