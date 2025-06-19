@@ -185,7 +185,7 @@ module.exports = {
                 .setColor('White')
                 .setTitle((LangKey === 'vi') ? `🎋 Thống Kê Lượt Dùng Omikuji Của Toàn Server` : `🎋 Checking Omikuji Stats Of Server`)
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setDescription(desc)
+                .setDescription(desc[LangKey])
                 .setTimestamp(Date.now())
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true, size: 512 }))
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })

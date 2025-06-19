@@ -67,6 +67,8 @@ module.exports = {
             })
         }
 
+        LangKey = LanguageKey.Lang
+
         const cdtime = 20000
         const Difficulties = ['easy', 'normal', 'hard', 'lunatic', 'extra', 'phantasm', 'asian']
         const Timer = [25, 20, 18, 16, 14, 12, 10]
@@ -241,11 +243,11 @@ module.exports = {
 
                     const DescIntro = {
                         'vi': {
-                            initial: `**Độ khó** \`${OfficialKey}\` | **Thời Gian Trả Lời** \`${KeyTime}s\`\nChúc may mắn nhé! Để có trải nghiệm tốt nhất, làm ơn **đừng** có dùng các công cụ hỗ trợ tính toán như **máy tính, bot, A.I, người dùng khác, v.v.**\n> Ghi chú:\n> 1. Bạn có thể ghi\`2 Chữ số thập phân\` cho câu trả lời của bạn\n> 2. Nếu muốn bỏ cuộc, chỉ cần ghi \`stop\` để xin dừng cuộc chơi tại đây.\n> 3. **Thời Gian Trả Lời** sẽ bị giảm dần sau mỗi **Lượt**, ngay cả khi bạn chat, nó sẽ tính vào **Lượt** của bạn. Bạn chỉ có \`3\` Lượt thôi đấy`,
+                            game: `**Độ khó** \`${OfficialKey}\` | **Thời Gian Trả Lời** \`${KeyTime}s\`\nChúc may mắn nhé! Để có trải nghiệm tốt nhất, làm ơn **đừng** có dùng các công cụ hỗ trợ tính toán như **máy tính, bot, A.I, người dùng khác, v.v.**\n> Ghi chú:\n> 1. Bạn có thể ghi\`2 Chữ số thập phân\` cho câu trả lời của bạn\n> 2. Nếu muốn bỏ cuộc, chỉ cần ghi \`stop\` để xin dừng cuộc chơi tại đây.\n> 3. **Thời Gian Trả Lời** sẽ bị giảm dần sau mỗi **Lượt**, ngay cả khi bạn chat, nó sẽ tính vào **Lượt** của bạn. Bạn chỉ có \`3\` Lượt thôi đấy`,
                             up: `## Lên Độ Khó!\n**Độ Khó** \`${DifficultyKey}\` | **Thời Gian Trả Lời** \`${RunTime}s\`\nChúc may mắn nhé! Vẫn câu nói cũ: làm ơn **đừng** có dùng các công cụ hỗ trợ tính toán như **máy tính, bot, A.I, người dùng khác, v.v.**, và bạn chỉ có \`3\` Lượt thôi đấy nhé!\n> Ghi chú: **Kết Quả Cuối Cùng** sẽ là độ khó mà bạn đã đặt lúc đầu (${OfficialKey}) như là phần tính điểm.`
                         },
                         'en-US': {
-                            initial: `**Difficulty** \`${OfficialKey}\` | **Attempt Timer** \`${KeyTime}s\`\nGood Luck! For the best experiences, please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**\n> Notes:\n> 1. You can write \`2 Digits Decimal Number\` for your answer\n> 2. If you Give Up, just write \`stop\` to stop the game.\n> 3. **Attempt Timer** will be decreased on each **Attempt**, even if you chat, it counts as an **Attempt**. You only have \`3\` Attempts`,
+                            game: `**Difficulty** \`${OfficialKey}\` | **Attempt Timer** \`${KeyTime}s\`\nGood Luck! For the best experiences, please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**\n> Notes:\n> 1. You can write \`2 Digits Decimal Number\` for your answer\n> 2. If you Give Up, just write \`stop\` to stop the game.\n> 3. **Attempt Timer** will be decreased on each **Attempt**, even if you chat, it counts as an **Attempt**. You only have \`3\` Attempts`,
                             up: `## Difficulty Up!\n**Difficulty** \`${DifficultyKey}\` | **Attempt Timer** \`${RunTime}s\`\nGood Luck! Still on the same sentence: please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**, and you only have \`3\` Attempts!\n> Note: **The Final Result** is the original difficulty you put (${OfficialKey}) as the scoring method.`
                         }
                     }
@@ -254,7 +256,7 @@ module.exports = {
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                         .setTitle(`${OriginalEmoji} **Minigame - QuickMath**`)
-                        .setDescription(Intro[LangKey].initial)
+                        .setDescription(DescIntro[LangKey].game)
                         .setTimestamp()
                     await interaction.followUp({
                         embeds: [StartEmbed]
