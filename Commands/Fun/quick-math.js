@@ -15,7 +15,7 @@ module.exports = {
         .addStringOption(option =>
             option.setName('difficulty')
                 .setDescription('The difficulty you choose for the game')
-                .setDescriptionLocalizations('Độ khó bạn chọn cho game')
+                .setDescriptionLocalizations({ vi: 'Độ khó bạn chọn cho game' })
                 .addChoices(
                     {
                         name: '[Easy]',
