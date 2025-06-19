@@ -112,7 +112,7 @@ module.exports = {
 
             const desc = (!responsekey) ?
                 {
-                    'vi': `<a:SeiaMuted:1336385867136241705> Well, người dùng này <@${targetid}> hiện không có thống kê (có lẽ cậu ta ở trong danh sách miễn hoặc chưa bao giờ dùng lệnh này, lmao)`,
+                    'vi': `<a:SeiaMuted:1336385867136241705> Chà, người dùng này <@${targetid}> hiện không có thống kê (có lẽ cậu ta ở trong danh sách miễn hoặc chưa bao giờ dùng lệnh này, lmao)`,
                     'en-US': `<a:SeiaMuted:1336385867136241705> Well, <@${targetid}> doesn't have any stats for this (maybe they are in the rejection list or have never tested before, lmao)`
                 }
                 :
@@ -141,7 +141,7 @@ module.exports = {
                     .setColor('White')
                     .setTitle((LangKey === 'vi') ? `🏳️‍🌈 Thống Kê Chỉ Số Gay Của Cả Server` : `🏳️‍🌈 Checking Gayness Stats Of Server`)
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                    .setDescription((LangKey === 'vi') ? `<a:SeiaMuted:1336385867136241705> Well, server **${interaction.guild.name}** chưa có dữ liệu thống kê... xin hãy thử lại sau.` : `<a:SeiaMuted:1336385867136241705> Well, server **${interaction.guild.name}** doesn't have actual data for this... please try again later.`)
+                    .setDescription((LangKey === 'vi') ? `<a:SeiaMuted:1336385867136241705> Chà, server **${interaction.guild.name}** chưa có dữ liệu thống kê... xin hãy thử lại sau.` : `<a:SeiaMuted:1336385867136241705> Well, server **${interaction.guild.name}** doesn't have actual data for this... please try again later.`)
                     .setTimestamp(Date.now())
                     .setThumbnail(interaction.guild.iconURL({ dynamic: true, size: 512 }))
                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })

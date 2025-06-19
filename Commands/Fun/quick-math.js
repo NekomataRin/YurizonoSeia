@@ -4,14 +4,18 @@ const wait = require('node:timers/promises').setTimeout;
 const cdSchema = require('../../Database/cooldown')
 const chalk = require('chalk')
 const QuickMathDb = require('../../Database/Fun/quickmath')
+const cdtxts = require('../../Assets/Defaults/cooldown')
+const Language = require('../../Database/lang-setup')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('quick-math')
         .setDescription('Test your mental calculating skills, obviously lol')
+        .setDescriptionLocalizations({ vi: 'Kiểm tra khả năng tính nhẩm của bạn, rõ rồi còn gì lol' })
         .addStringOption(option =>
             option.setName('difficulty')
                 .setDescription('The difficulty you choose for the game')
+                .setDescriptionLocalizations('Độ khó bạn chọn cho game')
                 .addChoices(
                     {
                         name: '[Easy]',
@@ -46,6 +50,22 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
+
+        //Language Setup
+        let LangKey
+        const LanguageKey = await Language.findOne({ UserID: interaction.user.id }).select('-_id Lang')
+        if (!LanguageKey) {
+            const ResponseEmbed = new EmbedBuilder()
+                .setColor("Yellow")
+                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                .setTitle(`<:seiaconcerned:1244128341540208793> • **Language Is Not Set**`)
+                .setDescription(`<:seiaehem:1244128370669650060> • Sensei! Please use \`/setup-language\` command in order to use the command! Since v1.4.0, my dad updated my code and added Vietnamese language for this!\n-# > And he is too lazy to add proper vietnamese embed for this lmao`)
+                .setTimestamp()
+                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+            return interaction.editReply({
+                embeds: [ResponseEmbed]
+            })
+        }
 
         const cdtime = 20000
         const Difficulties = ['easy', 'normal', 'hard', 'lunatic', 'extra', 'phantasm', 'asian']
@@ -189,7 +209,7 @@ module.exports = {
         const MathChannel = '1195982067780042863'
         if (interaction.channel.id === MathChannel) ChannelKey = true
         if (!ChannelKey) {
-            return interaction.editReply(`<:SeiaMuted:1244890584276008970> Oi! You can't use this command here!`)
+            return interaction.editReply((LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Oi! Bạn không thể dùng lệnh này đây được!` : `<:SeiaMuted:1244890584276008970> Oi! You can't use this command here!`)
         }
 
         cdSchema.findOne({ UserID: interaction.user.id }, async (err, data) => {
@@ -199,7 +219,7 @@ module.exports = {
                     UserID: interaction.user.id,
                     QuickMath: Date.now()
                 })
-                await interaction.editReply('<:seiaconcerned:1244128341540208793> Well, since you haven\'t in cooldown database yet... now you can try again')
+                await interaction.editReply(cdtxts[LangKey].new)
             } else {
                 const cduser = data.UserID
                 const CDTime = data.QuickMath
@@ -210,7 +230,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
+                        .setDescription(`${cdtxts[LangKey].cd[0]} ${interaction.user} ${cdtxts[LangKey].cd[1]} <t:${Math.floor(CDTime / 1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
@@ -219,12 +239,22 @@ module.exports = {
                     let KeyTime = Timer[Difficulties.indexOf(Difficulty)], Color = ColorList[Difficulties.indexOf(Difficulty)], Emoji = EmojiList[Difficulties.indexOf(Difficulty)]
                     let ReqLevel = 4, TimeResult, RunTime
 
+                    const DescIntro = {
+                        'vi': {
+                            initial: `**Độ khó** \`${OfficialKey}\` | **Thời Gian Trả Lời** \`${KeyTime}s\`\nChúc may mắn nhé! Để có trải nghiệm tốt nhất, làm ơn **đừng** có dùng các công cụ hỗ trợ tính toán như **máy tính, bot, A.I, người dùng khác, v.v.**\n> Ghi chú:\n> 1. Bạn có thể ghi\`2 Chữ số thập phân\` cho câu trả lời của bạn\n> 2. Nếu muốn bỏ cuộc, chỉ cần ghi \`stop\` để xin dừng cuộc chơi tại đây.\n> 3. **Thời Gian Trả Lời** sẽ bị giảm dần sau mỗi **Lượt**, ngay cả khi bạn chat, nó sẽ tính vào **Lượt** của bạn. Bạn chỉ có \`3\` Lượt thôi đấy`,
+                            up: `## Lên Độ Khó!\n**Độ Khó** \`${DifficultyKey}\` | **Thời Gian Trả Lời** \`${RunTime}s\`\nChúc may mắn nhé! Vẫn câu nói cũ: làm ơn **đừng** có dùng các công cụ hỗ trợ tính toán như **máy tính, bot, A.I, người dùng khác, v.v.**, và bạn chỉ có \`3\` Lượt thôi đấy nhé!\n> Ghi chú: **Kết Quả Cuối Cùng** sẽ là độ khó mà bạn đã đặt lúc đầu (${OfficialKey}) như là phần tính điểm.`
+                        },
+                        'en-US': {
+                            initial: `**Difficulty** \`${OfficialKey}\` | **Attempt Timer** \`${KeyTime}s\`\nGood Luck! For the best experiences, please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**\n> Notes:\n> 1. You can write \`2 Digits Decimal Number\` for your answer\n> 2. If you Give Up, just write \`stop\` to stop the game.\n> 3. **Attempt Timer** will be decreased on each **Attempt**, even if you chat, it counts as an **Attempt**. You only have \`3\` Attempts`,
+                            up: `## Difficulty Up!\n**Difficulty** \`${DifficultyKey}\` | **Attempt Timer** \`${RunTime}s\`\nGood Luck! Still on the same sentence: please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**, and you only have \`3\` Attempts!\n> Note: **The Final Result** is the original difficulty you put (${OfficialKey}) as the scoring method.`
+                        }
+                    }
                     const StartEmbed = new EmbedBuilder()
                         .setColor(OriginalColor)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                         .setTitle(`${OriginalEmoji} **Minigame - QuickMath**`)
-                        .setDescription(`**Difficulty** \`${OfficialKey}\` | **Attempt Timer** \`${KeyTime}s\`\nGood Luck! For the best experiences, please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**\n> Notes:\n> 1. You can write \`2 Digits Decimal Number\` for your answer\n> 2. If you Give Up, just write \`stop\` to stop the game.\n> 3. **Attempt Timer** will be decreased on each **Attempt**, even if you chat, it counts as an **Attempt**. You only have \`3\` Attempts`)
+                        .setDescription(Intro[LangKey].initial)
                         .setTimestamp()
                     await interaction.followUp({
                         embeds: [StartEmbed]
@@ -249,7 +279,7 @@ module.exports = {
                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                     .setTitle(`${Emoji} **Minigame - QuickMath**`)
-                                    .setDescription(`## Difficulty Up!\n**Difficulty** \`${DifficultyKey}\` | **Attempt Timer** \`${RunTime}s\`\nGood Luck! Still on the same sentence: please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**, and you only have \`3\` Attempts!\n> Note: **The Final Result** is the original difficulty you put (${OfficialKey}) as the scoring method.`)
+                                    .setDescription(DescIntro[LangKey].up)
                                     .setTimestamp()
                                 await interaction.followUp({
                                     embeds: [DiffUpEmbed]
@@ -275,14 +305,17 @@ module.exports = {
                             const OfficialEqt = CreateEqt(level)
                             const PreEqt = OfficialEqt
 
-                            Desc = `**Difficulty** \`${DifficultyKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \n\`\`\`js\n${OfficialEqt[0]}\`\`\``
+                            Desc = {
+                                "vi": `**Độ Khó** \`${DifficultyKey}\` | **Level** \`${level}\` | **Câu** \`${count + 1}\` | **Điểm** \`${score}\` \n\`\`\`js\n${OfficialEqt[0]}\`\`\``,
+                                "en-US": `**Difficulty** \`${DifficultyKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \n\`\`\`js\n${OfficialEqt[0]}\`\`\``
+                            }
 
                             const RunEmbed = new EmbedBuilder()
                                 .setColor(Color)
                                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                 .setTitle(`${Emoji} **Minigame - QuickMath**`)
-                                .setDescription(`${Desc}`)
+                                .setDescription(`${Desc[LangKey]}`)
                                 .setTimestamp()
                             let ReplyMsg = await interaction.followUp({
                                 embeds: [RunEmbed]
@@ -316,13 +349,16 @@ module.exports = {
                                         score += Number(scoreadd)
                                         score = Number(score.toFixed(1))
 
-                                        EqtResultDesc = `**Difficulty** \`${DifficultyKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \`(+${scoreadd})\`\n> **Solving Time** \`${TimeResult}\` | **Attempts Used** \`${MsgCount}\`\n\`\`\`js\n${PreEqt[0]} = ${PreEqt[1]}\n\`\`\``
+                                        EqtResultDesc = {
+                                            'vi': `**Độ khó** \`${DifficultyKey}\` | **Level** \`${level}\` | **Câu 1** \`${count + 1}\` | **Điểm** \`${score}\` \`(+${scoreadd})\`\n> **Thời Gian Giải** \`${TimeResult}\` | **Số Lượt Đã Dùng** \`${MsgCount}\`\n\`\`\`js\n${PreEqt[0]} = ${PreEqt[1]}\n\`\`\``,
+                                            "en-US": `**Difficulty** \`${DifficultyKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \`(+${scoreadd})\`\n> **Solving Time** \`${TimeResult}\` | **Attempts Used** \`${MsgCount}\`\n\`\`\`js\n${PreEqt[0]} = ${PreEqt[1]}\n\`\`\``
+                                        }
                                         let EditedEmbed = new EmbedBuilder()
                                             .setColor(Color)
                                             .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                             .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                             .setTitle(`${Emoji} **Minigame - QuickMath**`)
-                                            .setDescription(`${EqtResultDesc}`)
+                                            .setDescription(`${EqtResultDesc[LangKey]}`)
                                             .setTimestamp()
 
                                         await ReplyMsg.edit({
@@ -347,13 +383,16 @@ module.exports = {
                                     data.QuickMath = Date.now() + cdtime
                                     data.save()
                                     key++
-                                    let Desc2 = `## Game Over!\n**Difficulty** \`${OfficialKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \n\`\`\`js\n${OfficialEqt[0]} = ${OfficialEqt[1]}\`\`\``
+                                    let Desc2 = {
+                                        'vi': `## Trò Chơi Kết Thúc!\n**Độ Khó** \`${OfficialKey}\` | **Level** \`${level}\` | **Câu** \`${count + 1}\` | **Điểm** \`${score}\` \n\`\`\`js\n${OfficialEqt[0]} = ${OfficialEqt[1]}\`\`\``,
+                                        'en-US': `## Game Over!\n**Difficulty** \`${OfficialKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \n\`\`\`js\n${OfficialEqt[0]} = ${OfficialEqt[1]}\`\`\``
+                                    }
                                     const GameOverEmbed = new EmbedBuilder()
                                         .setColor(OriginalColor)
                                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                         .setTitle(`${OriginalEmoji} **Minigame - QuickMath**`)
-                                        .setDescription(Desc2)
+                                        .setDescription(Desc2[LangKey])
                                         .setTimestamp()
                                     await ReplyMsg.edit({
                                         embeds: [GameOverEmbed]
