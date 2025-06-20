@@ -3,7 +3,7 @@ const ImgList = require('./imglist')
 const Denied_CasesVN = [
     {
         "id": "1244213929438089286",
-        "desc": "<:SeiaMuted:1244890584276008970> Cậu muốn thử lệnh **`/howgay`** trên tớ (<@1244213929438089286>) sao? **BA ƠI!!!** ĐỨA **KẺ LẠ** NÀY ĐANG CỐ TÌM XEM TỚ **GAY** CỠ NÀO ĐẤY!!!!",
+        "desc": "<:SeiaMuted:1244890584276008970> Cậu muốn thử lệnh **`/howgay`** trên tớ (<@1244213929438089286>) sao? **BA ƠI!!!** ĐỨA **KẺ LẠ** NÀY ĐANG CỐ TÌM XEM ĐỨA CON CỦA MÌNH **GAY** CỠ NÀO ĐẤY!!!!",
         "img": ImgList.Rejected.Seia.value,
         "ctx": ImgList.Rejected.Seia.ctx
     },
