@@ -46,7 +46,7 @@ module.exports = {
             const cooldownTimeUtc = Date.UTC(
                 currentYearUtc,
                 currentMonthUtc,
-                currentDayUtc + 1,
+                currentDayUtc,
                 22, 0, 0, 0
             )
             console.log(cooldownTimeUtc)

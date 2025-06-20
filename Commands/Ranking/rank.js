@@ -9,14 +9,18 @@ const cdSchema = require('../../Database/cooldown')
 const LvlCalc = require('../../Utils/Ranking/lvlcalc')
 const RankingArr = require('../../Assets/RankCards/rankcardarr')
 const FooterEmbeds = require('../../Utils/embed')
+const cdtxts = require('../../Assets/Defaults/cooldown')
+const Language = require('../../Database/lang-setup')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('rank')
         .setDescription('Check a user\'s rank, or your rank in the server')
+        .setDescriptionLocalizations({ vi: 'Kiểm tra xếp hạng của người dùng, hoặc của bạn trong server' })
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('User where you want to check the ranking')
+                .setDescriptionLocalizations({ vi: 'Người dùng bạn muốn xem xếp hạng của họ' })
                 .setRequired(false)
         ),
     async execute(interaction) {
@@ -27,6 +31,23 @@ module.exports = {
 
         const user_ = await interaction.guild.members.fetch(user.id)
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
+        //Language Setup
+        let LangKey
+        const LanguageKey = await Language.findOne({ UserID: interaction.user.id }).select('-_id Lang')
+        if (!LanguageKey) {
+            const ResponseEmbed = new EmbedBuilder()
+                .setColor("Yellow")
+                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                .setTitle(`<:seiaconcerned:1244128341540208793> • **Language Is Not Set**`)
+                .setDescription(`<:seiaehem:1244128370669650060> • Sensei! Please use \`/setup-language\` command in order to use the command! Since v1.4.0, my dad updated my code and added Vietnamese language for this!\n-# > And he is too lazy to add proper vietnamese embed for this lmao`)
+                .setTimestamp()
+                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+            return interaction.editReply({
+                embeds: [ResponseEmbed]
+            })
+        }
+
+        LangKey = LanguageKey.Lang
 
         let key
         let RankKey = await Level.findOne({ UserID: user.id }).select('-_id background')
@@ -61,9 +82,9 @@ module.exports = {
         if (!FetchedLevel) {
             const NoData = new EmbedBuilder()
                 .setColor('DarkGreen')
-                .setTitle(`<:seiaconcerned:1244128341540208793> **No ranking data provided**`)
+                .setTitle(`<:seiaconcerned:1244128341540208793> ${(LangKey === 'vi') ? '**Không có thông tin xếp hạng**' : '**No ranking data provided**'}`)
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setDescription(`<:seiaehem:1244128370669650060> Unfortunately, ${user} has no ranking data, please try again later...`)
+                .setDescription(`<:seiaehem:1244128370669650060>` + (LangKey === 'vi') ? `Không may, ${user} hiện không có thông tin xếp hạng, hãy thử lại sau nhé...` : `Unfortunately, ${user} has no ranking data, please try again later...`)
                 .setTimestamp()
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             await interaction.editReply({
@@ -108,12 +129,12 @@ module.exports = {
             Background = RankingArr[0][1]
             ImgLink = RankingArr[0][3]
             Emoji = RankingArr[0][4]
-            Color = '#222222' 
+            Color = '#222222'
             Title = `Restricted: ${RestrictKey.restrict}`
         }
         if (RestrictKey.restrict === 'Code-2') {
             Color = '#abad03'
-            RankingColor = '#abad03' 
+            RankingColor = '#abad03'
             Title = `Restricted: ${RestrictKey.restrict}`
         }
 
@@ -267,7 +288,7 @@ module.exports = {
                     UserID: interaction.user.id,
                     Rank: Date.now()
                 })
-                await interaction.editReply('<:seiaconcerned:1244128341540208793> Well, since you haven\'t in cooldown database yet... now you can try again')
+                await interaction.editReply(cdtxts[LangKey].new)
 
             } else {
                 const cduser = data.UserID
@@ -279,7 +300,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime/1000)}:R>`)
+                        .setDescription(`${cdtxts[LangKey].cd[0]} ${interaction.user} ${cdtxts[LangKey].cd[1]} <t:${Math.floor(CDTime / 1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
@@ -287,14 +308,14 @@ module.exports = {
                     data.Rank = Date.now() + cdtime
                     data.save()
 
-                    let desc = `[${Emoji}] ${user}'s Ranking`
+                    let desc = (LangKey === 'vi') ? `[${Emoji}] Thứ Hạng Của ${user}` : `[${Emoji}] ${user}'s Ranking`
                     if (['Code-1', 'Code-2', 'Code-3'].includes(RestrictKey.restrict)) {
-                        desc += `\n==THIS USER HAS BEEN RESTRICTED [${RestrictKey.restrict}]==`
+                        desc += (LangKey === 'vi') ? `\n-# ==NGƯỜI DỤNG NÀY HIỆN ĐANG BỊ HẠN CHẾ [${RestrictKey.restrict}]==` : `\n-# ==THIS USER HAS BEEN RESTRICTED [${RestrictKey.restrict}]==`
                     }
 
                     const RankEmbed = new EmbedBuilder()
                         .setColor(Color)
-                        .setTitle(`**Server Ranking**`)
+                        .setTitle(`${(LangKey === 'vi') ? '**Xếp Hạng Server**' : '**Server Ranking**'}`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setDescription(desc)
                         .setTimestamp()
