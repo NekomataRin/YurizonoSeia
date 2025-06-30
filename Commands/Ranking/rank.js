@@ -94,13 +94,24 @@ module.exports = {
         }
 
         let AllLevels = await Level.find({ GuildID: interaction.guild.id }).select('-_id UserID total retrict')
-        AllLevels.sort((a, b) => {
+        AllLevels = AllLevels.sort((a, b) => {
             if (Number(a.total) < Number(b.total)) return 1
             if (Number(a.total) > Number(b.total)) return -1
             return 0
         })
 
-        let CurrentRank = AllLevels.findIndex((lvl) => lvl.UserID === user.id) + 1
+        console.log(AllLevels)
+        let diff
+        for (var i in AllLevels) {
+            diff = 0, expindex = AllLevels[i].total
+            for (var j = 0; j < AllLevels.length - 2; j++) {
+                if (AllLevels[j].total === AllLevels[j + 1].total === expindex) {
+                    diff++
+                }
+            }
+        }
+        
+        let CurrentRank = AllLevels.findIndex((lvl) => lvl.total) + 1 - diff
         let RestrictKey = await Level.findOne({ GuildID: interaction.guild.id, UserID: user.id }).select('-_id restrict')
 
         function Ranking_Level(CurrentRank) {

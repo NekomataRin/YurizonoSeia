@@ -48,16 +48,18 @@ module.exports = {
             const Total_Exp = interaction.options.getInteger('total-exp')
 
             function ReturnExp(num) {
-                if(num === 0) return [0, 0]
+                if (num === 0) return [0, 0]
                 let level = 0
-                do {
+                while (num > GetReqExp(level)) {
                     num -= GetReqExp(level)
                     level++
-                } while (num > GetReqExp(level))
-                return [level, num] 
+                }
+                return [level, num]
             }
 
-            const ResultArr = ReturnExp(Total_Exp)
+            let ResultArr
+            ResultArr = (Total_Exp < 500) ? [0, Total_Exp] : ReturnExp(Total_Exp)
+
             Level.findOne({ UserID: user.id }, async (err, data) => {
                 if (err) throw err
                 if (!data) {

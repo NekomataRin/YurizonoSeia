@@ -36,11 +36,11 @@ module.exports = {
             Emoji = [],
             TopList = []
 
-        for(var i in RankingArr) {
+        for (var i in RankingArr) {
             EmojiList.push(RankingArr[i][4])
             KeyList.push(RankingArr[i][0])
         }
-        
+
         for (var i in AllLevels) {
             const UserKey = AllLevels[i].background
             Emoji[i] = EmojiList[0]
@@ -58,12 +58,19 @@ module.exports = {
 
         for (var i = 0; i < AllLevels.length; i++) {
             let ReqExp = LevelCalc(AllLevels[i].level)
-            
+            let diff = 0, expindex = AllLevels[i].total
+            for (var j = 0; j < AllLevels.length - 2; j++) {
+                if (AllLevels[j].total === AllLevels[j + 1].total === expindex) {
+                    diff++
+                }
+            }
+            let index = AllLevels.findIndex((lvl) => lvl.total === AllLevels[i].total) + 1 - diff
+
             const ProgressNum = AllLevels[i].exp / ReqExp * 100
             const Progress = `${ProgressNum.toFixed(2)}%`
             const ProgressTxt = `[${Progress}] ${AllLevels[i].exp}/${ReqExp}`
-            let UserProg = `### • [${Emoji[i]}] **__Rank:__** #${i + 1}\n• **__User:__** <@${AllLevels[i].UserID}> • **__Total PP:__** ${AllLevels[i].total}\n• **__Level:__** ${AllLevels[i].level} • **__Progress:__** ${ProgressTxt}\n`
-            if(['Code-1', 'Code-2', 'Code-3'].includes(AllLevels[i].restrict)) UserProg = `### • [${Emoji[i]}] **__Rank:__** #${i + 1}\n• **__User:__** <@${AllLevels[i].UserID}> • **__Total PP:__** ${AllLevels[i].total}\n• **__Level:__** ${AllLevels[i].level} • **__Progress:__** ${ProgressTxt}\n-# Note: This User Has Been Restricted (Restrict Code: [${AllLevels[i].restrict}])\n`
+            let UserProg = `### • [${Emoji[i]}] **__Rank:__** #${index}\n• **__User:__** <@${AllLevels[i].UserID}> • **__Total PP:__** ${AllLevels[i].total}\n• **__Level:__** ${AllLevels[i].level} • **__Progress:__** ${ProgressTxt}\n`
+            if (['Code-1', 'Code-2', 'Code-3'].includes(AllLevels[i].restrict)) UserProg = `### • [${Emoji[i]}] **__Rank:__** #${index}\n• **__User:__** <@${AllLevels[i].UserID}> • **__Total PP:__** ${AllLevels[i].total}\n• **__Level:__** ${AllLevels[i].level} • **__Progress:__** ${ProgressTxt}\n-# Note: This User Has Been Restricted (Restrict Code: [${AllLevels[i].restrict}])\n`
             TopList.push(UserProg)
 
         }
@@ -79,11 +86,11 @@ module.exports = {
         }
         if (Desc === '') {
             Desc += '<:seiaconcerned:1244128341540208793> Hmm... looks like this page\'s so empty right now... Maybe time will tell the answer?'
-        } 
+        }
         if (ResultList.length === 10) {
             Desc += `\n\n<:seiaheh:1244128244664504392> Use command \`/top page:${Page + 1}\` to see page ${Page + 1}, if you liked please!`
-        } else if(Desc !== '') {
-            Desc +=`\n\n<:seiaehem:1244128370669650060> Alright, this is the end of the list... Only time will tell for the future of the leaderboard...`
+        } else if (Desc !== '') {
+            Desc += `\n\n<:seiaehem:1244128370669650060> Alright, this is the end of the list... Only time will tell for the future of the leaderboard...`
         }
 
         const TopEmbed = new EmbedBuilder()
@@ -112,7 +119,7 @@ module.exports = {
                         .setColor('Red')
                         .setTitle(`**Command - Cooldown**`)
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime/1000)}:R>`)
+                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
                         .setTimestamp()
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })

@@ -3,7 +3,8 @@ const wait = require('node:timers/promises').setTimeout
 const mongoose = require('mongoose')
 const chalk = require('chalk')
 const mongodbURL = process.env.MONGO_URL;
-const ServerData = require('../../Database/Server/memberlist')
+//const ServerData = require('../../Database/Server/memberlist')
+//const Level = require('../../Database/Ranking/Leveling')
 
 module.exports = async (client) => {
     if (!mongodbURL) return;
@@ -16,7 +17,7 @@ module.exports = async (client) => {
     if (mongoose.connect) {
         console.log(chalk.blue('[LOG]') + ' Database, Check!')
     }
-    
+
     /*
     const guild = await client.guilds.cache.get(process.env.GUILD_ID)
     const MemberList = await guild.members.fetch()
@@ -24,7 +25,6 @@ module.exports = async (client) => {
     MemberList.forEach(e => {if(!e.user.bot) arr.push({ UserId: e.user.id, joined: true })})
     ServerData.create({ GuildID: process.env.GUILD_ID, MemberList: arr })
     */
-
     var i = 0, a = 1
     b = [
         'v1.3.0 - Yurizono Seia, Prepare To Run!',
