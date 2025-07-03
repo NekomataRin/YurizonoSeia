@@ -66,7 +66,7 @@ module.exports = {
                         .setStyle(ButtonStyle.Secondary)
                         .setDisabled(UndoUsed),
                     new ButtonBuilder().setCustomId('blank8').setEmoji('1097172753985056859').setStyle(ButtonStyle.Secondary).setDisabled(true),
-                    new ButtonBuilder().setCustomId('quit').setEmoji('❌').setStyle(ButtonStyle.Danger),
+                    new ButtonBuilder().setCustomId('quit').setEmoji('❌').setStyle(ButtonStyle.Secondary),
                     new ButtonBuilder().setCustomId('blank9').setEmoji('1097172753985056859').setStyle(ButtonStyle.Secondary).setDisabled(true),
                 )
             ];
@@ -167,7 +167,10 @@ module.exports = {
                             const id = i.customId;
                             let moved = false;
 
-                            if (id === 'quit') return collector.stop('quit');
+                            if (id === 'quit') {
+                                if(['hidden', 'anomaly'].includes(gameKey)) Game.lost = true;
+                                return collector.stop('quit'); 
+                            }
 
                             switch (id) {
                                 case 'up':
@@ -188,6 +191,7 @@ module.exports = {
                             }
 
                             if (moved) {
+                                collector.resetTimer()
                                 const GameMovedEmbed = new EmbedBuilder()
                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -199,7 +203,7 @@ module.exports = {
                                     })
                                     .setColor('Yellow')
                                     .setTimestamp();
-
+                                
                                 const updatedButtons = createGameButtons(Game.undoUsed);
 
                                 await interaction.editReply({

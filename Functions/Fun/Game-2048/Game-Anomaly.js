@@ -11,6 +11,8 @@ const Game2048_Anomaly = {
     swapCount: 0,
     lastSwapped: [],
     lost: false,
+    lastAddedTile: [],
+    preNewTile: [],
 
     defaultArr: [
         [0, 0, 0, 0],
@@ -43,11 +45,15 @@ const Game2048_Anomaly = {
 
     Add(arr) {
         let added = false;
+        this.preNewTile = this.lastAddedTile || [-1, -1];
+        let cord_arr = []
         while (!added) {
             let rng = Math.floor(Math.random() * 11);
             let row = Math.floor(Math.random() * 4), col = Math.floor(Math.random() * 4);
             if (arr[row][col] === 0) {
                 arr[row][col] = (rng === 10) ? 4 : 2;
+                cord_arr.push(row, col);
+                this.lastAddedTile = cord_arr;
                 added = true;
             }
         }
@@ -74,14 +80,23 @@ const Game2048_Anomaly = {
     },
 
     ToString(arr) {
-        const shouldHide = !([1,2].includes((this.moveCount - 5) % 7) || this.lost || this.moveCount <= 5);
+        const phase = this.moveCount % 7;
+        const visible = [4, 5].includes(phase) || this.lost || this.moveCount <= 5;
         const swappedCoords = this.lastSwapped || [];
-        let str = '';
+        const [addRow, addCol] = this.lastAddedTile || [-1, -1];
 
+        let str = '';
         for (let i = 0; i < 4; i++) {
             str += arr[i].map((v, j) => {
                 const isSwapShown = swappedCoords.some(([x, y]) => x === i && y === j);
-                if (shouldHide && !isSwapShown) return EmojisGame_2048[0];
+
+                if (!visible && !isSwapShown) {
+                    if (i === addRow && j === addCol) {
+                        return EmojisGame_2048[v] || EmojisGame_2048[0];
+                    }
+                    return EmojisGame_2048[0];
+                }
+
                 return EmojisGame_2048[v] || EmojisGame_2048[0];
             }).join(' ') + '\n';
         }
@@ -93,6 +108,7 @@ const Game2048_Anomaly = {
         this.curArr = this.UnMove(this.lastArr);
         this.score = this.lastScore;
         this.undoUsed = true;
+        this.lastAddedTile = this.preNewTile;
         this.moveCount--;
         this.swapCount--;
         return true;

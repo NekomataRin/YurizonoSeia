@@ -9,6 +9,8 @@ const Game2048_Hidden = {
     undoUsed: false,
     moveCount: 0,
     lost: false,
+    lastAddedTile: [],
+    preNewTile: [],
 
     defaultArr: [
         [0, 0, 0, 0],
@@ -39,14 +41,18 @@ const Game2048_Hidden = {
 
     Add(arr) {
         let added = false;
+        this.preNewTile = this.lastAddedTile || [-1. - 1];
+        let cord_arr = [];
         while (!added) {
             let rng = Math.floor(Math.random() * 11);
             let row = Math.floor(Math.random() * 4), col = Math.floor(Math.random() * 4);
             if (arr[row][col] === 0) {
                 arr[row][col] = (rng === 10) ? 4 : 2;
+                cord_arr.push(row, col);
                 added = true;
             }
         }
+        this.lastAddedTile = cord_arr;
         return arr;
     },
 
@@ -70,14 +76,21 @@ const Game2048_Hidden = {
     },
 
     ToString(arr) {
-        const phase = (this.moveCount - 5) % 7; 
-        const visible = ([1,2].includes(phase) || this.lost || this.moveCount <= 5);     
+        const phase = this.moveCount % 7;
+        const visible = ([4, 5].includes(phase) || this.lost || this.moveCount <= 5);
+        const [addRow, addCol] = this.lastAddedTile || [-1, -1];
 
         let str = '';
         for (let i = 0; i < 4; i++) {
-            str += arr[i].map(v =>
-                visible ? (v === 0 ? EmojisGame_2048[0] : EmojisGame_2048[v]) : EmojisGame_2048[0]
-            ).join(' ') + '\n';
+            str += arr[i].map((v, j) => {
+                if (!visible) {
+                    return (i === addRow && j === addCol)
+                        ? EmojisGame_2048[v]
+                        : EmojisGame_2048[0];
+                } else {
+                    return EmojisGame_2048[v];
+                }
+            }).join(' ') + '\n';
         }
         return str;
     },
@@ -87,6 +100,7 @@ const Game2048_Hidden = {
         this.curArr = this.UnMove(this.lastArr);
         this.score = this.lastScore;
         this.undoUsed = true;
+        this.lastAddedTile = this.preNewTile || [-1, -1];
         this.moveCount--;
         return true;
     },
