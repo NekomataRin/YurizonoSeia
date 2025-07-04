@@ -11,6 +11,7 @@ const Game2048_Hidden = {
     lost: false,
     lastAddedTile: [],
     preNewTile: [],
+    showOnce: false,
 
     defaultArr: [
         [0, 0, 0, 0],
@@ -77,7 +78,7 @@ const Game2048_Hidden = {
 
     ToString(arr) {
         const phase = this.moveCount % 7;
-        const visible = ([4, 5].includes(phase) || this.lost || this.moveCount <= 5);
+        const visible = [4, 5].includes(phase) || this.lost || this.moveCount <= 5 || this.showOnce;
         const [addRow, addCol] = this.lastAddedTile || [-1, -1];
 
         let str = '';
@@ -92,6 +93,8 @@ const Game2048_Hidden = {
                 }
             }).join(' ') + '\n';
         }
+
+        if (this.showOnce) this.showOnce = false;
         return str;
     },
 

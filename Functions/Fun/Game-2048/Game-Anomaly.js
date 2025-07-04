@@ -13,6 +13,7 @@ const Game2048_Anomaly = {
     lost: false,
     lastAddedTile: [],
     preNewTile: [],
+    showOnce: false,
 
     defaultArr: [
         [0, 0, 0, 0],
@@ -81,7 +82,7 @@ const Game2048_Anomaly = {
 
     ToString(arr) {
         const phase = this.moveCount % 7;
-        const visible = [4, 5].includes(phase) || this.lost || this.moveCount <= 5;
+        const visible = [4, 5].includes(phase) || this.lost || this.moveCount <= 5 || this.showOnce;
         const swappedCoords = this.lastSwapped || [];
         const [addRow, addCol] = this.lastAddedTile || [-1, -1];
 
@@ -100,6 +101,8 @@ const Game2048_Anomaly = {
                 return EmojisGame_2048[v] || EmojisGame_2048[0];
             }).join(' ') + '\n';
         }
+
+        if (this.showOnce) this.showOnce = false;
         return str;
     },
 

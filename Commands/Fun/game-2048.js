@@ -9,6 +9,8 @@ const cdtxts = require('../../Assets/Defaults/cooldown')
 const chalk = require('chalk')
 const wait = require('node:timers/promises').setTimeout
 
+const Game2048Db = require('../../Database/Fun/game-2048')
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('game-2048')
@@ -42,6 +44,15 @@ module.exports = {
 
         const cdtime = 20000
 
+        function createDefaultMenu(key = true) {
+            return [
+                new ActionRowBuilder().addComponents(
+                    new ButtonBuilder().setCustomId('new-game').setLabel('[New Game]').setEmoji('1254109761125875802').setStyle(ButtonStyle.Secondary).setDisabled(false),
+                    new ButtonBuilder().setCustomId('load-game').setLabel('[Load Game]').setEmoji('1254109782592327783').setStyle(ButtonStyle.Secondary).setDisabled(key)
+                )
+            ]
+        }
+
         function createGameButtons(UndoUsed = true) {
             return [
                 new ActionRowBuilder().addComponents(
@@ -69,7 +80,7 @@ module.exports = {
                     new ButtonBuilder().setCustomId('quit').setEmoji('❌').setStyle(ButtonStyle.Secondary),
                     new ButtonBuilder().setCustomId('blank9').setEmoji('1097172753985056859').setStyle(ButtonStyle.Secondary).setDisabled(true),
                 )
-            ];
+            ]
         }
 
         //Language Setup
@@ -99,6 +110,7 @@ module.exports = {
                 })
                 await interaction.editReply(cdtxts[LangKey].new)
             } else {
+                let runkey = 0
                 const cduser = data.UserID
                 const CDTime = data.Game2048
                 console.log(chalk.yellow('[Command: Game2048]') + ` ${cduser}, ${CDTime}, ${Date.now()}`)
@@ -113,7 +125,15 @@ module.exports = {
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                     await interaction.editReply({ embeds: [cdembed] })
                 } else {
-                    const gameKey = interaction.options.getString('game-key') || 'default'
+                    let noSaved = true
+
+                    const GameData = await Game2048Db.findOne({ guildID: interaction.guild.id, userID: interaction.user.id }).select('-_id gameStats')
+                    if (!GameData) noSaved = true
+                    else if (GameData.gameStats.lost === false) noSaved = false
+
+                    let gameKey = interaction.options.getString('game-key') || 'default'
+                    gameKey = (!noSaved) ? GameData.gameStats.mode : gameKey
+
                     const Modeinfo =
                         {
                             default: ['Default', 'This is the default mode, no modifications at all. Suitable for everyone'],
@@ -122,147 +142,242 @@ module.exports = {
                             anomaly: ['Anomaly', 'Combo of Hidden and Swap, no need to explain further. This is insanely hard, not recommended for you to play it, unless you aren\'t normalhuman.']
                         }[gameKey]
 
-                    const InitEmbed = new EmbedBuilder()
+                    const Desc = {
+                        new: `Welcome ${interaction.user} to 2048 game, please select button below to Start The Game!`,
+                        load: `Welcome back, ${interaction.user}! Would you like to Load The Current Game?\n> **Mode:** \`${GameData?.gameStats.mode}\`\n▸ **Score:** \`${GameData?.gameStats.scores.current}\` ▸ **Moves:** \`${GameData?.gameStats.moveCount}\`\n> Saved Date: <t:${Math.floor(GameData?.gameStats.timestamp / 1000)}> | <t:${Math.floor(GameData?.gameStats.timestamp / 1000)}:R>`
+                    }
+
+                    const MenuEmbed = new EmbedBuilder()
                         .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                        .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
-                        .setDescription(`Please use the **Arrow Buttons** to **Move**, <:undo:1390076263951237240> to **Undo**, and **❌** to quit\n${Modeinfo[1]}\n\n-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`)
-                        .setColor('White')
+                        .setColor('Grey')
+                        .setTitle('**2048 Game - Menu**')
+                        .setDescription((!noSaved) ? Desc.load : Desc.new)
                         .setTimestamp()
-                    await interaction.editReply({
-                        embeds: [InitEmbed]
+
+                    const Menu = await interaction.editReply({
+                        embeds: [MenuEmbed],
+                        components: createDefaultMenu(noSaved)
                     })
 
-                    await wait(5000);
+                    let newGameKey = true
+                    let runkey = 0;
 
-                    const Game = Game2048_Modes[gameKey]
-                    Game.CreateGame();
-                    const button = createGameButtons(true);
-
-                    const GameEmbed_New = new EmbedBuilder()
-                        .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
-                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                        .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
-                        .setDescription(`Use arrows to move, <:undo:1390076263951237240> to Undo, ❌ to Quit.\n-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`)
-                        .addFields({
-                            name: `► **Score:** \`${Game.score}\` ► **Moves:** \`${Game.moveCount}\``,
-                            value: Game.ToString(Game.curArr)
-                        })
-                        .setColor('Yellow')
-                        .setTimestamp();
-
-                    const InputMessage = await interaction.editReply({
-                        embeds: [GameEmbed_New],
-                        components: button
-                    });
-
-                    try {
-                        const collector = InputMessage.createMessageComponentCollector({
+                    await new Promise((resolve) => {
+                        const collector1 = Menu.createMessageComponentCollector({
                             filter: i => i.user.id === interaction.user.id,
-                            time: 180000 // 3 phút
+                            time: 30000
                         });
 
-                        collector.on('collect', async i => {
+                        collector1.on('collect', async i => {
                             await i.deferUpdate();
-                            const id = i.customId;
-                            let moved = false;
-
-                            if (id === 'quit') {
-                                if(['hidden', 'anomaly'].includes(gameKey)) Game.lost = true;
-                                return collector.stop('quit'); 
+                            if (i.customId === 'new-game') {
+                                runkey = 1;
+                                gameKey = interaction.options.getString('game-key') || 'default';
+                            } else if (i.customId === 'load-game') {
+                                newGameKey = false
+                                runkey = 1;
                             }
+                            resolve(); // Tiếp tục code sau khi user nhấn nút
+                        });
 
-                            switch (id) {
-                                case 'up':
-                                    moved = Game.UMove(Game.curArr);
-                                    break;
-                                case 'down':
-                                    moved = Game.DMove(Game.curArr);
-                                    break;
-                                case 'left':
-                                    moved = Game.LMove(Game.curArr);
-                                    break;
-                                case 'right':
-                                    moved = Game.RMove(Game.curArr);
-                                    break;
-                                case 'undo':
-                                    moved = Game.Undo();
-                                    break;
+                        collector1.on('end', (_, reason) => {
+                            if (reason !== 'user') resolve();
+                        });
+                    });
+
+                    if (runkey === 1) {
+                        const InitEmbed = new EmbedBuilder()
+                            .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                            .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+                            .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
+                            .setDescription(`Please use the **Arrow Buttons** to **Move**, <:undo:1390076263951237240> to **Undo**, and **❌** to quit\n${Modeinfo[1]}\n\n-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`)
+                            .setColor('White')
+                            .setTimestamp()
+                        await interaction.editReply({
+                            embeds: [InitEmbed],
+                            components: []
+                        })
+
+                        await wait(5000);
+
+                        function LoadGame(Game, Stats) {
+                            Game.curArr = Stats.board.current
+                            Game.lastArr = Stats.board.last
+                            Game.score = Stats.scores.current
+                            Game.lastScore = Stats.scores.last
+                            Game.moveCount = Stats.moveCount
+                            Game.undoUsed = Stats.undoUsed
+                            Game.lastSwapped = Stats.lastSwapped
+                            Game.swapCount = Stats.swapCount
+                            Game.showOnce = Stats.showOnce
+                            Game.lastAddedTile = Stats.TilesIndexes.lastAddedTile
+                            Game.preNewTile = Stats.TilesIndexes.preNewTile
+                            Game.lost = Stats.lost
+                        }
+
+                        function SaveGame(Game) {
+                            return {
+                                mode: gameKey,
+                                scores: {
+                                    current: Game.score,
+                                    last: Game.lastScore
+                                },
+                                board: {
+                                    current: Game.curArr,
+                                    last: Game.lastArr,
+                                },
+                                moveCount: Game.moveCount,
+                                undoUsed: Game.undoUsed,
+                                lost: Game.lost,
+                                TilesIndexes: {
+                                    lastAddedTile: Game.lastAddedTile || [],
+                                    preNewTile: Game.preNewTile || [],
+                                },
+                                lastSwapped: Game.lastSwapped || [],
+                                swapCount: Game.swapCount || 0,
+                                showOnce: true,
+                                timestamp: `${Date.now()}`
                             }
+                        }
 
-                            if (moved) {
-                                collector.resetTimer()
-                                const GameMovedEmbed = new EmbedBuilder()
+                        const Game = Game2048_Modes[gameKey]
+                        if (newGameKey) Game.CreateGame();
+                        else LoadGame(Game, GameData.gameStats)
+
+                        const button = createGameButtons(true);
+
+                        const GameEmbed_New = new EmbedBuilder()
+                            .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
+                            .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+                            .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
+                            .setDescription(`Use arrows to move, <:undo:1390076263951237240> to Undo, ❌ to Quit.\n-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`)
+                            .addFields({
+                                name: `► **Score:** \`${Game.score}\` ► **Moves:** \`${Game.moveCount}\``,
+                                value: Game.ToString(Game.curArr)
+                            })
+                            .setColor('Yellow')
+                            .setTimestamp();
+
+                        const InputMessage = await interaction.editReply({
+                            embeds: [GameEmbed_New],
+                            components: button
+                        });
+
+                        try {
+                            const collector = InputMessage.createMessageComponentCollector({
+                                filter: i => i.user.id === interaction.user.id,
+                                time: 180000
+                            });
+
+                            collector.on('collect', async i => {
+                                const id = i.customId;
+                                let moved = false;
+
+                                if (id === 'quit') {
+                                    return collector.stop('quit');
+                                }
+
+                                switch (id) {
+                                    case 'up':
+                                        moved = Game.UMove(Game.curArr);
+                                        break;
+                                    case 'down':
+                                        moved = Game.DMove(Game.curArr);
+                                        break;
+                                    case 'left':
+                                        moved = Game.LMove(Game.curArr);
+                                        break;
+                                    case 'right':
+                                        moved = Game.RMove(Game.curArr);
+                                        break;
+                                    case 'undo':
+                                        moved = Game.Undo();
+                                        break;
+                                }
+
+                                if (moved) {
+                                    collector.resetTimer()
+                                    const GameMovedEmbed = new EmbedBuilder()
+                                        .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
+                                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+                                        .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
+                                        .setDescription(`Use arrows to move, <:undo:1390076263951237240> to Undo, ❌ to Quit.\n-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`)
+                                        .addFields({
+                                            name: `► **Score:** \`${Game.score}\` ► **Moves:** \`${Game.moveCount}\``,
+                                            value: Game.ToString(Game.curArr)
+                                        })
+                                        .setColor('Yellow')
+                                        .setTimestamp();
+
+                                    const updatedButtons = createGameButtons(Game.undoUsed);
+
+                                    await interaction.editReply({
+                                        embeds: [GameMovedEmbed],
+                                        components: updatedButtons
+                                    });
+                                    await Game2048Db.updateOne(
+                                        { guildID: interaction.guild.id, userID: interaction.user.id },
+                                        { $set: { gameStats: SaveGame(Game) } },
+                                        { upsert: true })
+
+                                    if (Game.lost) {
+                                        collector.stop('lose');
+                                    }
+                                }
+                            });
+
+                            collector.on('end', async (_, reason) => {
+                                data.Game2048 = Date.now() + cdtime
+                                data.save()
+
+                                await Game2048Db.updateOne(
+                                    { guildID: interaction.guild.id, userID: interaction.user.id },
+                                    { $set: { gameStats: SaveGame(Game) } },
+                                    { upsert: true })
+
+                                let reasonText = '';
+                                switch (reason) {
+                                    case 'quit': reasonText = 'Game Saved! Here is the saved board before you left.\n> You manually quit the game.'; break;
+                                    case 'lose': reasonText = 'Game Over! Here is your result of the game\n> No more valid moves!'; break;
+                                    default: reasonText = 'Game Over! Here is your result of the game\n> You took too long to respond.'; break;
+                                }
+
+                                const GameOver = new EmbedBuilder()
                                     .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
                                     .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                     .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
-                                    .setDescription(`Use arrows to move, <:undo:1390076263951237240> to Undo, ❌ to Quit.\n-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`)
+                                    .setDescription(`${reasonText}\n\n-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`)
                                     .addFields({
                                         name: `► **Score:** \`${Game.score}\` ► **Moves:** \`${Game.moveCount}\``,
                                         value: Game.ToString(Game.curArr)
                                     })
-                                    .setColor('Yellow')
+                                    .setColor('Grey')
                                     .setTimestamp();
-                                
-                                const updatedButtons = createGameButtons(Game.undoUsed);
 
                                 await interaction.editReply({
-                                    embeds: [GameMovedEmbed],
-                                    components: updatedButtons
+                                    embeds: [GameOver],
+                                    components: []
                                 });
-
-                                if (Game.CheckLose(Game.curArr)) {
-                                    collector.stop('lose');
-                                }
-                            }
-                        });
-
-                        collector.on('end', async (_, reason) => {
+                            });
+                        } catch (err) {
+                            console.error('Collector Error:', err);
                             data.Game2048 = Date.now() + cdtime
                             data.save()
 
-                            let reasonText = '';
-                            switch (reason) {
-                                case 'quit': reasonText = 'You manually quit the game.'; break;
-                                case 'lose': reasonText = 'No more valid moves!'; break;
-                                default: reasonText = 'You took too long to respond.'; break;
-                            }
-
-                            const GameOver = new EmbedBuilder()
+                            const errorEmbed = new EmbedBuilder()
                                 .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
                                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
                                 .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
-                                .setDescription(`Game Over! Here is your result of the game\n> ${reasonText}\n\n-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`)
-                                .addFields({
-                                    name: `► **Score:** \`${Game.score}\` ► **Moves:** \`${Game.moveCount}\``,
-                                    value: Game.ToString(Game.curArr)
-                                })
-                                .setColor('Grey')
+                                .setDescription(`<a:SeiaMuted:1336385867136241705> An unexpected error occurred during gameplay. Please try again later.`)
+                                .setColor('Red')
                                 .setTimestamp();
 
-                            await interaction.editReply({
-                                embeds: [GameOver],
+                            return interaction.editReply({
+                                embeds: [errorEmbed],
                                 components: []
                             });
-                        });
-
-                    } catch (err) {
-                        console.error('Collector Error:', err);
-                        data.Game2048 = Date.now() + cdtime
-                        data.save()
-
-                        const errorEmbed = new EmbedBuilder()
-                            .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
-                            .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                            .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
-                            .setDescription(`<a:SeiaMuted:1336385867136241705> An unexpected error occurred during gameplay. Please try again later.`)
-                            .setColor('Red')
-                            .setTimestamp();
-
-                        await interaction.editReply({
-                            embeds: [errorEmbed],
-                            components: []
-                        });
+                        }
                     }
                 }
             }

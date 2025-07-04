@@ -8,6 +8,7 @@ const Game2048_Swap = {
     lastArr: [],
     undoUsed: false,
     moveCount: 0,
+    lost: false,
 
     defaultArr: [
         [0, 0, 0, 0],
@@ -59,6 +60,8 @@ const Game2048_Swap = {
         for (let j = 0; j < 4; j++)
             for (let i = 0; i < 3; i++)
                 if (arr[i][j] === arr[i + 1][j]) return false;
+
+        this.lost = true;
         return true;
     },
 
