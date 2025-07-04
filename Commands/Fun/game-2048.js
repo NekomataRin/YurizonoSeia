@@ -270,7 +270,6 @@ module.exports = {
                             })
 
                             collector.on('collect', async i => {
-                                await i.deferUpdate()
                                 const id = i.customId
                                 let moved = false
 
