@@ -339,6 +339,7 @@ module.exports = {
                                 let reasonText = ''
                                 switch (reason) {
                                     case 'quit': {
+                                        if (['hidden', 'anomaly'].includes(gameKey)) Game.showOnce = true
                                         reasonText = 'Game Saved! Here is the saved board before you left.\n> You manually quit the game.'
                                         break
                                     }
@@ -347,6 +348,7 @@ module.exports = {
                                         break
                                     }
                                     default: {
+                                        if (['hidden', 'anomaly'].includes(gameKey)) Game.showOnce = true
                                         reasonText = 'Game Saved! Here is the saved board before you left.\n> You took too long to respond.'
                                     }
                                 }
