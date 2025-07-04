@@ -110,7 +110,6 @@ module.exports = {
                 })
                 await interaction.editReply(cdtxts[LangKey].new)
             } else {
-                let runkey = 0
                 const cduser = data.UserID
                 const CDTime = data.Game2048
                 console.log(chalk.yellow('[Command: Game2048]') + ` ${cduser}, ${CDTime}, ${Date.now()}`)
@@ -161,30 +160,30 @@ module.exports = {
                     })
 
                     let newGameKey = true
-                    let runkey = 0;
+                    let runkey = 0
 
                     await new Promise((resolve) => {
                         const collector1 = Menu.createMessageComponentCollector({
                             filter: i => i.user.id === interaction.user.id,
                             time: 30000
-                        });
+                        })
 
                         collector1.on('collect', async i => {
-                            await i.deferUpdate();
+                            await i.deferUpdate()
                             if (i.customId === 'new-game') {
-                                runkey = 1;
-                                gameKey = interaction.options.getString('game-key') || 'default';
+                                runkey = 1
+                                gameKey = interaction.options.getString('game-key') || 'default'
                             } else if (i.customId === 'load-game') {
                                 newGameKey = false
-                                runkey = 1;
+                                runkey = 1
                             }
-                            resolve(); // Tiếp tục code sau khi user nhấn nút
-                        });
+                            resolve() // Tiếp tục code sau khi user nhấn nút
+                        })
 
                         collector1.on('end', (_, reason) => {
-                            if (reason !== 'user') resolve();
-                        });
-                    });
+                            if (reason !== 'user') resolve()
+                        })
+                    })
 
                     if (runkey === 1) {
                         const InitEmbed = new EmbedBuilder()
@@ -199,7 +198,7 @@ module.exports = {
                             components: []
                         })
 
-                        await wait(5000);
+                        await wait(5000)
 
                         function LoadGame(Game, Stats) {
                             Game.curArr = Stats.board.current
@@ -242,10 +241,10 @@ module.exports = {
                         }
 
                         const Game = Game2048_Modes[gameKey]
-                        if (newGameKey) Game.CreateGame();
+                        if (newGameKey) Game.CreateGame()
                         else LoadGame(Game, GameData.gameStats)
 
-                        const button = createGameButtons(true);
+                        const button = createGameButtons(true)
 
                         const GameEmbed_New = new EmbedBuilder()
                             .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
@@ -257,43 +256,44 @@ module.exports = {
                                 value: Game.ToString(Game.curArr)
                             })
                             .setColor('Yellow')
-                            .setTimestamp();
+                            .setTimestamp()
 
                         const InputMessage = await interaction.editReply({
                             embeds: [GameEmbed_New],
                             components: button
-                        });
+                        })
 
                         try {
                             const collector = InputMessage.createMessageComponentCollector({
                                 filter: i => i.user.id === interaction.user.id,
                                 time: 180000
-                            });
+                            })
 
                             collector.on('collect', async i => {
-                                const id = i.customId;
-                                let moved = false;
+                                await i.deferUpdate()
+                                const id = i.customId
+                                let moved = false
 
                                 if (id === 'quit') {
-                                    return collector.stop('quit');
+                                    return collector.stop('quit')
                                 }
 
                                 switch (id) {
                                     case 'up':
-                                        moved = Game.UMove(Game.curArr);
-                                        break;
+                                        moved = Game.UMove(Game.curArr)
+                                        break
                                     case 'down':
-                                        moved = Game.DMove(Game.curArr);
-                                        break;
+                                        moved = Game.DMove(Game.curArr)
+                                        break
                                     case 'left':
-                                        moved = Game.LMove(Game.curArr);
-                                        break;
+                                        moved = Game.LMove(Game.curArr)
+                                        break
                                     case 'right':
-                                        moved = Game.RMove(Game.curArr);
-                                        break;
+                                        moved = Game.RMove(Game.curArr)
+                                        break
                                     case 'undo':
-                                        moved = Game.Undo();
-                                        break;
+                                        moved = Game.Undo()
+                                        break
                                 }
 
                                 if (moved) {
@@ -308,24 +308,24 @@ module.exports = {
                                             value: Game.ToString(Game.curArr)
                                         })
                                         .setColor('Yellow')
-                                        .setTimestamp();
+                                        .setTimestamp()
 
-                                    const updatedButtons = createGameButtons(Game.undoUsed);
+                                    const updatedButtons = createGameButtons(Game.undoUsed)
 
                                     await interaction.editReply({
                                         embeds: [GameMovedEmbed],
                                         components: updatedButtons
-                                    });
+                                    })
                                     await Game2048Db.updateOne(
                                         { guildID: interaction.guild.id, userID: interaction.user.id },
                                         { $set: { gameStats: SaveGame(Game) } },
                                         { upsert: true })
 
                                     if (Game.lost) {
-                                        collector.stop('lose');
+                                        collector.stop('lose')
                                     }
                                 }
-                            });
+                            })
 
                             collector.on('end', async (_, reason) => {
                                 data.Game2048 = Date.now() + cdtime
@@ -336,11 +336,19 @@ module.exports = {
                                     { $set: { gameStats: SaveGame(Game) } },
                                     { upsert: true })
 
-                                let reasonText = '';
+                                let reasonText = ''
                                 switch (reason) {
-                                    case 'quit': reasonText = 'Game Saved! Here is the saved board before you left.\n> You manually quit the game.'; break;
-                                    case 'lose': reasonText = 'Game Over! Here is your result of the game\n> No more valid moves!'; break;
-                                    default: reasonText = 'Game Over! Here is your result of the game\n> You took too long to respond.'; break;
+                                    case 'quit': {
+                                        reasonText = 'Game Saved! Here is the saved board before you left.\n> You manually quit the game.'
+                                        break
+                                    }
+                                    case 'lose': {
+                                        reasonText = 'Game Over! Here is your result of the game\n> No more valid moves!'
+                                        break
+                                    }
+                                    default: {
+                                        reasonText = 'Game Saved! Here is the saved board before you left.\n> You took too long to respond.'
+                                    }
                                 }
 
                                 const GameOver = new EmbedBuilder()
@@ -353,15 +361,15 @@ module.exports = {
                                         value: Game.ToString(Game.curArr)
                                     })
                                     .setColor('Grey')
-                                    .setTimestamp();
+                                    .setTimestamp()
 
                                 await interaction.editReply({
                                     embeds: [GameOver],
                                     components: []
-                                });
-                            });
+                                })
+                            })
                         } catch (err) {
-                            console.error('Collector Error:', err);
+                            console.error('Collector Error:', err)
                             data.Game2048 = Date.now() + cdtime
                             data.save()
 
@@ -371,12 +379,12 @@ module.exports = {
                                 .setTitle(`**Game 2048** (Mode: \`${Modeinfo[0]}\`)`)
                                 .setDescription(`<a:SeiaMuted:1336385867136241705> An unexpected error occurred during gameplay. Please try again later.`)
                                 .setColor('Red')
-                                .setTimestamp();
+                                .setTimestamp()
 
                             return interaction.editReply({
                                 embeds: [errorEmbed],
                                 components: []
-                            });
+                            })
                         }
                     }
                 }
