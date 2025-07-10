@@ -12,11 +12,11 @@ const FooterEmbeds = [
         `©${CYear}-${CurYear} • Yurizono Seia ▸ LYG Code V2 by nekorin727`
     ],
     [
-        { file: new AttachmentBuilder('./Assets/Defaults/Image_Embeds/Seia0.png'), ctx: 'attachment://Seia0.png' },
-        { file: new AttachmentBuilder('./Assets/Defaults/Image_Embeds/Seia1.png'), ctx: 'attachment://Seia1.png' },
-        { file: new AttachmentBuilder('./Assets/Defaults/Image_Embeds/Seia2.png'), ctx: 'attachment://Seia2.png' },
-        { file: new AttachmentBuilder('./Assets/Defaults/Image_Embeds/Seia3.png'), ctx: 'attachment://Seia3.png' },
-        { file: new AttachmentBuilder('./Assets/Defaults/Image_Embeds/Seia4.png'), ctx: 'attachment://Seia4.png' },
+        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia0.png',  
+        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia1.png',
+        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia2.png',
+        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia3.png',
+        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia4.png'
     ]
 ]
 /*Footer Embeds
