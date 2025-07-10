@@ -19,6 +19,14 @@ const ImgList = {
         Rin: {
             value: './Assets/Howgay/CaseImg/Rejected/reject-3.png',
             ctx: 'attachment://reject-3.png'
+        },
+        Wakamo: {
+            value: './Assets/Howgay/CaseImg/Rejected/reject-5.png',
+            ctx: 'attachment://reject-5.png'
+        },
+        Acid: {
+            value: './Assets/Howgay/CaseImg/Rejected/reject-4.png',
+            ctx: 'attachment://reject-4.png'
         }
     },
     GigaChad: [

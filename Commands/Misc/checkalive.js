@@ -68,7 +68,7 @@ module.exports = {
                 }
                 const embed = new EmbedBuilder()
                     .setColor('White')
-                    .setTitle(`<:seiaconcerned:1244128341540208793> ${(LangKey === 'vi') ? '**Kiểm tra một vài thông tin của bot trong server' : '**Checking some information from the bot in the server...**'}`)
+                    .setTitle(`<:seiaconcerned:1244128341540208793> ${(LangKey === 'vi') ? '**Kiểm tra một vài thông tin của bot trong server**' : '**Checking some information from the bot in the server...**'}`)
                     .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
                     .setDescription(Desc[LangKey])
                     .setTimestamp(Date.now())

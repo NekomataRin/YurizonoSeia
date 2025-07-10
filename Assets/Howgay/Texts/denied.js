@@ -15,9 +15,9 @@ const Denied_Cases = [
     },
     {
         "id": "786816081032773662",
-        "desc": "<:serikadisgust:1230835681224298546> \"*Hmm*, you really wanted to be **dead** if you check **`/howgay`** on me, right?\" -<@786816081032773662>",
-        "img": ImgList.Rejected.None.value,
-        "ctx": ImgList.Rejected.None.ctx
+        "desc": "<:WakamoEvil:1275016475257733121> \"*Hmm*, you really wanted to be **dead** if you check **`/howgay`** on me, right?\" -<@786816081032773662>",
+        "img": ImgList.Rejected.Wakamo.value,
+        "ctx": ImgList.Rejected.Wakamo.ctx
     },
     {
         "id": "999614067322925087",
@@ -36,6 +36,12 @@ const Denied_Cases = [
         "desc": "<:SeiaL:1355916415529521213> *Oya?* Checking **`/howgay`** command on <@1206234286056017923>? After you see me going out with **Neru** from **Millennium Sciene School** gotcha **mad**?\nDon't worry, a *wise artist* said: **\"Men and women don't matter as long as they're happy\"*, right?\nSo, no need to *shy*, my guy, even my *dad* is also me, don't wory, he is **NOT GAY** as you are... and it's **ALWAYS** has been.",
         "img": ImgList.Rejected.QuocMinh.value,
         "ctx": ImgList.Rejected.QuocMinh.ctx
+    },
+    {
+        "id": "892054339072438303",
+        "desc": "<:AcidFAQ:1392733235699777597> Hey, I am **NOT** the place for you to check **`/howgay`**! **Listen up, there's NO chance in a million for this!**",
+        "img": ImgList.Rejected.Acid.value,
+        "ctx": ImgList.Rejected.Acid.ctx,
     }
 ]
 

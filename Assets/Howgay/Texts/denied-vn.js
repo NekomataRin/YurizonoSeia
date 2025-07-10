@@ -15,9 +15,9 @@ const Denied_CasesVN = [
     },
     {
         "id": "786816081032773662",
-        "desc": "<:serikadisgust:1230835681224298546> \"*Hừm*, cậu thật sự muốn **chết** nếu kiểm tra **`/howgay`** trên tui, đúng không?\" -<@786816081032773662>",
-        "img": ImgList.Rejected.None.value,
-        "ctx": ImgList.Rejected.None.ctx
+        "desc": "<:WakamoEvil:1275016475257733121> \"*Hừm*, cậu thật sự muốn **chết** nếu kiểm tra **`/howgay`** trên tui, đúng không?\" -<@786816081032773662>",
+        "img": ImgList.Rejected.Wakamo.value,
+        "ctx": ImgList.Rejected.Wakamo.ctx
     },
     {
         "id": "999614067322925087",
@@ -36,6 +36,12 @@ const Denied_CasesVN = [
         "desc": "<:SeiaL:1355916415529521213> *Oya?* Kiểm tra lệnh **`/howgay`** trên <@1206234286056017923>? Sau khi thấy tớ đi chơi với **Neru** từ **Millennium Science School** làm cậu **phát điên** à?\nĐừng lo, một *nghệ sĩ thông thái* đã nói: **\"Nam nữ quan trọng éo gì, sướng là được\"**, đúng không?\nVậy nên, đừng **ngại ngùng**, anh bạn, ngay cả *ba tớ* cũng là tớ, đừng lo, ông ấy **KHÔNG GAY** như cậu đâu... và điều đó **LUÔN LUÔN** là thế.",
         "img": ImgList.Rejected.QuocMinh.value,
         "ctx": ImgList.Rejected.QuocMinh.ctx
+    },
+    {
+        "id": "892054339072438303",
+        "desc": "<:AcidFAQ:1392733235699777597> Này nhá, tớ **KHÔNG** phải là nơi mà cậu check lệnh **`/howgay`** được đâu nhá! **Nghe đây, có cái TOAI mà check được nhá!**",
+        "img": ImgList.Rejected.Acid.value,
+        "ctx": ImgList.Rejected.Acid.ctx,
     }
 ]
 /*
