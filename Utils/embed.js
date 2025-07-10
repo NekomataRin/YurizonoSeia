@@ -12,13 +12,14 @@ const FooterEmbeds = [
         `©${CYear}-${CurYear} • Yurizono Seia ▸ LYG Code V2 by nekorin727`
     ],
     [
-        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia0.png',  
-        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia1.png',
-        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia2.png',
-        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia3.png',
-        'https://github.com/NekomataRin/YurizonoSeia/blob/52acf878c41db7aa48d43c9f751519a3ee192153/Assets/Defaults/Image_Embeds/Seia4.png'
+        'https://raw.githubusercontent.com/NekomataRin/YurizonoSeia/refs/heads/droid_ver/Assets/Defaults/Image_Embeds/Seia0.png',
+        'https://raw.githubusercontent.com/NekomataRin/YurizonoSeia/refs/heads/droid_ver/Assets/Defaults/Image_Embeds/Seia1.png',
+        'https://raw.githubusercontent.com/NekomataRin/YurizonoSeia/refs/heads/droid_ver/Assets/Defaults/Image_Embeds/Seia2.png',
+        'https://raw.githubusercontent.com/NekomataRin/YurizonoSeia/refs/heads/droid_ver/Assets/Defaults/Image_Embeds/Seia3.png',
+        'https://raw.githubusercontent.com/NekomataRin/YurizonoSeia/refs/heads/droid_ver/Assets/Defaults/Image_Embeds/Seia4.png'
     ]
 ]
+
 /*Footer Embeds
 [0] Footer Line 
 [1] Footer URL*/
