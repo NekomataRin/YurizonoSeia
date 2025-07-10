@@ -171,7 +171,7 @@ module.exports = {
                     ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
                     ImgCtx = ImgList.Gay[index].ctx
                     if (tuser.roles.cache.has("1171750121109733438")) {
-                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1171750121109733438> cho ${target}, well tệ đấy, anh bạn mất đi danh hiệu rồi còn dâu, lol.` : `\n-# > Successfully removed <@&1171750121109733438https://x.com/MusicGameHell/status/1938963637500010930> to ${target}, well too bad, bro lost your title lol.`
+                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1171750121109733438> cho ${target}, well tệ đấy, anh bạn mất đi danh hiệu rồi còn dâu, lol.` : `\n-# > Successfully removed <@&1171750121109733438> to ${target}, well too bad, bro lost your title lol.`
                     } else if (!tuser.roles.cache.has("1162944612508377088")) {
                         DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng, giờ thì mọi anh em trong làng biết là bạn bị GAY` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
                     } else {

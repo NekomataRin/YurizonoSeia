@@ -169,7 +169,6 @@ module.exports = {
                         })
 
                         collector1.on('collect', async i => {
-                            await i.deferUpdate()
                             if (i.customId === 'new-game') {
                                 runkey = 1
                                 gameKey = interaction.options.getString('game-key') || 'default'
@@ -216,7 +215,7 @@ module.exports = {
                         }
 
                         function SaveGame(Game) {
-                            return {
+                            const obj = {
                                 mode: gameKey,
                                 scores: {
                                     current: Game.score,
@@ -238,11 +237,25 @@ module.exports = {
                                 showOnce: true,
                                 timestamp: `${Date.now()}`
                             }
+                            return Game2048Db.findOne({ guildID: interaction.guild.id, userID: interaction.user.id }, async (err, data0) => {
+                                if (err) throw err
+                                if (!data0) {
+                                    Game2048Db.create({
+                                        guildID: interaction.guild.id,
+                                        userID: interaction.user.id,
+                                        gameStats: obj
+                                    })
+                                } else {
+                                    data0.gameStats = obj
+                                    data0.save()
+                                }
+                            })
                         }
 
                         const Game = Game2048_Modes[gameKey]
                         if (newGameKey) Game.CreateGame()
                         else LoadGame(Game, GameData.gameStats)
+
 
                         const button = createGameButtons(true)
 
@@ -270,6 +283,7 @@ module.exports = {
                             })
 
                             collector.on('collect', async i => {
+                                await i.deferUpdate()
                                 const id = i.customId
                                 let moved = false
 
@@ -296,7 +310,7 @@ module.exports = {
                                 }
 
                                 if (moved) {
-                                    collector.resetTimer()
+                                    await collector.resetTimer()
                                     const GameMovedEmbed = new EmbedBuilder()
                                         .setAuthor({ name: `${interaction.user.username}`, iconURL: iuser.displayAvatarURL({ dynamic: true }) })
                                         .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
@@ -315,10 +329,8 @@ module.exports = {
                                         embeds: [GameMovedEmbed],
                                         components: updatedButtons
                                     })
-                                    await Game2048Db.updateOne(
-                                        { guildID: interaction.guild.id, userID: interaction.user.id },
-                                        { $set: { gameStats: SaveGame(Game) } },
-                                        { upsert: true })
+
+                                    SaveGame(Game)
 
                                     if (Game.lost) {
                                         collector.stop('lose')
@@ -330,11 +342,8 @@ module.exports = {
                                 data.Game2048 = Date.now() + cdtime
                                 data.save()
 
-                                await Game2048Db.updateOne(
-                                    { guildID: interaction.guild.id, userID: interaction.user.id },
-                                    { $set: { gameStats: SaveGame(Game) } },
-                                    { upsert: true })
-
+                                SaveGame(Game)
+                                
                                 let reasonText = ''
                                 switch (reason) {
                                     case 'quit': {
