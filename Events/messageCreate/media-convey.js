@@ -18,7 +18,7 @@ const facebookLinkRegex = /https?:\/\/(?:www\.|web\.|m\.)?facebook\.com\/(?!(?:s
 module.exports = async (client, message) => {
   if (message.author.bot) return
   if (message.channel.type === ChannelType.DM) return
-  if (message.guild.id !== process.env.GUILD_ID) return
+  //if (message.guild.id !== process.env.GUILD_ID) return
 
   const content = message.content
 
