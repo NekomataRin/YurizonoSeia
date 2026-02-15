@@ -44,10 +44,10 @@ const rest = new REST({ version: '10' }).setToken(token);
         console.log(chalk.blue('[LOG]') + ` Refreshing ${commands.length} Commands`);
         let data
         data = await rest.put(
-            Routes.applicationGuildCommands(clientID, guildID),
-            //Routes.applicationCommands(clientId), { body: commands }),
-            //{ body: commands },
-            { body : []},
+            //Routes.applicationGuildCommands(clientID, guildID),
+            Routes.applicationCommands(clientID),
+            { body: commands },
+            //{ body : []},
         );
         console.log(chalk.blue('[LOG]') + ` Successfully Created ${data.length} Commands`)
     } catch (error) {
