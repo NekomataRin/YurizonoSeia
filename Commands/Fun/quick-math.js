@@ -352,7 +352,7 @@ module.exports = {
                                         score = Number(score.toFixed(1))
 
                                         EqtResultDesc = {
-                                            'vi': `**Độ khó** \`${DifficultyKey}\` | **Level** \`${level}\` | **Câu 1** \`${count + 1}\` | **Điểm** \`${score}\` \`(+${scoreadd})\`\n> **Thời Gian Giải** \`${TimeResult}\` | **Số Lượt Đã Dùng** \`${MsgCount}\`\n\`\`\`js\n${PreEqt[0]} = ${PreEqt[1]}\n\`\`\``,
+                                            'vi': `**Độ khó** \`${DifficultyKey}\` | **Level** \`${level}\` | **Câu** \`${count + 1}\` | **Điểm** \`${score}\` \`(+${scoreadd})\`\n> **Thời Gian Giải** \`${TimeResult}\` | **Số Lượt Đã Dùng** \`${MsgCount}\`\n\`\`\`js\n${PreEqt[0]} = ${PreEqt[1]}\n\`\`\``,
                                             "en-US": `**Difficulty** \`${DifficultyKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \`(+${scoreadd})\`\n> **Solving Time** \`${TimeResult}\` | **Attempts Used** \`${MsgCount}\`\n\`\`\`js\n${PreEqt[0]} = ${PreEqt[1]}\n\`\`\``
                                         }
                                         let EditedEmbed = new EmbedBuilder()

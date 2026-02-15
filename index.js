@@ -20,8 +20,9 @@ const client = new Client({
     intents: Object.keys(GatewayIntentBits).map((a) => {
         return GatewayIntentBits[a]
     }),
-    partials: Object.keys(Partials).map((b) => { 
-        return Partials[b] })
+    partials: Object.keys(Partials).map((b) => {
+        return Partials[b]
+    })
 });
 
 eventHandler(client)
@@ -44,8 +45,9 @@ const rest = new REST({ version: '10' }).setToken(token);
         let data
         data = await rest.put(
             Routes.applicationGuildCommands(clientID, guildID),
-            { body: commands },
-            //{ body : []},
+            //Routes.applicationCommands(clientId), { body: commands }),
+            //{ body: commands },
+            { body : []},
         );
         console.log(chalk.blue('[LOG]') + ` Successfully Created ${data.length} Commands`)
     } catch (error) {
