@@ -122,7 +122,7 @@ module.exports = {
             if (!AvgChr) {
                 rng = Math.random() * 101.0001
                 //rng = 0.5 //Tesing Purposes, Only Remove When You Do That
-                rng = (Math.floor(rng * 1000) / 1000).toFixed(1)
+                rng = (Math.floor(rng * 1000) / 1000).toFixed(4)
 
                 //Normal Entry
                 for (var i in NumEntry) {
