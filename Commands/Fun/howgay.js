@@ -120,9 +120,9 @@ module.exports = {
         } else {
             var DescArr = [], GayEmbeds = [], Emoji, Comment, rng, avgrng, typeindex, spkey = false
             if (!AvgChr) {
-                rng = Math.random() * 101.1
+                rng = Math.random() * 101.0001
                 //rng = 0.5 //Tesing Purposes, Only Remove When You Do That
-                rng = (Math.floor(rng * 10) / 10).toFixed(1)
+                rng = (Math.floor(rng * 1000) / 1000).toFixed(1)
 
                 //Normal Entry
                 for (var i in NumEntry) {
@@ -138,13 +138,14 @@ module.exports = {
                 }
 
                 //Special HowGayCases
-                if (SpecialEntry.includes(Number(rng))) {
-                    ImgLink = new AttachmentBuilder(HowGayCases.SpecialCases[`Case${rng}`].img)
-                    ImgCtx = HowGayCases.SpecialCases[`Case${rng}`].ctx
-                    Emoji = HowGayCases.SpecialCases[`Case${rng}`].emoji
+                let detect_rng = Number(rng).toFixed(1)
+                if (SpecialEntry.includes(detect_rng)) {
+                    ImgLink = new AttachmentBuilder(HowGayCases.SpecialCases[`Case${detect_rng}`].img)
+                    ImgCtx = HowGayCases.SpecialCases[`Case${detect_rng}`].ctx
+                    Emoji = HowGayCases.SpecialCases[`Case${detect_rng}`].emoji
                     Color = HowGayCases.Colors.SpecialCases
-                    Comment = HowGayCases.SpecialCases[`Case${rng}`].desc
-                    specialnum = rng
+                    Comment = HowGayCases.SpecialCases[`Case${detect_rng}`].desc
+                    specialnum = detect_rng
                     spkey = true
                 }
 
@@ -191,8 +192,8 @@ module.exports = {
                 avgrng = 0
                 let rnglist = []
                 for (var i = 0; i < 3; i++) {
-                    let temp = Math.random() * 101.1
-                    temp = (Math.floor(temp * 10) / 10).toFixed(1)
+                    let temp = Math.random() * 101.0001
+                    temp = (Math.floor(temp * 1000) / 1000).toFixed(4)
                     rnglist.push(temp)
                     DescArr.push((LangKey === 'vi') ? `▸ **Lần ${i + 1}:** Chỉ số gay của ${target} là \`${rnglist[i]}%\`\n` : `▸ **Attempt ${i + 1}:** The gayness of ${target} is \`${rnglist[i]}%\`\n`)
                     avgrng += Number(rnglist[i])
@@ -200,8 +201,8 @@ module.exports = {
 
                 avgrng /= 3
                 //avgrng = 100.5 //Tesing Purposes, Only Remove When You Do That
-                avgrng = (Math.floor(avgrng * 10) / 10).toFixed(1)
-
+                avgrng = (Math.floor(avgrng * 1000) / 1000).toFixed(4)
+                let detect_rng = Number(avgrng).toFixed(1)
                 //Normal Entry
                 for (var i in NumEntry) {
                     if (avgrng < NumEntry[i]) {
@@ -215,13 +216,13 @@ module.exports = {
                     }
                 }
                 //Special Cases
-                if (SpecialEntry.includes(Number(avgrng))) {
-                    ImgLink = new AttachmentBuilder(HowGayCases.SpecialCases[`Case${avgrng}`].img)
-                    ImgCtx = HowGayCases.SpecialCases[`Case${avgrng}`].ctx
-                    Emoji = HowGayCases.SpecialCases[`Case${avgrng}`].emoji
+                if (SpecialEntry.includes(detect_rng)) {
+                    ImgLink = new AttachmentBuilder(HowGayCases.SpecialCases[`Case${detect_rng}`].img)
+                    ImgCtx = HowGayCases.SpecialCases[`Case${detect_rng}`].ctx
+                    Emoji = HowGayCases.SpecialCases[`Case${detect_rng}`].emoji
                     Color = HowGayCases.Colors.SpecialCases
-                    Comment = HowGayCases.SpecialCases[`Case${avgrng}`].desc
-                    specialnum = avgrng
+                    Comment = HowGayCases.SpecialCases[`Case${detect_rng}`].desc
+                    specialnum = detect_rng
                     spkey = true
                 }
 

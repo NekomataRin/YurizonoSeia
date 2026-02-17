@@ -12,7 +12,7 @@ const ImgList = {
             value: './Assets/Howgay/CaseImg/Rejected/reject-1.png',
             ctx: 'attachment://reject-1.png'
         },
-        QuocMinh: {
+        Hirru: {
             value: './Assets/Howgay/CaseImg/Rejected/reject-2.jpg',
             ctx: 'attachment://reject-2.jpg'
         },
@@ -20,13 +20,21 @@ const ImgList = {
             value: './Assets/Howgay/CaseImg/Rejected/reject-3.png',
             ctx: 'attachment://reject-3.png'
         },
+        Acid: {
+            value: './Assets/Howgay/CaseImg/Rejected/reject-4.png',
+            ctx: 'attachment://reject-4.png'
+        },
         Wakamo: {
             value: './Assets/Howgay/CaseImg/Rejected/reject-5.png',
             ctx: 'attachment://reject-5.png'
         },
-        Acid: {
-            value: './Assets/Howgay/CaseImg/Rejected/reject-4.png',
-            ctx: 'attachment://reject-4.png'
+        Mika: {
+            value: './Assets/Howgay/CaseImg/Rejected/reject-6.png',
+            ctx: 'attachment://reject-6.png'
+        },
+        Mori: {
+            value: './Assets/Howgay/CaseImg/Rejected/reject-7.png',
+            ctx: 'attachment://reject-7.png'
         }
     },
     GigaChad: [
