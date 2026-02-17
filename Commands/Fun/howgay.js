@@ -202,7 +202,7 @@ module.exports = {
                 avgrng /= 3
                 //avgrng = 100.5 //Tesing Purposes, Only Remove When You Do That
                 avgrng = (Math.floor(avgrng * 1000) / 1000).toFixed(4)
-                
+
                 //Normal Entry
                 for (var i in NumEntry) {
                     if (avgrng < NumEntry[i]) {
@@ -365,7 +365,7 @@ module.exports = {
                             }
                         }
                     }
-                    
+
                     HowgayList.findOne({ GuildId: interaction.guild.id }, async (err, data1) => {
                         if (err) return err
                         if (!data1) {
@@ -377,6 +377,7 @@ module.exports = {
                         }
                         if (data1) {
                             //Save Record For User 
+                            finalvalue = rng || avgrng
                             const UserRecordsArr = data1.UserRecords, TypeRecords = data1.TypeRecords
                             if (UserRecordsArr.length > 0) {
                                 let index = 0
