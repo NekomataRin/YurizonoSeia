@@ -202,7 +202,7 @@ module.exports = {
                 avgrng /= 3
                 //avgrng = 100.5 //Tesing Purposes, Only Remove When You Do That
                 avgrng = (Math.floor(avgrng * 1000) / 1000).toFixed(4)
-                let detect_rng = Number(avgrng).toFixed(1)
+                
                 //Normal Entry
                 for (var i in NumEntry) {
                     if (avgrng < NumEntry[i]) {
@@ -216,6 +216,7 @@ module.exports = {
                     }
                 }
                 //Special Cases
+                let detect_rng = Number(avgrng).toFixed(1)
                 if (SpecialEntry.includes(detect_rng)) {
                     ImgLink = new AttachmentBuilder(HowGayCases.SpecialCases[`Case${detect_rng}`].img)
                     ImgCtx = HowGayCases.SpecialCases[`Case${detect_rng}`].ctx
