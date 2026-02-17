@@ -42,20 +42,31 @@ module.exports = {
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused()
         const choices = []
-        for(var i in RankingArr) {
+        for (var i in RankingArr) {
             choices.push(RankingArr[i][0])
         }
         let filtered = choices.filter(choice => choice.startsWith(focusedValue))
-        filtered = filtered.slice(0,24)
+        filtered = filtered.slice(0, 24)
         await interaction.respond(
-            filtered.map(choice => ({ name: choice, value: choice}))
+            filtered.map(choice => ({ name: choice, value: choice }))
         )
     },
     async execute(interaction) {
         await interaction.deferReply()
 
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
-
+        if (interaction.guild.id !== process.env.GUILD_ID) {
+            const ErrEmbed = new EmbedBuilder()
+                .setColor('Red')
+                .setTitle(`Err - Wrong Channel`)
+                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
+                .setDescription(`<:SeiaMuted:1244890584276008970> This command is not supported here, though it is shown here!`)
+                .setTimestamp(Date.now())
+                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+            return interaction.editReply({
+                embeds: [ErrEmbed]
+            })
+        }
         var user = interaction.options.getUser('user') || interaction.user
         user = user.id
         var key = interaction.options.getString('keyword')
@@ -68,10 +79,10 @@ module.exports = {
         var MethodValue = interaction.options.getString('method') || 'set'
         let runkey = false
         const KeyList = []
-        for(var i in RankingArr) {
+        for (var i in RankingArr) {
             KeyList.push(RankingArr[i][0])
         }
-        
+
         for (i in KeyList) {
             if (key === KeyList[i]) {
                 runkey = true

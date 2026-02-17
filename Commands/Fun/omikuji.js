@@ -57,11 +57,13 @@ module.exports = {
 
         const channelid = '1084370333622083624' //'<channel_id_here>' //Debug: Only Remove When Testing 
         if (interaction.channel.id !== channelid) {
+            let err_desc = (LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Oi, đây không phải là kênh chat cho bạn dùng, làm ơn qua <#${channelid}> để dùng nhá!` : `<:SeiaMuted:1244890584276008970> Oi, this isn't the channel for you to use this command, please go to <#${channelid}> to use it!`
+            if(interaction.guild.id !== process.env.GUILD_ID) err_desc = (LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Lệnh này không hỗ trợ ở đây đâu nhá, mặc dù nó có hiển thị!` : `<:SeiaMuted:1244890584276008970> This command is not supported here, though it is shown here!`
             const ErrEmbed = new EmbedBuilder()
                 .setColor('Red')
                 .setTitle(`Err - Wrong Channel`)
                 .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setDescription((LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Oi, đây không phải là kênh chat cho bạn dùng, làm ơn qua <#${channelid}> để dùng nhá!` : `<:SeiaMuted:1244890584276008970> Oi, this isn't the channel for you to use this command, please go to <#${channelid}> to use it!`)
+                .setDescription(err_desc)
                 .setTimestamp(Date.now())
                 .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
             return interaction.editReply({

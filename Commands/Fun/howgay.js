@@ -159,24 +159,28 @@ module.exports = {
                     const index = Math.floor(Math.random() * ImgList.GigaChad.length)
                     ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
                     ImgCtx = ImgList.GigaChad[index].ctx
-                    if (tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1162944612508377088> cho ${target}, well, vì chính bản thân họ đã chứng minh họ là con người chính hiệu.` : `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
-                    } else if (!tuser.roles.cache.has("1171750121109733438")) {
-                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1171750121109733438> cho ${target}. Chúc mừng anh bạn nhá, giờ đã là GIGA CHAD rôi đấy!` : `\n-# > Successfully added <@&1171750121109733438> to ${target}. Congratulations, you're the real chad here!`
-                    } else {
-                        DescArr[0] += (LangKey === 'vi') ? `\n-# Anh bạn à, kĩ năng rizz của ngài cao quá so với chúng sinh rồi, chả lẽ phải gọi ngài là TERACHAD?` : `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
+                    if (interaction.guild.id === process.env.GUILD_ID) {
+                        if (tuser.roles.cache.has("1162944612508377088")) {
+                            DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1162944612508377088> cho ${target}, well, vì chính bản thân họ đã chứng minh họ là con người chính hiệu.` : `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
+                        } else if (!tuser.roles.cache.has("1171750121109733438")) {
+                            DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1171750121109733438> cho ${target}. Chúc mừng anh bạn nhá, giờ đã là GIGA CHAD rôi đấy!` : `\n-# > Successfully added <@&1171750121109733438> to ${target}. Congratulations, you're the real chad here!`
+                        } else {
+                            DescArr[0] += (LangKey === 'vi') ? `\n-# Anh bạn à, kĩ năng rizz của ngài cao quá so với chúng sinh rồi, chả lẽ phải gọi ngài là TERACHAD?` : `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
+                        }
                     }
                 }
                 if (rng >= 100) {
                     const index = Math.floor(Math.random() * ImgList.Gay.length)
                     ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
                     ImgCtx = ImgList.Gay[index].ctx
-                    if (tuser.roles.cache.has("1171750121109733438")) {
-                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1171750121109733438> cho ${target}, well tệ đấy, anh bạn mất đi danh hiệu rồi còn dâu, lol.` : `\n-# > Successfully removed <@&1171750121109733438> to ${target}, well too bad, bro lost your title lol.`
-                    } else if (!tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng, giờ thì mọi anh em trong làng biết là bạn bị GAY` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
-                    } else {
-                        DescArr[0] += (LangKey === 'vi') ? `\n-# Lmao, Bạn đã gay rồi, giờ lại còn nhận cái chỉ số này nữa, thật đáng xấu hổ mà.` : `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
+                    if (interaction.guild.id === process.env.GUILD_ID) {
+                        if (tuser.roles.cache.has("1171750121109733438")) {
+                            DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1171750121109733438> cho ${target}, well tệ đấy, anh bạn mất đi danh hiệu rồi còn dâu, lol.` : `\n-# > Successfully removed <@&1171750121109733438> to ${target}, well too bad, bro lost your title lol.`
+                        } else if (!tuser.roles.cache.has("1162944612508377088")) {
+                            DescArr[0] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng, giờ thì mọi anh em trong làng biết là bạn bị GAY` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
+                        } else {
+                            DescArr[0] += (LangKey === 'vi') ? `\n-# Lmao, Bạn đã gay rồi, giờ lại còn nhận cái chỉ số này nữa, thật đáng xấu hổ mà.` : `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
+                        }
                     }
                 }
                 GayEmbeds[0] = new EmbedBuilder()
@@ -249,24 +253,28 @@ module.exports = {
                     const index = Math.floor(Math.random() * ImgList.GigaChad.length)
                     ImgLink = new AttachmentBuilder(ImgList.GigaChad[index].value)
                     ImgCtx = ImgList.GigaChad[index].ctx
-                    if (tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1162944612508377088> cho ${target}, well, vì chính bản thân họ đã chứng minh họ là con người chính hiệu.` : `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
-                    } else if (!tuser.roles.cache.has("1171750121109733438")) {
-                        DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1171750121109733438> cho ${target}. Chúc mừng anh bạn nhá, giờ đã là GIGA CHAD rôi đấy!` : `\n-# > Successfully added <@&1171750121109733438> to ${target}. Congratulations, you're the real chad here!`
-                    } else {
-                        DescArr[3] += (LangKey === 'vi') ? `\n-# Anh bạn à, kĩ năng rizz của ngài cao quá so với chúng sinh rồi, chả lẽ phải gọi ngài là TERACHAD?` : `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
+                    if (interaction.guild.id === process.env.GUILD_ID) {
+                        if (tuser.roles.cache.has("1162944612508377088")) {
+                            DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1162944612508377088> cho ${target}, well, vì chính bản thân họ đã chứng minh họ là con người chính hiệu.` : `\n-# > Successfully removed <@&1162944612508377088> to ${target}, well then, since they proved themselves to be a real person.`
+                        } else if (!tuser.roles.cache.has("1171750121109733438")) {
+                            DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1171750121109733438> cho ${target}. Chúc mừng anh bạn nhá, giờ đã là GIGA CHAD rôi đấy!` : `\n-# > Successfully added <@&1171750121109733438> to ${target}. Congratulations, you're the real chad here!`
+                        } else {
+                            DescArr[3] += (LangKey === 'vi') ? `\n-# Anh bạn à, kĩ năng rizz của ngài cao quá so với chúng sinh rồi, chả lẽ phải gọi ngài là TERACHAD?` : `\n-# Bro, your rizz level is too high for us now, what do we call, a TERACHAD?`
+                        }
                     }
                 }
                 if (avgrng >= 100) {
                     const index = Math.floor(Math.random() * ImgList.Gay.length)
                     ImgLink = new AttachmentBuilder(ImgList.Gay[index].value)
                     ImgCtx = ImgList.Gay[index].ctx
-                    if (tuser.roles.cache.has("1171750121109733438")) {
-                        DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1171750121109733438> cho ${target}, well tệ đấy, anh bạn mất đi danh hiệu rồi còn dâu, lol.` : `\n-# > Successfully removed <@&1171750121109733438> to ${target}, well too bad, bro lost your title lol.`
-                    } else if (!tuser.roles.cache.has("1162944612508377088")) {
-                        DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng, giờ thì mọi anh em trong làng biết là bạn bị GAY` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
-                    } else {
-                        DescArr[3] += (LangKey === 'vi') ? `\n-# Lmao, Bạn đã gay rồi, giờ lại còn nhận cái chỉ số này nữa, thật đáng xấu hổ mà.` : `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
+                    if (interaction.guild.id === process.env.GUILD_ID) {
+                        if (tuser.roles.cache.has("1171750121109733438")) {
+                            DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã gỡ <@&1171750121109733438> cho ${target}, well tệ đấy, anh bạn mất đi danh hiệu rồi còn dâu, lol.` : `\n-# > Successfully removed <@&1171750121109733438> to ${target}, well too bad, bro lost your title lol.`
+                        } else if (!tuser.roles.cache.has("1162944612508377088")) {
+                            DescArr[3] += (LangKey === 'vi') ? `\n-# > Đã thêm <@&1162944612508377088> cho ${target}. Chúc mừng, giờ thì mọi anh em trong làng biết là bạn bị GAY` : `\n-# > Successfully added <@&1162944612508377088> to ${target}. Congratulations, now everyone knows that you are GAY`
+                        } else {
+                            DescArr[3] += (LangKey === 'vi') ? `\n-# Lmao, Bạn đã gay rồi, giờ lại còn nhận cái chỉ số này nữa, thật đáng xấu hổ mà.` : `\n-# Lmao, you're already gay, and now you got this value again, what a pity.`
+                        }
                     }
                 }
 
