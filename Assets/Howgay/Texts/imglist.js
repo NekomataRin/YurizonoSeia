@@ -29,12 +29,12 @@ const ImgList = {
             ctx: 'attachment://reject-5.png'
         },
         Mika: {
-            value: './Assets/Howgay/CaseImg/Rejected/reject-6.png',
-            ctx: 'attachment://reject-6.png'
+            value: './Assets/Howgay/CaseImg/Rejected/reject-6.gif',
+            ctx: 'attachment://reject-6.gif'
         },
         Mori: {
-            value: './Assets/Howgay/CaseImg/Rejected/reject-7.png',
-            ctx: 'attachment://reject-7.png'
+            value: './Assets/Howgay/CaseImg/Rejected/reject-7.gif',
+            ctx: 'attachment://reject-7.gif'
         }
     },
     GigaChad: [
