@@ -12,7 +12,7 @@ module.exports = async (client, member) => {
     //const guild = await client.guilds.fetch('1084992874212495390')
     //if (guild.id !== '1084992874212495390') return
     const guild = await client.guilds.fetch(member.guild.id)
-    if (guild.id !== process.env.GUILD_ID) return
+    if (member.guild.id !== process.env.GUILD_ID) return
     const vmember = await member.user.username
     const totalmember = guild.memberCount
     console.log(vmember, totalmember)
