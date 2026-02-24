@@ -534,8 +534,8 @@ module.exports = {
                             //Special Cases
                             const SpecialIndexes = Object.keys(SpecialCasesList)
                             for (var i in SpecialIndexes) {
-                                if (finalvalue === SpecialIndexes[i]) {
-                                    SpecialCasesList[finalvalue] = Number(SpecialCasesList[finalvalue]) + 1
+                                if (Number(finalvalue).toFixed(1) === SpecialIndexes[i]) {
+                                    SpecialCasesList[Number(finalvalue).toFixed(1)] = Number(SpecialCasesList[Number(finalvalue).toFixed(1)]) + 1
                                     break
                                 }
                             }
