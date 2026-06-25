@@ -83,7 +83,7 @@ module.exports = {
 
         const usemem = await interaction.guild.members.fetch(interaction.user.id)
         var usingkey = false
-        if (usemem.roles.cache.has('1244608723737903165') || BotOwner.includes(usemem.id)) {
+        if (usemem.roles.cache.has('900747529384247336') || BotOwner.includes(usemem.id)) {
             usingkey = true
         }
 

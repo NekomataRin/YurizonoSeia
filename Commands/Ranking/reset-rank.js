@@ -30,7 +30,7 @@ module.exports = {
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
         const usemem = await interaction.guild.members.fetch(interaction.user.id)
         var usingkey = false
-        if (usemem.permissions.has(PermissionFlagsBits.Administrator) || BotOwner.includes(interaction.user.id)) {
+        if (usemem.roles.cache.has('900747529384247336') || BotOwner.includes(interaction.user.id)) {
             usingkey = true
         }
 
