@@ -82,7 +82,7 @@ module.exports = {
         const NumEntry = HowGayCases.Ranges.NormalCases
         const SpecialEntry = HowGayCases.Ranges.SpecialCases
         const GayFactorEntry = HowGayCases.Ranges.GayFactorRates
-        const ChadFacorEntry = HowGayCases.Ranges.ChadFactorRates
+        const ChadFactorEntry = HowGayCases.Ranges.ChadFactorRates
         const FactorValues = HowGayCases.Ranges.FactorValues
 
 
@@ -168,7 +168,7 @@ module.exports = {
                     }
                 }
 
-                for (var j in ChadFacorEntry) {
+                for (var j in ChadFactorEntry) {
                     if (Number(rng) >= ChadFactorEntry[j]) {
                         factorStr += `\n▸ ${ResultArr[LangKey][5]} \`${FactorValues[j]}\``
                         break
@@ -265,7 +265,7 @@ module.exports = {
                     }
                 }
 
-                for (var j in ChadFacorEntry) {
+                for (var j in ChadFactorEntry) {
                     if (Number(avgrng) >= FactorEntry[j]) {
                         factorStr += `\n▸ ${ResultArr[LangKey][5]} \`${FactorValues[j]}\``
                         break
