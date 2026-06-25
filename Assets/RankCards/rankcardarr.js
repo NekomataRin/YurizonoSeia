@@ -11,7 +11,7 @@ let rankattributes = [
         '#ffffff',
         'https://cdn.discordapp.com/emojis/1097172753985056859.png?quality=lossless',
         '<:LYG_blank:1097172753985056859>',
-        'LazyGang Member',
+        'Ordinary Member',
     ],
     ...Cluster1_Assets,
     ...Cluster2_Assets,
