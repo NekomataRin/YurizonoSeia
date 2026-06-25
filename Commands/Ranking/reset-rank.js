@@ -1,13 +1,14 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js')
 
 const wait = require('node:timers/promises').setTimeout
 const FooterEmbeds = require('../../Utils/embed')
 const Level = require('../../Database/Ranking/Leveling')
+const BotOwner = require('../../Utils/owners')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reset-rank')
-        .setDescription('-Mod Only- Reset all exp in the server'),
+        .setDescription('-Mod/Owner Only- Reset all exp in the server'),
 
     async execute(interaction) {
         await interaction.deferReply()
@@ -29,7 +30,7 @@ module.exports = {
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
         const usemem = await interaction.guild.members.fetch(interaction.user.id)
         var usingkey = false
-        if (usemem.roles.cache.has('900747529384247336')) {
+        if (usemem.permissions.has(PermissionFlagsBits.Administrator) || BotOwner.includes(interaction.user.id)) {
             usingkey = true
         }
 

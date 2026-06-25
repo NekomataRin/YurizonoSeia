@@ -40,14 +40,9 @@ module.exports = {
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
         const user = await interaction.options.getUser('user')
         const restrict_key = await interaction.options.getString('restrict-code')
-        
+
         let key = false
-        for (var i in BotOwner) {
-            if (interaction.user.id === BotOwner[i]) {
-                key = true
-                break
-            }
-        }
+        if (BotOwner.includes(interaction.user.id)) key = true
 
         if (!key) {
             const NoPerm = new EmbedBuilder()
