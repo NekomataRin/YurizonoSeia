@@ -49,7 +49,7 @@ module.exports = {
             CardDesc.push(RankingArr[i][5])
         }
         const Backgrounds = [], BGSyntax = [], Emoji = [], Status = []
-        let UnlockedRankCards = await UserCards.findOne({ UserID: interaction.user.id }).select('-_id Cards')
+        let UnlockedRankCards = await UserCards.findOne({ UserID: interaction.user.id }).select('-_id Cards') || ['none']
         let CurrentCard = await Level.findOne({ UserID: interaction.user.id }).select('-_id background')
 
         let page = interaction.options.getInteger('page') || 1
