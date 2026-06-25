@@ -81,7 +81,8 @@ module.exports = {
         const AvgChr = await interaction.options.getBoolean('avg') || false
         const NumEntry = HowGayCases.Ranges.NormalCases
         const SpecialEntry = HowGayCases.Ranges.SpecialCases
-        const FactorEntry = HowGayCases.Ranges.FactorRates
+        const GayFactorEntry = HowGayCases.Ranges.GayFactorRates
+        const ChadFacorEntry = HowGayCases.Ranges.ChadFactorRates
         const FactorValues = HowGayCases.Ranges.FactorValues
 
 
@@ -159,17 +160,17 @@ module.exports = {
                 }
 
                 let factorStr = ''
-                for (var i in FactorEntry) {
+                for (var i in GayFactorEntry) {
                     //console.log(rng < FactorEntry[i])
-                    if (rng < FactorEntry[i]) {
+                    if (rng < GayFactorEntry[i]) {
                         factorStr += `${ResultArr[LangKey][4]} \`${FactorValues[i]}\``
                         break
                     }
                 }
 
-                for (var j = FactorEntry.length - 1; j >= 0; j--) {
-                    if (rng > FactorEntry[j]) {
-                        factorStr += `\n▸ ${ResultArr[LangKey][5]} \`${FactorValues[FactorEntry.length - 1 - j]}\``
+                for (var j in ChadFacorEntry) {
+                    if (Number(rng) >= ChadFactorEntry[j]) {
+                        factorStr += `\n▸ ${ResultArr[LangKey][5]} \`${FactorValues[j]}\``
                         break
                     }
                 }
@@ -256,7 +257,7 @@ module.exports = {
                     "en-US": ["Gayness Test Result", "The calculated gayness of", "is", "Comments:", "Gay Factor:", "Giga Chad Factor:"]
                 }
                 let factorStr = ''
-                for (var i in FactorEntry) {
+                for (var i in GayFactorEntry) {
                     //console.log(avgrng < FactorEntry[i])
                     if (avgrng < FactorEntry[i]) {
                         factorStr += `${ResultArr[LangKey][4]} \`${FactorValues[i]}\``
@@ -264,9 +265,9 @@ module.exports = {
                     }
                 }
 
-                for (var j = FactorEntry.length - 1; j >= 0; j--) {
-                    if (avgrng > FactorEntry[j]) {
-                        factorStr += `\n▸ ${ResultArr[LangKey][5]} \`${FactorValues[FactorEntry.length - 1 - j]}\``
+                for (var j in ChadFacorEntry) {
+                    if (Number(avgrng) >= FactorEntry[j]) {
+                        factorStr += `\n▸ ${ResultArr[LangKey][5]} \`${FactorValues[j]}\``
                         break
                     }
                 }
