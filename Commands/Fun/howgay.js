@@ -162,7 +162,7 @@ module.exports = {
                 for (var i in FactorEntry) {
                     //console.log(rng < FactorEntry[i])
                     if (rng < FactorEntry[i]) {
-                        factorStr += `${ResultArr[LangKey][5]} \`${FactorValues[i]}\``
+                        factorStr += `${ResultArr[LangKey][4]} \`${FactorValues[i]}\``
                         break
                     }
                 }
@@ -252,7 +252,7 @@ module.exports = {
                 for (var i in FactorEntry) {
                     //console.log(avgrng < FactorEntry[i])
                     if (avgrng < FactorEntry[i]) {
-                        factorStr += `${ResultArr[LangKey][5]} \`${FactorValues[i]}\``
+                        factorStr += `${ResultArr[LangKey][4]} \`${FactorValues[i]}\``
                         break
                     }
                 }
