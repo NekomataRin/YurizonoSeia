@@ -8,24 +8,31 @@ const FooterEmbeds = require('../../Utils/embed')
 module.exports = async (client, message) => {
     if (message.author.bot) return
     if (message.channel.type === ChannelType.DM || message.channel.type === ChannelType.GroupDM) return
-    if (message.guild.id !== process.env.GUILD_ID || cd.has(message.author.id)) return
+    if (cd.has(message.author.id)) return
     if ((message.content.length) <= 1) return
 
+    const supprotedGuilds = ['900742301373042809', '1501582674186207446']
+    if(!supprotedGuilds.includes(message.guild.id)) return
+    
     const iuser = await message.guild.members.fetch(message.author.id)
-    const Channel = client.channels.cache.get('900760973953093664')
+    const msgLvlUpChannel = {
+        '900742301373042809': '900760973953093664',
+        '1501582674186207446': '1519367480227791070'
+    }
+    const Channel = client.channels.cache.get(msgLvlUpChannel[message.guild.id])
 
     function Random(max, min) {
         return Math.floor(Math.random() * (max - min)) + min
     }
 
     let key = true
-    if (Blacklisted.includes(message.channel.id)) key = false
+    if (Blacklisted[message.guild.id].includes(message.channel.id)) key = false
     if (!key) { return }
 
     let xpToGive = Random(5, 1)
     let expCD = Random(15, 5) * 1000
 
-    if (Date.now() < 1749574799 * 1000) {
+    if (Date.now() < 1783011599 * 1000) {
         xpToGive = Random(15, 3)
         expCD = Random(25, 10) * 1000
     } //Event Exp Lol */

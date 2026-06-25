@@ -48,18 +48,6 @@ module.exports = {
         }
 
         LangKey = LanguageKey.Lang
-        if (interaction.guild.id !== process.env.GUILD_ID) {
-            const ErrEmbed = new EmbedBuilder()
-                .setColor('Red')
-                .setTitle(`Err - Wrong Channel`)
-                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setDescription((LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Lệnh này không hỗ trợ ở đây đâu nhá, mặc dù nó có hiển thị!` : `<:SeiaMuted:1244890584276008970> This command is not supported here, though it is shown here!`)
-                .setTimestamp(Date.now())
-                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-            return interaction.editReply({
-                embeds: [ErrEmbed]
-            })
-        }
         let key
         let RankKey = await Level.findOne({ UserID: user.id }).select('-_id background')
         if (!RankKey) {

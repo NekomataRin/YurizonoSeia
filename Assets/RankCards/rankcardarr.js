@@ -1,8 +1,7 @@
 const Cluster1_Assets = require('./Cluster1 - Blue Archive/c1arr')
-const Cluster2_Assets = require('./Cluster2 - HoyoGames/c2arr')
-const Cluster3_Assets = require('./Cluster3 - Arcaea/c3arr')
-const Cluster4_Assets = require('./Cluster4 - VTubers/c4arr')
-const Cluster5_Assets = require('./Cluster5 - Touhou/c5arr')
+const Cluster2_Assets = require('./Cluster2 - Touhou/c2arr')
+const Cluster3_Assets = require('./Cluster3 - Senren Banka/c3arr')
+const Cluster4_Assets = require('./Cluster4 - GekiChuMai/c4arr')
 
 let rankattributes = [
     [
@@ -17,8 +16,8 @@ let rankattributes = [
     ...Cluster1_Assets,
     ...Cluster2_Assets,
     ...Cluster3_Assets,
-    ...Cluster4_Assets,
-    ...Cluster5_Assets
+    ...Cluster4_Assets
+    
 ]
 /*
 [0] Rank_Key

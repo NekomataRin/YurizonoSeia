@@ -208,7 +208,7 @@ module.exports = {
         }
 
         let ChannelKey = false
-        const MathChannel = ['1195982067780042863', '1466825591306326038']
+        const MathChannel = ['1195982067780042863', '1466825591306326038', '1501585463163621486']
         if (MathChannel.includes(interaction.channel.id)) ChannelKey = true
         if (!ChannelKey) {
             return interaction.editReply((LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Oi! Bạn không thể dùng lệnh này đây được!` : `<:SeiaMuted:1244890584276008970> Oi! You can't use this command here!`)

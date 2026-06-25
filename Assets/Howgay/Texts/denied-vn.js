@@ -9,7 +9,7 @@ const Denied_CasesVN = [
     },
     {
         "id": "751225225047179324",
-        "desc": "<:CastoriceAngy:1360440200966176878> Vậy là ngay cả *ba tớ* cũng chọn **biện pháp cuối cùng** này... Ông ấy thật sự muốn cậu **'ra đi'** ngay và luôn... sao cậu lại kiểm tra **`/howgay`** trên <@751225225047179324>? Khi cậu *đã biết* là ông ấy **không thể bị kiểm tra** rồi mà?",
+        "desc": "<:MuraAngry:1519660811776167940> Ừ thì... sao cậu lại kiểm tra **`/howgay`** trên <@751225225047179324>? Khi cậu *đã biết* là ông ấy **không thể bị kiểm tra** rồi mà?",
         "img": ImgList.Rejected.Rin.value,
         "ctx": ImgList.Rejected.Rin.ctx
     },

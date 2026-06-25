@@ -17,14 +17,15 @@ const allowedChannels = [
 module.exports = async (client, message) => {
     if (message.author.bot) return
     if (message.channel.type === ChannelType.DM) return
-
+    if (message.guild.id !== process.env.GUILD_ID) return
+    
     // If the channel is allowed, skip
     if (allowedChannels.includes(message.channel.id)) return
 
     const content = message.content
     let inviteCode
     const matches = [...content.matchAll(inviteRegex)]
-    
+
     if (matches.length === 1) {
         inviteCode = matches[0][0]
     }
@@ -44,9 +45,9 @@ module.exports = async (client, message) => {
             await message.delete()
         }
         return
-    } 
-    
-    if(matches.length === 0) return
+    }
+
+    if (matches.length === 0) return
 
     const invite = await client.fetchInvite(inviteCode)
 

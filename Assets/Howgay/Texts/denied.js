@@ -9,7 +9,7 @@ const Denied_Cases = [
     },
     {
         "id": "751225225047179324",
-        "desc": "<:CastoriceAngy:1360440200966176878> So, even my *dad* chosen to use this **last resort**... He really wanted you to be **dead** right now... why did you check **`/howgay`** on <@751225225047179324>? Since you *already know* that he cannot be **checked**?",
+        "desc": "<:MuraAngry:1519660811776167940> So, why did you check **`/howgay`** on <@751225225047179324>? Since you *already know* that he cannot be **checked**?",
         "img": ImgList.Rejected.Rin.value,
         "ctx": ImgList.Rejected.Rin.ctx
     },

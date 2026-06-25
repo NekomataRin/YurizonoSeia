@@ -55,7 +55,7 @@ module.exports = async (client, message) => {
   // --- Twitter Link ---
   if (twitterLinks.length === 1) {
     const [match] = twitterLinks
-    const converted = match[0].replace(/https?:\/\/(?:www\.|mobile\.)?x\.com/, 'https://fxtwitter.com')
+    const converted = match[0].replace(/https?:\/\/(?:www\.|mobile\.)?x\.com/, 'https://fixupx.com')
 
     await message.channel.send({
       content: `${converted}\n\n> Requested by: \`${message.author.username}\``,
