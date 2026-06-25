@@ -2,7 +2,9 @@ const ImgList = require('./imglist')
 const CasesVN = {
     Ranges: {
         NormalCases: [1.1, 17.6, 34.1, 50.6, 67.1, 83.6, 100, 101.1],
-        SpecialCases: [32.0, 40.3, 40.4, 42.0, 49.9, 63.0, 72.7, 91.1, 96.9, 99.9]
+        SpecialCases: [32.0, 40.3, 40.4, 42.0, 49.9, 63.0, 72.7, 91.1, 96.9, 99.9],
+        FactorRates: [50.0, 60.0, 70.0, 75.0, 80.0, 90.0, 94.0, 97.0, 98.0, 99.0, 99.5, 100.0, 100.5, 101.1],
+        FactorValues: ['D', 'C', 'B', 'BB', 'BBB', 'A', 'AA', 'AAA', 'S', 'S+', 'SS', 'SS+', 'SSS', 'SSS+']
     },
     Colors: {
         NormalCases: [

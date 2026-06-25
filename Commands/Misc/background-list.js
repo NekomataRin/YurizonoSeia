@@ -22,7 +22,6 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply()
         const iuser = await interaction.guild.members.fetch(interaction.user.id)
-        
         //Language Setup
         let LangKey
         const LanguageKey = await Language.findOne({ UserID: interaction.user.id }).select('-_id Lang')
@@ -40,6 +39,7 @@ module.exports = {
         }
 
         LangKey = LanguageKey.Lang
+        
         const RankKeyName = [], BackgroundList = [], Colors = [], EmojiList = [], CardDesc = []
         for (var i in RankingArr) {
             RankKeyName.push(RankingArr[i][0])
@@ -56,27 +56,28 @@ module.exports = {
         for (var i in BackgroundList) {
             Backgrounds.push(new AttachmentBuilder(BackgroundList[i]))
             Emoji.push(EmojiList[i])
-            Status.push('<:seiaehem:1244128370669650060> ' + (LangKey === 'vi') ? 'Trạng Thái: \`Chưa Nhận\`' : 'Status: \`Not Obtained\`')
+            Status.push(`<:seiaehem:1244128370669650060> ${(LangKey === 'vi') ? 'Trạng Thái: \`Chưa Nhận\`' : 'Status: \`Not Obtained\`'}`)
             BGSyntax.push(`attachment://RankCard_${i}.png`)
             for (var j in UnlockedRankCards.Cards) {
                 if (RankKeyName[i] === UnlockedRankCards.Cards[j]) {
-                    Status[i] = ('<:seiaheh:1244128244664504392> ' + (LangKey === 'vi') ? 'Trạng Thái: \`Đã Nhận\`' : 'Status: `Obtained`')
+                    Status[i] = `<:seiaheh:1244128244664504392> ${(LangKey === 'vi') ? 'Trạng Thái: \`Đã Nhận\`' : 'Status: \`Obtained\`'}`
                     break
                 }
             }
         }
 
         if (RankKeyName.indexOf(CurrentCard.background) !== -1) {
-            Status[RankKeyName.indexOf(CurrentCard.background)] = '<:SeiaSip:1244890166116618340>' + (LangKey === 'vi') ? 'Trạng Thái: \`Đang Sử Dụng\`' : 'Status: `Currently Equipped`'
+            Status[RankKeyName.indexOf(CurrentCard.background)] = `<:SeiaSip:1244890166116618340> ${(LangKey === 'vi') ? 'Trạng Thái: \`Đang Sử Dụng\`' : 'Status: \`Currently Equipped\`'}`
         }
-        Status[0] = '<:SeiaMuted:1244890584276008970> ' + (LangKey === 'vi') ? 'Trạng Thái: `Có Mặc Định`' : 'Status: `Obtained by Default`'
+        Status[0] = `<:SeiaMuted:1244890584276008970> ${(LangKey === 'vi') ? 'Trạng Thái: \`Có Mặc Định\`' : 'Status: \`Obtained by Default\`'}`
         let listlen = RankKeyName.length
-        const BackgroundEmbed = [],
-            Descs = {
+        const BackgroundEmbed = []
+
+        for (var i = 0; i < listlen; i++) {
+            let Descs = {
                 'vi': `Danh Sách Rank Card\n> Người Dùng: ${interaction.user}\n> ${Status[i]}\n> Tiêu Đề Card: \`${CardDesc[i]}\``,
                 'en-US': `Rank Cards Collection\n> User: ${interaction.user}\n> ${Status[i]}\n> Card's Title: \`${CardDesc[i]}\``
             }
-        for (var i = 0; i < RankKeyName.length; i++) {
             BackgroundEmbed[i] = new EmbedBuilder()
                 .setColor(Colors[i])
                 .setTitle(`[${Emoji[i]}] **Card Key:** \`${RankKeyName[i]}\` - \`(Page: ${i + 1})\``)

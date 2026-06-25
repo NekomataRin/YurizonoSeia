@@ -81,6 +81,8 @@ module.exports = {
         const AvgChr = await interaction.options.getBoolean('avg') || false
         const NumEntry = HowGayCases.Ranges.NormalCases
         const SpecialEntry = HowGayCases.Ranges.SpecialCases
+        const FactorEntry = HowGayCases.Ranges.FactorEntry
+        const FactorValues = HowGayCases.Ranges.FactorValues
 
         let Desc, Color, RunKey, ImgLink, ImgCtx
         //Bypassed HowGayCases
@@ -150,10 +152,18 @@ module.exports = {
                 }
 
                 const ResultArr = {
-                    "vi": ["Kết Quả Kiểm Tra Độ Gay", "Độ gay của", "là", "Nhận xét:"],
-                    "en-US": ["Gayness Test Result", "The gayness of", "is", "Comments:"]
+                    "vi": ["Kết Quả Kiểm Tra Độ Gay", "Độ gay của", "là", "Nhận xét:", "Chỉ Số Gay:"],
+                    "en-US": ["Gayness Test Result", "The gayness of", "is", "Comments:", "Gay Factor:"]
                 }
-                DescArr.push(`## ${Emoji} - ${ResultArr[LangKey][0]}\n▸ ${ResultArr[LangKey][1]} ${target} ${ResultArr[LangKey][2]} \`${rng}%\`\n### > ${ResultArr[LangKey][3]}\n\n ${Comment}`)
+
+                let factorStr = ''
+                for (var i in FactorEntry) {
+                    if (Number(rng) < FactorEntry[i]) {
+                        factorStr = `${ResultArr[LangKey][5]} \`${FactorValues[i]}\``
+                        break
+                    }
+                }
+                DescArr.push(`## ${Emoji} - ${ResultArr[LangKey][0]}\n▸ ${ResultArr[LangKey][1]} ${target} ${ResultArr[LangKey][2]} \`${rng}%\`\n▸ ${factorStr}\n### > ${ResultArr[LangKey][3]}\n\n ${Comment}`)
 
                 if (rng <= 1) {
                     const index = Math.floor(Math.random() * ImgList.GigaChad.length)
@@ -232,10 +242,18 @@ module.exports = {
                 }
 
                 const ResultArr = {
-                    "vi": ["Kết Quả Kiểm Tra Độ Gay", "Độ gay sau khi tính toán của", "là", "Nhận xét:"],
-                    "en-US": ["Gayness Test Result", "The calculated gayness of", "is", "Comments:"]
+                    "vi": ["Kết Quả Kiểm Tra Độ Gay", "Độ gay sau khi tính toán của", "là", "Nhận xét:", "Chỉ Số Gay:"],
+                    "en-US": ["Gayness Test Result", "The calculated gayness of", "is", "Comments:", "Gay Factor:"]
                 }
-                DescArr.push(`## ${Emoji} - ${ResultArr[LangKey][0]}\n▸ ${ResultArr[LangKey][1]} ${target} ${ResultArr[LangKey][2]} \`${avgrng}%\`\n\n### > ${ResultArr[LangKey][3]}\n ${Comment}`)
+                let factorStr = ''
+                for (var i in FactorEntry) {
+                    if (Number(avgrng) < FactorEntry[i]) {
+                        factorStr = `${ResultArr[LangKey][5]} \`${FactorValues[i]}\``
+                        break
+                    }
+                }
+
+                DescArr.push(`## ${Emoji} - ${ResultArr[LangKey][0]}\n▸ ${ResultArr[LangKey][1]} ${target} ${ResultArr[LangKey][2]} \`${avgrng}%\`\n▸ ${factorStr}\n### > ${ResultArr[LangKey][3]}\n ${Comment}`)
                 let OfficialDesc = ''
                 for (var i = 0; i < 3; i++) {
                     OfficialDesc += DescArr[i]

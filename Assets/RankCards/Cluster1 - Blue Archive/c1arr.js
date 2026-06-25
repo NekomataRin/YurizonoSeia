@@ -16,7 +16,7 @@ const Cluster1_Assets =
             '#f2abf5',
             'https://cdn.discordapp.com/emojis/1229126728417280050.png?size=512&quality=lossless',
             '<:HoshinoSleep:1229126728417280050>',
-            'Abydos - Hoshino',
+            'Abydos - Hoshino (v1)',
         ],
         [
             3,
@@ -149,8 +149,8 @@ const Cluster1_Assets =
             'seia-2',
             './Assets/RankCards/Cluster1 - Blue Archive/Images/RankCard_17.png',
             '#fff598',
-            'https://cdn.discordapp.com/emojis/1250945393370333214.png?size=512&quality=lossless',
-            '<:SeiaSmug:1250945393370333214>',
+            'https://cdn.discordapp.com/emojis/1250768503431233616.png?size=512&quality=lossless',
+            '<:SeiaSmug:1250768503431233616>',
             'Trinity - Seia (v2)',
         ],
         [
@@ -187,7 +187,7 @@ const Cluster1_Assets =
             '#f2abf5',
             'https://cdn.discordapp.com/emojis/1230898571197546568.png?size=512&quality=lossless',
             '<:hoshinoyawn:1230898571197546568>',
-            'Abydos - Hoshino',
+            'Abydos - Hoshino (v2)',
         ],
         [
             22,
