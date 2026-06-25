@@ -81,8 +81,10 @@ module.exports = {
         const AvgChr = await interaction.options.getBoolean('avg') || false
         const NumEntry = HowGayCases.Ranges.NormalCases
         const SpecialEntry = HowGayCases.Ranges.SpecialCases
-        const FactorEntry = HowGayCases.Ranges.FactorEntry
+        const FactorEntry = HowGayCases.Ranges.FactorRates
         const FactorValues = HowGayCases.Ranges.FactorValues
+
+        
 
         let Desc, Color, RunKey, ImgLink, ImgCtx
         //Bypassed HowGayCases
@@ -158,8 +160,9 @@ module.exports = {
 
                 let factorStr = ''
                 for (var i in FactorEntry) {
-                    if (Number(rng) < FactorEntry[i]) {
-                        factorStr = `${ResultArr[LangKey][5]} \`${FactorValues[i]}\``
+                    //console.log(rng < FactorEntry[i])
+                    if (rng < FactorEntry[i]) {
+                        factorStr += `${ResultArr[LangKey][5]} \`${FactorValues[i]}\``
                         break
                     }
                 }
@@ -247,8 +250,9 @@ module.exports = {
                 }
                 let factorStr = ''
                 for (var i in FactorEntry) {
-                    if (Number(avgrng) < FactorEntry[i]) {
-                        factorStr = `${ResultArr[LangKey][5]} \`${FactorValues[i]}\``
+                    //console.log(avgrng < FactorEntry[i])
+                    if (avgrng < FactorEntry[i]) {
+                        factorStr += `${ResultArr[LangKey][5]} \`${FactorValues[i]}\``
                         break
                     }
                 }
