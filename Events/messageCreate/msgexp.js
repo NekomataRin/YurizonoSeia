@@ -11,13 +11,12 @@ module.exports = async (client, message) => {
     if (cd.has(message.author.id)) return
     if ((message.content.length) <= 1) return
 
-    const supprotedGuilds = ['900742301373042809', '1501582674186207446']
+    const supprotedGuilds = ['900742301373042809']
     if(!supprotedGuilds.includes(message.guild.id)) return
     
     const iuser = await message.guild.members.fetch(message.author.id)
     const msgLvlUpChannel = {
         '900742301373042809': '900760973953093664',
-        '1501582674186207446': '1519367480227791070'
     }
     const Channel = client.channels.cache.get(msgLvlUpChannel[message.guild.id])
 
