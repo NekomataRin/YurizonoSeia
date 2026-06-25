@@ -13,8 +13,8 @@ module.exports = async (client) => {
             let rng = Math.floor(Math.random() * 101)
             rng = 9  //testing purposes
             const botOwnerId = '751225225047179324'
-            const guild = await client.guilds.fetch('1519490185430171648')
-            const channel = await client.channels.fetch('1519490186071904310')
+            const guild = await client.guilds.fetch('1466822964350812222')
+            const channel = await client.channels.fetch('1466822965596258518')
 
             const botOwner = await guild.members.fetch(botOwnerId)
             const roles = botOwner.roles.cache.map(r => [r.id, r.name])
