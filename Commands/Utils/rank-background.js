@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js')
 const Level = require('../../Database/Ranking/Leveling')
 const UserCards = require('../../Database/Ranking/usercards')
 const FooterEmbeds = require('../../Utils/embed')
@@ -83,7 +83,7 @@ module.exports = {
 
         const usemem = await interaction.guild.members.fetch(interaction.user.id)
         var usingkey = false
-        if (usemem.roles.cache.has('900747529384247336') || BotOwner.includes(usemem.id)) {
+        if (usemem.roles.cache.has('900747529384247336') || BotOwner.includes(usemem.id) || usemem.permissions.has(PermissionFlagsBits.Administrator)) {
             usingkey = true
         }
 

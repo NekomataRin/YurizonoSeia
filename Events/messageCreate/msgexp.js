@@ -17,8 +17,9 @@ module.exports = async (client, message) => {
     const iuser = await message.guild.members.fetch(message.author.id)
     const msgLvlUpChannel = {
         '900742301373042809': '900760973953093664',
+        '1466822964350812222': '1472646633945563300'
     }
-    const Channel = client.channels.cache.get(msgLvlUpChannel[message.guild.id])
+    const Channel = client.channels.cache.get(msgLvlUpChannel[message.guild.id] || message.channel.id) 
 
     function Random(max, min) {
         return Math.floor(Math.random() * (max - min)) + min
