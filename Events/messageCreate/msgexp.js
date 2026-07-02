@@ -11,7 +11,7 @@ module.exports = async (client, message) => {
     if (cd.has(message.author.id)) return
     if ((message.content.length) <= 1) return
 
-    const supprotedGuilds = ['900742301373042809']
+    const supprotedGuilds = ['900742301373042809', '1466822964350812222']
     if(!supprotedGuilds.includes(message.guild.id)) return
     
     const iuser = await message.guild.members.fetch(message.author.id)
