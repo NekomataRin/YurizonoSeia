@@ -259,14 +259,14 @@ module.exports = {
                 let factorStr = ''
                 for (var i in GayFactorEntry) {
                     //console.log(avgrng < FactorEntry[i])
-                    if (avgrng < FactorEntry[i]) {
+                    if (avgrng < GayFactorEntry[i]) {
                         factorStr += `${ResultArr[LangKey][4]} \`${FactorValues[i]}\``
                         break
                     }
                 }
 
                 for (var j in ChadFactorEntry) {
-                    if (Number(avgrng) >= FactorEntry[j]) {
+                    if (Number(avgrng) >= ChadFactorEntry[j]) {
                         factorStr += `\n▸ ${ResultArr[LangKey][5]} \`${FactorValues[j]}\``
                         break
                     }
