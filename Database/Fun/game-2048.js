@@ -27,4 +27,6 @@ const Game2048Db = new Schema({
     }
 })
 
+Game2048Db.index({ guildID: 1, userID: 1 })
+
 module.exports = model('Game2048', Game2048Db)

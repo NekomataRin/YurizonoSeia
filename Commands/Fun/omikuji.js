@@ -1,14 +1,20 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
-const FooterEmbeds = require('../../Utils/embed')
+const { SlashCommandBuilder } = require('discord.js')
 
+const { SeiaEmbed, Author } = require('../../Utils/embed')
+const { GetLanguage } = require('../../Utils/language')
+const { OnCooldown, SetCooldown } = require('../../Utils/cooldown')
+const Clock = require('../../Utils/clock')
+const Config = require('../../Utils/config')
+const OmikujiConfig = require('../../Assets/Omikuji/config')
 const { GetOmikujiCard } = require('../../Assets/Omikuji/Texts/getembed')
-const cdSchema = require('../../Database/cooldown')
-const Omikuji = require('../../Database/Fun/omikuji')
-const OmikujiBonus = require('../../Database/Fun/omikuji-bonus')
-const chalk = require('chalk')
+const { OmikujiUser, OmikujiGuild } = require('../../Database/Fun/omikuji')
 
-const cdtxts = require('../../Assets/Defaults/cooldown')
-const Language = require('../../Database/lang-setup')
+// Next daily reset (22:00 UTC, Discord's clock). After 22:00 it is tomorrow's 22:00, not today's
+function NextReset() {
+    const now = new Date(Clock.Now())
+    const reset = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), OmikujiConfig.ResetHourUTC, 0, 0, 0)
+    return (reset > now.getTime()) ? reset : reset + 24 * 60 * 60 * 1000
+}
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,279 +23,31 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply()
-        const iuser = await interaction.guild.members.fetch(interaction.user.id)
 
-        //Language Setup
-        let LangKey
-        const LanguageKey = await Language.findOne({ UserID: interaction.user.id }).select('-_id Lang')
-        if (!LanguageKey) {
-            const ResponseEmbed = new EmbedBuilder()
-                .setColor("Yellow")
-                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle(`<:seiaconcerned:1244128341540208793> • **Language Is Not Set**`)
-                .setDescription(`<:seiaehem:1244128370669650060> • Sensei! Please use \`/setup-language\` command in order to use the command! Since v1.4.0, my dad updated my code and added Vietnamese language for this!\n-# > And he is too lazy to add proper vietnamese embed for this lmao`)
-                .setTimestamp()
-                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-            return interaction.editReply({
-                embeds: [ResponseEmbed]
-            })
-        }
+        const LangKey = await GetLanguage(interaction)
+        if (!LangKey) return
+        const vi = (LangKey === 'vi')
 
-        LangKey = LanguageKey.Lang
-
-        function DailyCD() {
-            const nowUtc = new Date()
-            const currentYearUtc = nowUtc.getUTCFullYear()
-            const currentMonthUtc = nowUtc.getUTCMonth()
-            const currentDayUtc = nowUtc.getUTCDate()
-
-            const cooldownTimeUtc = Date.UTC(
-                currentYearUtc,
-                currentMonthUtc,
-                currentDayUtc,
-                22, 0, 0, 0
-            )
-            console.log(cooldownTimeUtc)
-            const Daily_CD = cooldownTimeUtc
-            return Daily_CD
-        }
-        const Daily_CD = DailyCD()
-
-        const channelid = '1084370333622083624' //'<channel_id_here>' //Debug: Only Remove When Testing 
+        const channelid = Config.Channels.Omikuji
         if (interaction.channel.id !== channelid) {
-            let err_desc = (LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Oi, đây không phải là kênh chat cho bạn dùng, làm ơn qua <#${channelid}> để dùng nhá!` : `<:SeiaMuted:1244890584276008970> Oi, this isn't the channel for you to use this command, please go to <#${channelid}> to use it!`
-            if(interaction.guild.id !== process.env.GUILD_ID) err_desc = (LangKey === 'vi') ? `<:SeiaMuted:1244890584276008970> Lệnh này không hỗ trợ ở đây đâu nhá, mặc dù nó có hiển thị!` : `<:SeiaMuted:1244890584276008970> This command is not supported here, though it is shown here!`
-            const ErrEmbed = new EmbedBuilder()
-                .setColor('Red')
-                .setTitle(`Err - Wrong Channel`)
-                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setDescription(err_desc)
-                .setTimestamp(Date.now())
-                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+            let err_desc = vi ? `<:SeiaMuted:1244890584276008970> Oi, đây không phải là kênh chat cho bạn dùng, làm ơn qua <#${channelid}> để dùng nhá!` : `<:SeiaMuted:1244890584276008970> Oi, this isn't the channel for you to use this command, please go to <#${channelid}> to use it!`
+            if (interaction.guild.id !== process.env.GUILD_ID) err_desc = vi ? `<:SeiaMuted:1244890584276008970> Lệnh này không hỗ trợ ở đây đâu nhá, mặc dù nó có hiển thị!` : `<:SeiaMuted:1244890584276008970> This command is not supported here, though it is shown here!`
             return interaction.editReply({
-                embeds: [ErrEmbed]
+                embeds: [SeiaEmbed(interaction, 'Red').setTitle(`Err - Wrong Channel`).setDescription(err_desc)]
             })
         }
 
+        if (await OnCooldown(interaction, 'Omikuji', LangKey)) return
+        await SetCooldown(interaction.user.id, 'Omikuji', NextReset())
 
-        //20 Rolls Bonus (Cuz Of The Bug Fixing)
-        const eventtime = 1746377999000
-        if (Date.now() <= eventtime) {
-            OmikujiBonus.findOne({ GuildID: interaction.guild.id }, async (err, datan) => {
-                if (err) throw err
-                if (!datan) {
-                    OmikujiBonus.create({
-                        GuildID: interaction.guild.id,
-                        UserStats: [
-                            {
-                                UserID: interaction.user.id,
-                                Pulls: 1
-                            }
-                        ]
-                    })
-                }
-                if (datan) {
-                    const UserStats = datan.UserStats
-                    datan.UserStats = []
-                    let index = 0
+        const { Tier, Index, Embed, File } = GetOmikujiCard(LangKey)
+        Embed.setAuthor(Author(interaction))
+        await interaction.editReply({ embeds: [Embed], files: (File) ? [File] : [] })
 
-                    for (var i in UserStats) {
-                        if (UserStats[i].UserID === interaction.user.id) {
-                            UserStats[i].Pulls++
-                            Pulls = UserStats[i].Pulls
-                            break
-                        }
-                        index = i
-                    }
-
-                    if (Number(index) === UserStats.length - 1) {
-                        if (interaction.user.id !== UserStats[index].UserID) {
-                            UserStats.push({
-                                UserID: interaction.user.id,
-                                Pulls: 1
-                            })
-                        }
-                    }
-                    for (var i in UserStats) {
-                        datan.UserStats.push(UserStats[i])
-                    }
-                    datan.save()
-                }
-            })
-        } else {
-            OmikujiBonus.findOne({ GuildID: interaction.guild.id }, async (err, datae) => {
-                if (err) throw err
-                if (!datae) return
-                else {
-                    const Stats = datae.UserStats
-                    datae.UserStats = []
-                    for (var i in Stats) {
-                        Stats[i].Pulls = 0
-                        datae.UserStats.push(Stats[i])
-                    }
-                    datae.save()
-                }
-            })
-        }
-
-        //Actual Run
-        cdSchema.findOne({ UserID: interaction.user.id }, async (err, data) => {
-            if (err) throw err
-            if (!data) {
-                cdSchema.create({
-                    UserID: interaction.user.id,
-                    Omikuji: "0"
-                })
-                await interaction.editReply(cdtxts[LangKey].new)
-            } else {
-                const cduser = data.UserID
-                const CDTime = data.Omikuji
-                console.log(chalk.yellow('[Command: Omikuji]') + ` ${cduser}, ${CDTime}, ${Date.now()}`)
-
-                let Bypass = false
-                if (Date.now() <= eventtime) {
-                    const KeyCheck = await OmikujiBonus.findOne({ GuildID: interaction.guild.id }).select('-_id UserStats')
-                    if (!KeyCheck) Bypass = true
-                    else {
-                        const UserStats = KeyCheck.UserStats
-                        for (var i in UserStats) {
-                            if (UserStats[i].UserID === interaction.user.id) {
-                                if (Number(UserStats[i].Pulls) <= 20) Bypass = true
-                                break
-                            }
-                        }
-                    }
-                }
-
-                //let cdkey = (Bypass) ? Bypass : CDTime < Date.now()
-                //cdkey = true //Debug: Only remove when testing
-                if (Date.now() < CDTime) {
-                    //if (!cdkey) {
-                    const cdembed = new EmbedBuilder()
-                        .setColor('Red')
-                        .setTitle(`**Command - Cooldown**`)
-                        .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setDescription(`${cdtxts[LangKey].cd[0]} ${interaction.user} ${cdtxts[LangKey].cd[1]} <t:${Math.floor(CDTime / 1000)}:R>`)
-                        .setTimestamp()
-                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                    await interaction.editReply({ embeds: [cdembed] })
-                } else {
-                    data.Omikuji = Daily_CD
-                    data.save()
-                    const Data = await GetOmikujiCard(LangKey)
-                    if (['SS-Tier', 'EX-Tier'].includes(Data[1])) {
-                        await interaction.editReply({
-                            embeds: [Data[2].setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })],
-                            files: [Data[3]]
-                        })
-                    }
-                    else await interaction.editReply({
-                        embeds: [Data[2].setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })]
-                    })
-
-                    //return //Debug: Only Remove When Testing
-                    Omikuji.findOne({ GuildId: interaction.guild.id }, async (err, data1) => {
-                        if (err) return err
-                        if (!data1) {
-                            console.log(Data[0], Data[1])
-                            return Omikuji.create({
-                                GuildId: interaction.guild.id,
-                                UserRecords: [
-                                    {
-                                        UserID: interaction.user.id,
-                                        "C-Tier": (Data[1] === 'C-Tier') ? 1 : 0,
-                                        "B-Tier": (Data[1] === 'B-Tier') ? 1 : 0,
-                                        "A-Tier": (Data[1] === 'A-Tier') ? 1 : 0,
-                                        "S-Tier": (Data[1] === 'S-Tier') ? 1 : 0,
-                                        "SS-Tier": [
-                                            (Data[1] === 'SS-Tier' && Data[0] === 0) ? 1 : 0,
-                                            (Data[1] === 'SS-Tier' && Data[0] === 1) ? 1 : 0,
-                                            (Data[1] === 'SS-Tier' && Data[0] === 2) ? 1 : 0
-                                        ],
-                                        "EX-Tier": (Data[1] === 'EX-Tier') ? 1 : 0
-                                    }
-                                ],
-                                TypeRecords: [{
-                                    "C-Tier": (Data[1] === 'C-Tier') ? 1 : 0,
-                                    "B-Tier": (Data[1] === 'B-Tier') ? 1 : 0,
-                                    "A-Tier": (Data[1] === 'A-Tier') ? 1 : 0,
-                                    "S-Tier": (Data[1] === 'S-Tier') ? 1 : 0,
-                                    "SS-Tier": [
-                                        (Data[1] === 'SS-Tier' && Data[0] === 0) ? 1 : 0,
-                                        (Data[1] === 'SS-Tier' && Data[0] === 1) ? 1 : 0,
-                                        (Data[1] === 'SS-Tier' && Data[0] === 2) ? 1 : 0
-                                    ],
-                                    "EX-Tier": (Data[1] === 'EX-Tier') ? 1 : 0
-                                }]
-                            })
-                        } else {
-                            const UserRecordsArr = data1.UserRecords
-                            const Index = Data[0], Key = Data[1]
-                            console.log(Index, Key)
-
-                            //User Records
-                            if (UserRecordsArr.length > 0) {
-                                let index = 0
-                                for (var i in UserRecordsArr) {
-                                    if (UserRecordsArr[i].UserID === interaction.user.id) {
-                                        if (["SS-Tier"].includes(Key)) UserRecordsArr[i][Key][Index] += 1
-                                        else UserRecordsArr[i][Key] += 1
-                                        break
-                                    }
-                                    index = i
-                                }
-                                if (Number(index) === UserRecordsArr.length - 1) {
-                                    const UserObj_Push = {
-                                        UserID: interaction.user.id,
-                                        "C-Tier": (Key === 'C-Tier') ? 1 : 0,
-                                        "B-Tier": (Key === 'B-Tier') ? 1 : 0,
-                                        "A-Tier": (Key === 'A-Tier') ? 1 : 0,
-                                        "S-Tier": (Key === 'S-Tier') ? 1 : 0,
-                                        "SS-Tier": [
-                                            (Key === 'SS-Tier' && Index === 0) ? 1 : 0,
-                                            (Key === 'SS-Tier' && Index === 1) ? 1 : 0,
-                                            (Key === 'SS-Tier' && Index === 2) ? 1 : 0
-                                        ],
-                                        "EX-Tier": (Key === 'EX-Tier') ? 1 : 0
-                                    }
-                                    if (UserObj_Push.UserID !== UserRecordsArr[index].UserID)
-                                        UserRecordsArr.push(UserObj_Push)
-                                }
-                            } else {
-                                const UserObj = {
-                                    UserID: interaction.user.id,
-                                    "C-Tier": (Key === 'C-Tier') ? 1 : 0,
-                                    "B-Tier": (Key === 'B-Tier') ? 1 : 0,
-                                    "A-Tier": (Key === 'A-Tier') ? 1 : 0,
-                                    "S-Tier": (Key === 'S-Tier') ? 1 : 0,
-                                    "SS-Tier": [
-                                        (Key === 'SS-Tier' && Index === 0) ? 1 : 0,
-                                        (Key === 'SS-Tier' && Index === 1) ? 1 : 0,
-                                        (Key === 'SS-Tier' && Index === 2) ? 1 : 0
-                                    ],
-                                    "EX-Tier": (Key === 'EX-Tier') ? 1 : 0
-                                }
-                                UserRecordsArr.push(UserObj)
-                            }
-
-                            //Type Records
-
-                            const Obj = data1.TypeRecords
-                            if (Obj.length > 0) {
-                                if (Key === "SS-Tier") Obj[0][Key][Index] += 1
-                                else Obj[0][Key] += 1
-                            }
-
-                            data1.UserRecords = [], data1.TypeRecords = []
-                            for (var i in UserRecordsArr) {
-                                data1.UserRecords.push(UserRecordsArr[i])
-                            }
-                            data1.TypeRecords.push(Obj[0])
-                            data1.save()
-                        }
-                    })
-                }
-            }
-        })
+        //Stats: tier count (+ card count for SS cards)
+        const Inc = { [`Counts.${Tier}`]: 1 }
+        if (OmikujiConfig.Cards[Tier]) Inc[`Counts.${Tier}_${Index}`] = 1
+        await OmikujiUser.updateOne({ GuildID: interaction.guild.id, UserID: interaction.user.id }, { $inc: Inc }, { upsert: true })
+        await OmikujiGuild.updateOne({ GuildID: interaction.guild.id }, { $inc: Inc }, { upsert: true })
     }
 }

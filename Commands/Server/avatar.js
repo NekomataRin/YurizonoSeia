@@ -1,7 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
-const chalk = require('chalk')
-const cdSchema = require('../../Database/cooldown')
-const FooterEmbeds = require('../../Utils/embed')
+const { SlashCommandBuilder } = require('discord.js')
+
+const { SeiaEmbed } = require('../../Utils/embed')
+const { OnCooldown } = require('../../Utils/cooldown')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -34,155 +34,39 @@ module.exports = {
 
     async execute(interaction) {
         await interaction.deferReply()
-
-        const iuser = await interaction.guild.members.fetch(interaction.user.id)
         const cdtime = 5000
 
-        let user, BannerURL
-        const OptionKey = await interaction.options.getString('option') || 'none'
-        switch (OptionKey) {
-            case 'banner':
-                {
-                    user = interaction.options.getUser('user') || interaction.user
-                    user = await user.fetch()
-                    BannerURL = user.bannerURL({ extension: 'png', size: 2048, dynamic: true })
-                    console.log(`${chalk.cyanBright('[DEBUG]')} ${BannerURL}`)
-                    break
-                }
-            case 'guild':
-                {
-                    user = interaction.options.getMember('user') || interaction.user
-                    user = await interaction.guild.members.fetch(user.id)
-                    break
-                }
-            case 'gnb':
-                {
-                    user = interaction.options.getMember('user') || interaction.user
-                    user = await interaction.guild.members.fetch(user.id)
-                    BannerURL = user.bannerURL({ extension: 'png', size: 2048, dynamic: true })
-                    console.log(`${chalk.cyanBright('[DEBUG]')} ${BannerURL}`)
-                    break
-                }
-            default:
-                {
-                    user = interaction.options.getUser('user') || interaction.user
-                    user = await user.fetch()
-                }
-        }
+        if (await OnCooldown(interaction, 'Avatar', 'en-US', cdtime)) return
 
-        cdSchema.findOne({ UserID: interaction.user.id }, async (err, data) => {
-            if (err) throw err
-            if (!data) {
-                cdSchema.create({
-                    UserID: interaction.user.id,
-                    Avatar: Date.now()
-                })
-                await interaction.editReply('<:seiaconcerned:1244128341540208793> Well, since you haven\'t in cooldown database yet... now you can try again')
-            } else {
-                const cduser = data.UserID
-                const CDTime = data.Avatar
-                console.log(chalk.yellow('[Command: Avatar]') + ` ${cduser}, ${CDTime}, ${Date.now()}`)
+        const OptionKey = interaction.options.getString('option') || 'none'
+        const Guild = ['guild', 'gnb'].includes(OptionKey)
+        const ShowBanner = ['banner', 'gnb'].includes(OptionKey)
+        const target = interaction.options.getUser('user') || interaction.user
 
-                if (CDTime > Date.now()) {
-                    const cdembed = new EmbedBuilder()
-                        .setColor('Red')
-                        .setTitle(`**Command - Cooldown**`)
-                        .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 2048 })}` })
-                        .setDescription(` <:seiaconcerned:1244128341540208793> | ${interaction.user} Sensei! Can you please stop doing that command again? I'm exhausted, I can take a rest too, you know? I'm not some sort of a real robot who can repeatedly do this for you!\n-# You can use this command again in: <t:${Math.floor(CDTime / 1000)}:R>`)
-                        .setTimestamp()
-                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                    await interaction.editReply({ embeds: [cdembed] })
-                } else {
-                    data.Avatar = Date.now() + cdtime
-                    data.save()
-                    switch (OptionKey) {
-                        case 'guild': {
-                            const GuildAvt = new EmbedBuilder()
-                                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                .setTitle(`<:seiaehem:1244128370669650060> **Avatar Displayer** (Guild)`)
-                                .setDescription(`[PNG Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'png' })}) • [JPG Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'jpg' })}) • [WEBP Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'webp' })})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
-                                .setColor('Blue')
-                                .setTimestamp()
-                                .setImage(`${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'png' })}`)
-                                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                            await interaction.editReply({
-                                embeds: [GuildAvt]
-                            })
-                            break
-                        }
-                        case 'banner':
-                            {
-                                const Avt = new EmbedBuilder()
-                                    .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                    .setTitle(`<:seiaehem:1244128370669650060> **Avatar Displayer** (Global)`)
-                                    .setDescription(`[PNG Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'png' })}) • [JPG Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'jpg' })}) • [WEBP Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'webp' })})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
-                                    .setColor('Blue')
-                                    .setTimestamp()
-                                    .setImage(`${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'png' })}`)
-                                    .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                                await interaction.editReply({
-                                    embeds: [Avt]
-                                })
-                                if (BannerURL !== null) {
-                                    const BannerAvt = new EmbedBuilder()
-                                        .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                        .setTitle(`<:seiaehem:1244128370669650060> **Banner Displayer** (Global)`)
-                                        .setDescription(`[Banner_URL](${BannerURL})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
-                                        .setColor('Blue')
-                                        .setTimestamp()
-                                        .setImage(BannerURL)
-                                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                                    await interaction.followUp({
-                                        embeds: [BannerAvt]
-                                    })
-                                }
-                                break
-                            }
-                        case 'gnb':
-                            {
-                                const GuildAvt = new EmbedBuilder()
-                                    .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                                    .setTitle(`<:seiaehem:1244128370669650060> **Avatar Displayer** (Guild)`)
-                                    .setDescription(`[PNG Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'png' })}) • [JPG Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'jpg' })}) • [WEBP Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'webp' })})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
-                                    .setColor('Blue')
-                                    .setTimestamp()
-                                    .setImage(`${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'png' })}`)
-                                    .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                                await interaction.editReply({
-                                    embeds: [GuildAvt]
-                                })
-                                if (BannerURL !== null) {
-                                    const BannerAvt = new EmbedBuilder()
-                                        .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 2048 })}` })
-                                        .setTitle(`<:seiaehem:1244128370669650060> **Banner Displayer** (Guild)`)
-                                        .setDescription(`[Banner_URL](${BannerURL})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
-                                        .setColor('Blue')
-                                        .setTimestamp()
-                                        .setImage(BannerURL)
-                                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                                    await interaction.followUp({
-                                        embeds: [BannerAvt]
-                                    })
-                                }
-                                break
-                            }
-                        default:
-                            {
-                                const Avt = new EmbedBuilder()
-                                    .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 2048 })}` })
-                                    .setTitle(`<:seiaehem:1244128370669650060> **Avatar Displayer** (Global)`)
-                                    .setDescription(`[PNG Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'png' })}) • [JPG Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'jpg' })}) • [WEBP Format](${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'webp' })})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
-                                    .setColor('Blue')
-                                    .setTimestamp()
-                                    .setImage(`${user.displayAvatarURL({ dynamic: true, size: 2048, extension: 'png' })}`)
-                                    .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-                                await interaction.editReply({
-                                    embeds: [Avt]
-                                })
-                            }
-                    }
-                }
-            }
+        //Guild = server avatar/banner (falls back to the global one)
+        const user = (Guild)
+            ? await interaction.guild.members.fetch({ user: target.id, force: true }).catch(() => null) || await target.fetch(true)
+            : await target.fetch(true)
+        const Scope = (Guild) ? 'Guild' : 'Global'
+
+        const Url = (extension) => user.displayAvatarURL({ size: 2048, extension })
+        const AvatarEmbed = SeiaEmbed(interaction, 'Blue')
+            .setTitle(`<:seiaehem:1244128370669650060> **Avatar Displayer** (${Scope})`)
+            .setDescription(`[PNG Format](${Url('png')}) • [JPG Format](${Url('jpg')}) • [WEBP Format](${Url('webp')})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
+            .setImage(Url('png'))
+        await interaction.editReply({ embeds: [AvatarEmbed] })
+
+        if (!ShowBanner) return
+        //Server banner first (Guild options), then the global banner
+        let BannerURL = (Guild) ? user.bannerURL?.({ size: 2048, extension: 'png' }) : null
+        if (!BannerURL) BannerURL = (await target.fetch(true)).bannerURL({ size: 2048, extension: 'png' })
+        if (!BannerURL) return
+
+        await interaction.followUp({
+            embeds: [SeiaEmbed(interaction, 'Blue')
+                .setTitle(`<:seiaehem:1244128370669650060> **Banner Displayer** (${Scope})`)
+                .setDescription(`[Banner_URL](${BannerURL})\n> <:SeiaPeek:1244890461592621147> **(User: ${user})**`)
+                .setImage(BannerURL)]
         })
     }
 }

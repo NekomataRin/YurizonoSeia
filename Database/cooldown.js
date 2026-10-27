@@ -1,14 +1,16 @@
 const { model, Schema } = require('mongoose')
 
+// One document per user, each field = the time (ms) that command can be used again
 let cdSchema = new Schema({
     //User_ID Stored
-    UserID: String,
+    UserID: { type: String, index: true },
     //Commands Related
     //Fun
     HowGay: String,
     QuickMath: String,
     Omikuji: String,
     Game2048: String,
+    MinigameTop: String,
     //Misc
     CheckAlive: String,
     //Ranking

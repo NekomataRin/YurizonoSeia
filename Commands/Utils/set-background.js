@@ -1,7 +1,14 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js')
+
+const { SeiaEmbed } = require('../../Utils/embed')
 const Level = require('../../Database/Ranking/Leveling')
 const UserCards = require('../../Database/Ranking/usercards')
-const FooterEmbeds = require('../../Utils/embed')
+
+// 'none' (default card) + every card the user unlocked
+async function UnlockedCards(UserID) {
+    const data = await UserCards.findOne({ UserID }).select('-_id Cards').lean()
+    return ['none', ...(data?.Cards || [])]
+}
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,77 +20,46 @@ module.exports = {
                 .setAutocomplete(true)
                 .setRequired(true)
         ),
+
     async autocomplete(interaction) {
-        let UnlokedCards = await UserCards.findOne({ UserID: interaction.user.id }).select('-_id Cards')
-        UnlokedCards = ['none', ...UnlokedCards.Cards] || ['none']
-        const focusedValue = interaction.options.getFocused()
-        const choices = UnlokedCards
-        let filtered = choices.filter(choice => choice.startsWith(focusedValue))
-        filtered = filtered.slice(0, 24)
-        await interaction.respond(
-            filtered.map(choice => ({ name: choice, value: choice }))
-        )
+        const focusedValue = interaction.options.getFocused().toLowerCase()
+        const filtered = (await UnlockedCards(interaction.user.id)).filter(choice => choice.startsWith(focusedValue)).slice(0, 25)
+        await interaction.respond(filtered.map(choice => ({ name: choice, value: choice })))
     },
+
     async execute(interaction) {
         await interaction.deferReply()
-        const key = interaction.options.getString('keyword')
-        const iuser = await interaction.guild.members.fetch(interaction.user.id)
-        const ValidKeys = await UserCards.findOne({ UserID: interaction.user.id }).select('-_id Cards')
-       
-        if (!ValidKeys['Cards'].includes(key) || !ValidKeys) {
-            const ErrEmbed = new EmbedBuilder()
-                .setColor('Red')
-                .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('Error - Invalid Key')
-                .setDescription(`<:seiaehem:1244128370669650060> • I cannot set this key because it is invalid from the database, sorry!`)
-                .setTimestamp()
-                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+        const key = interaction.options.getString('keyword').trim().toLowerCase()
 
+        if (!(await UnlockedCards(interaction.user.id)).includes(key)) {
             return interaction.editReply({
-                embeds: [ErrEmbed]
+                embeds: [SeiaEmbed(interaction, 'Red')
+                    .setTitle('Error - Invalid Key')
+                    .setDescription(`<:seiaehem:1244128370669650060> • I cannot set this key because it is invalid from the database, sorry!`)]
             })
         }
 
-        Level.findOne({ UserID: interaction.user.id }, async (err, data) => {
-            if (err) throw err
-            if (!data) return
-            else {
-                const previouskey = Level.key
-                if (key === 'none' && key === previouskey) {
-                    const SkipKey = new EmbedBuilder()
-                        .setColor('DarkButNotBlack')
-                        .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setTitle('<:seiaheh:1244128244664504392> • Key skipped')
-                        .setDescription(`<:seiaehem:1244128370669650060> • Since you wrote '\`${key}\`', I skipped this for you then...`)
-                        .setTimestamp()
-                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+        const data = await Level.findOne({ GuildID: interaction.guild.id, UserID: interaction.user.id })
+        if (!data) {
+            return interaction.editReply('<:seiaheh:1244128244664504392> • Looks like you are currently not active yet in this server... Please chat a bit and try again later...')
+        }
 
-                    await interaction.editReply({
-                        embeds: [SkipKey]
-                    })
-                } else {
-                    data.background = key
-                    let desc
-                    if (data.background === 'none') {
-                        desc = `Successfully restored the default card background for <@${interaction.user.id}>`
-                    } else {
-                        desc = `Successfully set the rank card background '\`${key}\`' for <@${interaction.user.id}>`
-                    }
+        if (key === 'none' && data.background === key) {
+            return interaction.editReply({
+                embeds: [SeiaEmbed(interaction, 'DarkButNotBlack')
+                    .setTitle('<:seiaheh:1244128244664504392> • Key skipped')
+                    .setDescription(`<:seiaehem:1244128370669650060> • Since you wrote '\`${key}\`', I skipped this for you then...`)]
+            })
+        }
 
-                    const EditKey = new EmbedBuilder()
-                        .setColor('Yellow')
-                        .setAuthor({ name: `${interaction.user.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                        .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully set.')
-                        .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)
-                        .setTimestamp()
-                        .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+        data.background = key
+        await data.save()
 
-                    await interaction.editReply({
-                        embeds: [EditKey]
-                    })
-                    data.save()
-                }
-            }
+        const desc = (key === 'none') ? `Successfully restored the default card background for <@${interaction.user.id}>` : `Successfully set the rank card background '\`${key}\`' for <@${interaction.user.id}>`
+        await interaction.editReply({
+            embeds: [SeiaEmbed(interaction, 'Yellow')
+                .setTitle('<:seiaheh:1244128244664504392> • The key has been successfully set.')
+                .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)]
         })
     }
 }

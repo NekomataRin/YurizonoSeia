@@ -1,71 +1,35 @@
-const wait = require('node:timers/promises').setTimeout;
-const chalk = require('chalk')
-/**
- * 
- * @param {Client} client 
- * @param {Message} message 
- */
+const wait = require('node:timers/promises').setTimeout
+const Config = require('../../Utils/config')
+const Log = require('../../Utils/logger')
 
+// Gallery channel: exactly 1 png/jpg per message, Seia adds the vote reactions
 module.exports = async (client, message) => {
-    if (message.channel.id !== '1207402690464841728') return
-    console.log(`${chalk.cyanBright('[DEBUG]')} MessageID: ${message.id}`)
+    if (message.channel.id !== Config.Channels.Gallery) return
     if (message.author.bot) return
-    if (message.id === '1207402690464841728') return
-    if (message.guild.id !== process.env.GUILD_ID) return
+    if (message.guild?.id !== process.env.GUILD_ID) return
 
-    if (message.attachments.size === 1) {
-        var msgAttach = message.attachments.first()
-        await wait(250)
-        if (attachIsImage(msgAttach)) {
-            await message.react('1207387176673873991')
-            await message.react('1207387198643642530')
-        } else {
-            await message.delete()
-            await wait(500)
-            await message.channel.send({
-                content: `<a:SeiaMuted:1336385867136241705> ${message.author} Oi! Wrong File's Extention, Sensei! I only accept those \`png/jpg/jpeg\` only!`,
-            }).then(msg =>
-                setTimeout(
-                    () => msg.delete(),
-                    5000
-                ))
-            return
-        }
-    } else {
-        if (message.attachments.size < 1) {
-            await message.delete()
-            await wait(500)
-            await message.channel.send({
-                content: `<a:SeiaMuted:1336385867136241705> ${message.author} Sensei! If you wanted to chat, please head to <#900755787142545438>!`,
-            }).then(msg =>
-                setTimeout(
-                    () => msg.delete(),
-                    5000
-                ))
-            return
-        } else {
-            await message.delete()
-            await wait(500)
-            await message.channel.send({
-                content: `<a:SeiaMuted:1336385867136241705> ${message.author} Sensei! You can only use **1 Image** per message! Please separate those for each message for me!`,
-            }).then(msg =>
-                setTimeout(
-                    () => msg.delete(),
-                    5000
-                ))
-            return
-        }
+    // Warning that deletes itself after 5s
+    const Warn = async (text) => {
+        await message.delete().catch(() => {})
+        await wait(500)
+        const msg = await message.channel.send(`<a:SeiaMuted:1336385867136241705> ${message.author} ${text}`)
+        setTimeout(() => msg.delete().catch(() => {}), 5000)
     }
-    function attachIsImage(msgAttach) {
-        var type = msgAttach.contentType;
-        console.log(`${chalk.cyanBright('[DEBUG]')} ${type}`)
-        let key
-        if (type === 'image/png' || type === 'image/jpeg') {
-            key = true
-        } else {
-            key = false
-        }
-        console.log(`${chalk.cyanBright('[DEBUG]')} ${key}`)
-        return key
+
+    if (message.attachments.size === 0) {
+        return Warn(`Sensei! If you wanted to chat, please head to <#${Config.Channels.GalleryChat}>!`)
     }
+    if (message.attachments.size > 1) {
+        return Warn(`Sensei! You can only use **1 Image** per message! Please separate those for each message for me!`)
+    }
+
+    const type = message.attachments.first().contentType
+    Log.Debug(`Gallery - MessageID: ${message.id} | Type: ${type}`)
+    if (!['image/png', 'image/jpeg'].includes(type)) {
+        return Warn(`Oi! Wrong File's Extention, Sensei! I only accept those \`png/jpg/jpeg\` only!`)
+    }
+
+    await wait(250)
+    await message.react(Config.Emojis.GalleryUpvote)
+    await message.react(Config.Emojis.GalleryDownvote)
 }

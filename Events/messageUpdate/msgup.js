@@ -1,96 +1,43 @@
-const { ChannelType, EmbedBuilder } = require('discord.js')
-const FooterEmbeds = require('../../Utils/embed')
+const { EmbedBuilder } = require('discord.js')
+const { Footer, Cut } = require('../../Utils/embed')
+const Config = require('../../Utils/config')
+const Clock = require('../../Utils/clock')
 
-module.exports = async (client, message) => {
-    if (message.channel.type === ChannelType.DM || message.channel.type === ChannelType.GroupDM) return
-    if (message.guild.id !== process.env.GUILD_ID) return
-    const Channel = client.channels.cache.get('1165537322943643678')
-    if (!message.partial) {
-        if (message.author.bot) return
-        if (!message.content) return
-        const iuser = await message.guild.members.fetch(message.author.id)
+// A message that wasn't in the cache (partial) only counts as edited when Discord's
+// edit time is this recent. Link previews, pins, threads... also fire messageUpdate
+// but don't change the edit time, so they are not logged anymore.
+const FRESH_EDIT_MS = 60000
 
-        let n = await message.fetch().catch(e => { return null })
-        if(!n) return
-        let EditedContent = n.content, PreContent = message.content
-        if (EditedContent === PreContent) return
-        let desc = `Ufufu~ Looks like someone edited their message! Are they hiding something? Or maybe they just made a typo / mistake?\n<:seiaehem:1244128370669650060> Message Author: ${message.member}\n> Channel: ${message.channel}`
-        if (EditedContent.length > 1024 || PreContent.length > 1024) {
-            const EditEmbed = new EmbedBuilder()
-                .setColor('Blue')
-                .setAuthor({ name: `${message.author.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244128341540208793> • Log Action: Edit Message')
-                .setDescription(`${desc}\nWell... i think nope, absolutely nope, this message is too long!`)
-                .setTimestamp()
-                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-            return Channel.send({
-                embeds: [EditEmbed]
-            })
-        } else {
-            const EditEmbed = new EmbedBuilder()
-                .setColor('Blue')
-                .setAuthor({ name: `${message.author.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244128341540208793> • Log Action: Edit Message')
-                .setDescription(desc)
-                .addFields(
-                    {
-                        name: '<:NoaNoted:1247028261847040050> Old Message Content',
-                        value: PreContent,
-                        inline: true
-                    },
-                    {
-                        name: '<:SeiaPeek:1244890461592621147> New Message Content',
-                        value: EditedContent,
-                        inline: true
-                    }
-                )
-                .setTimestamp()
-                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+module.exports = async (client, oldMessage, newMessage) => {
+    if (!newMessage.inGuild() || newMessage.guild.id !== process.env.GUILD_ID) return
 
-            await Channel.send({
-                embeds: [EditEmbed]
-            })
-        }
-    } else {
-        let n = await message.fetch().catch(e => { return null })
-        if(!n) return
-        if (n.author.bot) return
-        if (!n.content) return
+    if (newMessage.partial) newMessage = await newMessage.fetch().catch(() => null)
+    if (!newMessage || newMessage.author.bot || !newMessage.content) return
 
-        const iuser = await message.guild.members.fetch(n.author.id)
+    //Only real edits have an edit time
+    if (!newMessage.editedTimestamp) return
+    if (oldMessage.partial) {
+        if (Clock.Now() - newMessage.editedTimestamp > FRESH_EDIT_MS) return
+    } else if (oldMessage.content === newMessage.content) return
 
-        let EditedContent = n.content
-        let desc = `Ufufu~ Looks like someone edited their message! Are they hiding something? Or maybe they just made a typo / mistake?\n<:seiaehem:1244128370669650060> Message Author: ${iuser}\n> Channel: ${message.channel}\n-# > Note: This message is partial, so I cannot get the previous edited content!`
-        if (EditedContent.length > 1024) {
-            const EditEmbed = new EmbedBuilder()
-                .setColor('Blue')
-                .setAuthor({ name: `${n.author.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244128341540208793> • Log Action: Edit Message')
-                .setDescription(`${desc}\nWell... i think nope, absolutely nope, this message is too long!`)
-                .setTimestamp()
-                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
-            return Channel.send({
-                embeds: [EditEmbed]
-            })
-        } else {
-            const EditEmbed = new EmbedBuilder()
-                .setColor('Blue')
-                .setAuthor({ name: `${n.author.username}`, iconURL: `${iuser.displayAvatarURL({ dynamic: true, size: 512 })}` })
-                .setTitle('<:seiaconcerned:1244128341540208793> • Log Action: Edit Message')
-                .setDescription(desc)
-                .addFields(
-                    {
-                        name: '<:SeiaPeek:1244890461592621147> New Message Content',
-                        value: EditedContent,
-                        inline: true
-                    }
-                )
-                .setTimestamp()
-                .setFooter({ text: `${FooterEmbeds[0][0]}`, iconURL: `${FooterEmbeds[1][Math.floor(Math.random() * FooterEmbeds[1].length)]}` })
+    const Channel = client.channels.cache.get(Config.Channels.MessageLog)
+    if (!Channel) return
 
-            await Channel.send({
-                embeds: [EditEmbed]
-            })
-        }
+    let desc = `Ufufu~ Looks like someone edited their message! Are they hiding something? Or maybe they just made a typo / mistake?\n<:seiaehem:1244128370669650060> Message Author: ${newMessage.author}\n> Channel: ${newMessage.channel}\n> [Jump to message](${newMessage.url})`
+    if (oldMessage.partial) desc += `\n-# > Note: This message is partial, so I cannot get the previous edited content!`
+
+    const EditEmbed = new EmbedBuilder()
+        .setColor('Blue')
+        .setAuthor({ name: newMessage.author.username, iconURL: (newMessage.member || newMessage.author).displayAvatarURL({ size: 512 }) })
+        .setTitle('<:seiaconcerned:1244128341540208793> • Log Action: Edit Message')
+        .setDescription(desc)
+        .setTimestamp()
+        .setFooter(Footer())
+
+    if (!oldMessage.partial && oldMessage.content) {
+        EditEmbed.addFields({ name: '<:NoaNoted:1247028261847040050> Old Message Content', value: Cut(oldMessage.content), inline: true })
     }
+    EditEmbed.addFields({ name: '<:SeiaPeek:1244890461592621147> New Message Content', value: Cut(newMessage.content), inline: true })
+
+    await Channel.send({ embeds: [EditEmbed] })
 }

@@ -1,15 +1,5 @@
+// Omikuji texts (Tiếng Việt). Ranges, colors and images: Assets/Omikuji/config.js
 const OmikujiAssetsVN = {
-    Range: [57.005, 84.005, 94.005, 98.005, 99.995, 100.001],
-    Key: ['C-Tier', 'B-Tier', 'A-Tier', 'S-Tier', 'SS-Tier', 'EX-Tier'],
-    Title: [
-        "**Omikuji Card - C Tier**",
-        "**Omikuji Card - B Tier**",
-        "**Omikuji Card - A Tier**",
-        "**Omikuji Card - S Tier**",
-        "**Omikuji Card - SS Tier**",
-        "**Omikuji Card - EX Tier**",
-    ],
-    Color: ['#808080', '#3cb371', '#4682b4', '#b939bf', '#ffd426', '#f0f8ff'],
     Description: {
         "C-Tier": [
             "## **📖 ページの向こう (Ngoài Trang Sách)**\n### 🌱 **Vận May:** *Tiểu Cát* `(小吉)`\n### **Lời Tiên Tri:**\nLời thì thầm nhẹ nhàng từ cõi huyền bí vang vọng khi ngươi đắm mình trong những trang sách. Những mối dây liên kết bất ngờ và tiếng vọng từ chính đời ngươi ẩn sâu trong từng dòng chữ, ban phát chỉ dẫn dịu dàng và những tia sáng lặng lẽ.\n### **Điềm Báo:**\n📚 Một mảnh giấy ghi lời chẳng phải ngươi viết.\n✍ Câu chuyện kể lại chính đời ngươi.\n🔖 Dấu sách hiện ra hai lần trước mắt.\n### **Vật May Mắn:**\nMảnh giấy sách, đầu bút chì gãy, dải lụa mỏng\n### **Con Đường Định Mệnh:**\nChân lý là anh em song sinh của hư cấu.\n### **Lời Sau Cùng:**\n*\"Phước lành nhỏ chờ ngươi nơi trang sách tiếp theo. Lật từng trang với lòng tò mò thanh tao, bởi những mối liên kết bất ngờ và ân sủng tinh tế đang ẩn mình trong câu chuyện dần hé mở.\"*",

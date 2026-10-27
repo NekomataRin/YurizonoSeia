@@ -1,15 +1,5 @@
+// Omikuji texts (English). Ranges, colors and images: Assets/Omikuji/config.js
 const OmikujiAssets = {
-    Range: [57.005, 84.005, 94.005, 98.005, 99.995, 100.001],
-    Key: ['C-Tier', 'B-Tier', 'A-Tier', 'S-Tier', 'SS-Tier', 'EX-Tier'],
-    Title: [
-        "**Omikuji Card - C Tier**",
-        "**Omikuji Card - B Tier**",
-        "**Omikuji Card - A Tier**",
-        "**Omikuji Card - S Tier**",
-        "**Omikuji Card - SS Tier**",
-        "**Omikuji Card - EX Tier**",
-    ],
-    Color: ['#808080', '#3cb371', '#4682b4', '#b939bf', '#ffd426', '#f0f8ff'],
     Description: {
         "C-Tier": [
             '## **📖 ページの向こう (Beyond the Page)**\n### 🌱 **Fortune:** *Small Fortune* `(小吉)`\n### **Divine Message:**\nA subtle whisper of small fortune unfolds as you delve into the written word. Unexpected connections and echoes of your own experiences lie within the pages, offering gentle guidance and quiet insights.\n### **Omens:**\n📚 You find a note you didn\'t write.\n✍ A story echoes your own.\n🔖 A bookmark appears twice.\n### **Lucky Items:**\nBook scrap, pencil stub, ribbon\n### **Destiny Path:**\nTruth is fiction\'s sibling.\n### **Final Words:**\n*"Small fortune awaits as you explore further. Turn the page with gentle curiosity, for unexpected connections and subtle blessings reside within the unfolding narrative."*',
@@ -56,16 +46,6 @@ const OmikujiAssets = {
         "EX-Tier": [
             //Nekomata Rin (Kitsune)
             '## **🦊 七尾神の神託 (Oracle of the Seven-Tailed God)**\n### 🌕 **Fortune:** *Absolute Divine Blessing* *`(絶対神の祝福)`*\n### **Divine Message:**\nFeel the profound embrace of ultimate celestial favor enveloping you. A sacred, radiant light now graces your very being, unlocking pathways to immeasurable joy and unforeseen miracles. With unwavering faith, step confidently into this divinely ordained destiny.\n### **Omens:**\n🌕 A silver light shall follow you in dreams.\n🦴 Even the lost are drawn to your warmth.\n🪷 Where you walk, serenity blooms.\n### **Lucky Items:**\n✨ Moonstone, Celestial Kimono, Fox Mask\n### **Destiny Path:**\n🔮 The divine path is open. Trust your intuition, for a hidden door awaits beyond illusions.\n### **Final Words:**\n*"Your fate rests in the hands of the divine fox herself. Whatever you do next, know that you have already been blessed."*'
-        ]
-    },
-    Image: {
-        "SS-Tier": [
-            './Assets/Omikuji/SpecialImg/t5-0.png',
-            './Assets/Omikuji/SpecialImg/t5-1.png',
-            './Assets/Omikuji/SpecialImg/t5-2.png'
-        ],
-        "EX-Tier": [
-            './Assets/Omikuji/SpecialImg/t6-0.png'
         ]
     }
 }

@@ -1,4 +1,4 @@
-const { ChannelType } = require('discord.js')
+const { MarkDeleted } = require('../../Utils/bot-deleted')
 
 // Emoji IDs
 const EMOJI_ERROR = '<a:SeiaMuted:1336385867136241705>'
@@ -15,110 +15,134 @@ const facebookRedirectRegex = /https?:\/\/(?:www\.|web\.|m\.)?facebook\.com\/sha
 // All Facebook links matcher
 const facebookLinkRegex = /https?:\/\/(?:www\.|web\.|m\.)?facebook\.com\/(?!(?:share\/[vr]\/))(?:(?:[^\/\s]+\/videos\/(\d+))|reel\/(\d+)|watch\/\?v=(\d+)|fb\.watch\/[\w-]+|[^\/]+\/posts\/[\w-]+|permalink\.php\?story_fbid=\d+&id=\d+|story\.php\?story_fbid=\d+&id=\d+|groups\/\d+\/posts\/[\w-]+)(?:[/?&][^\s]*)?/gi
 
-module.exports = async (client, message) => {
-  if (message.author.bot) return
-  if (message.channel.type === ChannelType.DM) return
-  //if (message.guild.id !== process.env.GUILD_ID) return
+// Facebook link -> facebed.com link (null = unknown format)
+function ConvertFacebook(link) {
+    let m
 
-  const content = message.content
+    // /user/posts/:id
+    m = link.match(/facebook\.com\/user\/posts\/(\d+)/)
+    if (m) return `https://facebed.com/user/posts/${m[1]}`
 
-  // Match links
-  const twitterLinks = [...content.matchAll(twitterRegex)]
-  const facebookLinks = [...content.matchAll(facebookLinkRegex)]
-  const redirectLinks = [...content.matchAll(facebookRedirectRegex)]
-  const totalLinks = twitterLinks.length + facebookLinks.length + redirectLinks.length
+    // /share/p/:hash
+    m = link.match(/facebook\.com\/share\/p\/([\w-]+)/)
+    if (m) return `https://facebed.com/share/p/${m[1]}`
 
-  if (totalLinks > 1) {
-    const errorMsg = await message.channel.send({
-      content: `${EMOJI_ERROR} ${message.author} Sensei! You can only use one link either **Twitter** or **Facebook** link for this!`,
-    })
-    setTimeout(() => errorMsg.delete().catch(() => {}), 10000)
-    await message.delete()
-    return
-  }
+    // /permalink.php?story_fbid=xxx&id=yyy
+    m = link.match(/facebook\.com\/permalink\.php\?story_fbid=(\d+)&id=(\d+)/)
+    if (m) return `https://facebed.com/permalink.php?story_fbid=${m[1]}&id=${m[2]}`
 
-  // --- Facebook redirect links (share/v/, share/r/) ---
-  if (redirectLinks.length === 1) {
-    try {
-      await message.author.send(`🔗 Sensei! You sent a **Facebook redirect link**, please follow these steps below to get the full link!\n\n${EMOJI_STEP1} Open the link in your browser.\n${EMOJI_STEP2} Copy the full video or reel URL from the address bar.\n${EMOJI_STEP3} Repost that full link in the chat (NOT HERE) and I’ll convert it automatically for you!\n\n> Also: Don't forget this link you've sent here in case you wanted to copy again: ${redirectLinks[0]}`)
+    // /story.php?story_fbid=xxx&id=yyy
+    m = link.match(/facebook\.com\/story\.php\?story_fbid=(\d+)&id=(\d+)/)
+    if (m) return `https://facebed.com/story.php?story_fbid=${m[1]}&id=${m[2]}`
 
-      const notice = await message.channel.send(`${EMOJI_ERROR} ${message.author} Sensei! This link is a redirect link, I cannot automatically convert it to the link you need. Please check your DMs for the instructions!`)
-      setTimeout(() => notice.delete().catch(() => {}), 10000)
-    } catch {
-      const fallback = await message.channel.send(`${EMOJI_ERROR} Sensei! I cannot send to your DMs because they are closed! Please follow these steps below to get the full link!\n\n${EMOJI_STEP1} Open the link in your browser.\n${EMOJI_STEP2} Copy the full video or reel URL from the address bar.\n${EMOJI_STEP3} Repost that full link in the chat (NOT HERE) and I’ll convert it automatically for you!\n\n> Also: Don't forget this link you've sent here in case you wanted to copy again: ${redirectLinks[0]}`)
-      setTimeout(() => fallback.delete().catch(() => {}), 30000)
+    // /groups/:id/posts/:id
+    m = link.match(/facebook\.com\/groups\/(\d+)\/posts\/(\d+)/)
+    if (m) return `https://facebed.com/groups/${m[1]}/posts/${m[2]}`
+
+    // /watch/?v=xxx
+    m = link.match(/[?&]v=(\d+)/)
+    if (m) return `https://facebed.com/watch/?v=${m[1]}`
+
+    // /reel/:id
+    m = link.match(/facebook\.com\/reel\/(\d+)/)
+    if (m) return `https://facebed.com/reel/${m[1]}`
+
+    // /videos/:id
+    m = link.match(/facebook\.com\/[^\/]+\/videos\/(\d+)/)
+    if (m) return `https://facebed.com/watch/?v=${m[1]}`
+
+    // fb.watch
+    m = link.match(/fb\.watch\/([\w-]+)/)
+    if (m) return `https://facebed.com/fb.watch/${m[1]}`
+
+    return null
+}
+
+/*
+Converted message:
+<converted link>
+> Requested by: `user`
+> Context: <the message without the link>   (only when there is other text)
+*/
+function BuildMessage(converted, message, link) {
+    let text = `${converted}\n> Requested by: \`${message.author.username}\``
+
+    const context = message.content
+        .replace(link, '')
+        .replace(/<\s*>/g, '')
+        .replace(/[ \t]{2,}/g, ' ')
+        .replace(/[ \t]+\n/g, '\n')
+        .trim()
+    if (context) {
+        const room = 2000 - text.length - 20
+        const cut = (context.length > room) ? context.slice(0, room - 3) + '...' : context
+        text += `\n> Context: ${cut.split('\n').join('\n> ')}`
     }
-    await message.delete()
-    return
-  }
+    return text
+}
 
-  // --- Twitter Link ---
-  if (twitterLinks.length === 1) {
-    const [match] = twitterLinks
-    const converted = match[0].replace(/https?:\/\/(?:www\.|mobile\.)?x\.com/, 'https://fixupx.com')
-
+async function SendConverted(message, converted, link) {
     await message.channel.send({
-      content: `${converted}\n\n> Requested by: \`${message.author.username}\``,
+        content: BuildMessage(converted, message, link),
+        //Never ping anyone that was mentioned in the context
+        allowedMentions: { parse: [] }
     })
-    await message.delete()
-    return
-  }
+    MarkDeleted(message.id)
+    await message.delete().catch(() => {})
+}
 
-  // --- Facebook formats (Facebed supported or video/reel/watch) ---
-  if (facebookLinks.length === 1) {
-    const [rawLink] = facebookLinks
+module.exports = async (client, message) => {
+    if (message.author.bot || !message.inGuild()) return
 
-    const converted = (() => {
-      let m
+    const content = message.content || ''
 
-      // /user/posts/:id
-      m = rawLink[0].match(/facebook\.com\/user\/posts\/(\d+)/)
-      if (m) return `https://facebed.com/user/posts/${m[1]}`
+    // Match links
+    const twitterLinks = [...content.matchAll(twitterRegex)]
+    const facebookLinks = [...content.matchAll(facebookLinkRegex)]
+    const redirectLinks = [...content.matchAll(facebookRedirectRegex)]
+    const totalLinks = twitterLinks.length + facebookLinks.length + redirectLinks.length
+    if (totalLinks === 0) return
 
-      // /share/p/:hash
-      m = rawLink[0].match(/facebook\.com\/share\/p\/([\w-]+)/)
-      if (m) return `https://facebed.com/share/p/${m[1]}`
-
-      // /permalink.php?story_fbid=xxx&id=yyy
-      m = rawLink[0].match(/facebook\.com\/permalink\.php\?story_fbid=(\d+)&id=(\d+)/)
-      if (m) return `https://facebed.com/permalink.php?story_fbid=${m[1]}&id=${m[2]}`
-
-      // /story.php?story_fbid=xxx&id=yyy
-      m = rawLink[0].match(/facebook\.com\/story\.php\?story_fbid=(\d+)&id=(\d+)/)
-      if (m) return `https://facebed.com/story.php?story_fbid=${m[1]}&id=${m[2]}`
-
-      // /groups/:id/posts/:id
-      m = rawLink[0].match(/facebook\.com\/groups\/(\d+)\/posts\/(\d+)/)
-      if (m) return `https://facebed.com/groups/${m[1]}/posts/${m[2]}`
-
-      // /watch/?v=xxx
-      m = rawLink[0].match(/[?&]v=(\d+)/)
-      if (m) return `https://facebed.com/watch/?v=${m[1]}`
-
-      // /reel/:id
-      m = rawLink[0].match(/facebook\.com\/reel\/(\d+)/)
-      if (m) return `https://facebed.com/reel/${m[1]}`
-
-      // /videos/:id
-      m = rawLink[0].match(/facebook\.com\/[^\/]+\/videos\/(\d+)/)
-      if (m) return `https://facebed.com/watch/?v=${m[1]}`
-
-      // fb.watch
-      m = rawLink[0].match(/fb\.watch\/([\w-]+)/)
-      if (m) return `https://facebed.com/fb.watch/${m[1]}`
-
-      return null
-    })()
-
-    if (converted) {
-      await message.channel.send({
-        content: `${converted}\n\n> Requested by: \`${message.author.username}\``,
-      })
-    } else {
-      await message.channel.send(`${EMOJI_ERROR} Sensei! I couldn’t recognize this Facebook link. How do I convert those to the domain you needed?`)
+    if (totalLinks > 1) {
+        const errorMsg = await message.channel.send({
+            content: `${EMOJI_ERROR} ${message.author} Sensei! You can only use one link either **Twitter** or **Facebook** link for this!`,
+        })
+        setTimeout(() => errorMsg.delete().catch(() => {}), 10000)
+        await message.delete().catch(() => {})
+        return
     }
 
-    await message.delete()
-    return
-  }
+    // --- Facebook redirect links (share/v/, share/r/) ---
+    if (redirectLinks.length === 1) {
+        const Steps = `${EMOJI_STEP1} Open the link in your browser.\n${EMOJI_STEP2} Copy the full video or reel URL from the address bar.\n${EMOJI_STEP3} Repost that full link in the chat (NOT HERE) and I’ll convert it automatically for you!\n\n> Also: Don't forget this link you've sent here in case you wanted to copy again: ${redirectLinks[0][0]}`
+        try {
+            await message.author.send(`🔗 Sensei! You sent a **Facebook redirect link**, please follow these steps below to get the full link!\n\n${Steps}`)
+
+            const notice = await message.channel.send(`${EMOJI_ERROR} ${message.author} Sensei! This link is a redirect link, I cannot automatically convert it to the link you need. Please check your DMs for the instructions!`)
+            setTimeout(() => notice.delete().catch(() => {}), 10000)
+        } catch {
+            const fallback = await message.channel.send(`${EMOJI_ERROR} Sensei! I cannot send to your DMs because they are closed! Please follow these steps below to get the full link!\n\n${Steps}`)
+            setTimeout(() => fallback.delete().catch(() => {}), 30000)
+        }
+        await message.delete().catch(() => {})
+        return
+    }
+
+    // --- Twitter Link ---
+    if (twitterLinks.length === 1) {
+        const link = twitterLinks[0][0]
+        const converted = link.replace(/https?:\/\/(?:www\.|mobile\.)?x\.com/, 'https://fixupx.com')
+        return SendConverted(message, converted, link)
+    }
+
+    // --- Facebook formats (Facebed supported or video/reel/watch) ---
+    if (facebookLinks.length === 1) {
+        const link = facebookLinks[0][0]
+        const converted = ConvertFacebook(link)
+
+        if (converted) return SendConverted(message, converted, link)
+
+        await message.channel.send(`${EMOJI_ERROR} Sensei! I couldn’t recognize this Facebook link. How do I convert those to the domain you needed?`)
+        await message.delete().catch(() => {})
+    }
 }

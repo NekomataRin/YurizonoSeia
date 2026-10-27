@@ -1,7 +1,7 @@
 const { model, Schema } = require('mongoose')
 
 const Langugage = new Schema({
-    UserID: String,
+    UserID: { type: String, index: true },
     Lang: String,
 })
 
