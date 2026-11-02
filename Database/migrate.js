@@ -19,7 +19,9 @@ const Steps = [
     // Merge duplicated rank documents + /howgay and /omikuji stats: old per-server arrays -> one document per user
     { Key: 'v2-2026-10', Run: MigrateV2 },
     // /quick-math scores saved as text -> numbers (so they sort), /game-2048 saved games -> first best scores
-    { Key: 'v3-2026-10-minigames', Run: MigrateV3 }
+    { Key: 'v3-2026-10-minigames', Run: MigrateV3 },
+    // /quick-math best scores are per server now: the old ones (no server) go to the main server
+    { Key: 'v4-2026-11-quickmath-guilds', Run: MigrateV4 }
 ]
 
 async function RunMigrations() {
@@ -215,6 +217,13 @@ async function MigrateOmikuji(GuildIds) {
         if (ServerRecord) await OmikujiGuild.updateOne({ GuildID }, { $setOnInsert: { Counts: OmikujiCounts(ServerRecord) } }, { upsert: true })
     }
     return users
+}
+
+// /quick-math best scores without a server -> the main server (in Miosha's time the minigames were Lazy Gang only)
+async function MigrateV4() {
+    if (!process.env.GUILD_ID) throw new Error('GUILD_ID is not set in .env')
+    const result = await QuickMathDb.collection.updateMany({ GuildID: { $exists: false } }, { $set: { GuildID: process.env.GUILD_ID } })
+    return { quickmath: result.modifiedCount }
 }
 
 // createIndexes only adds missing indexes, it never drops anything

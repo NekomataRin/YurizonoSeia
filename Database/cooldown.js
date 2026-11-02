@@ -11,8 +11,14 @@ let cdSchema = new Schema({
     Omikuji: String,
     Game2048: String,
     MinigameTop: String,
+    Coinflip: String,
+    Dice: String,
+    Shiprate: String,
     //Misc
     CheckAlive: String,
+    Pick: String,
+    Roll: String,
+    NumberConvert: String,
     //Ranking
     Rank: String,
     Top: String,

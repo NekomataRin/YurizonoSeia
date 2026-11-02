@@ -11,13 +11,12 @@ const Game2048Db = require('../../Database/Fun/game-2048')
 const Game2048Best = require('../../Database/Fun/game-2048-best')
 
 const BLANK = '1097172753985056859'
-const VI_NOTE = `-# <:seiaehem:1244128370669650060> Currently, Vietnamese Isn't Supported Here... Please Wait Until My Dad Update It!`
 
-function createDefaultMenu(noSaved = true) {
+function createDefaultMenu(noSaved = true, vi = false) {
     return [
         new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId('new-game').setLabel('[New Game]').setEmoji('1254109761125875802').setStyle(ButtonStyle.Secondary),
-            new ButtonBuilder().setCustomId('load-game').setLabel('[Load Game]').setEmoji('1254109782592327783').setStyle(ButtonStyle.Secondary).setDisabled(noSaved)
+            new ButtonBuilder().setCustomId('new-game').setLabel(vi ? '[Ván mới]' : '[New Game]').setEmoji('1254109761125875802').setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder().setCustomId('load-game').setLabel(vi ? '[Chơi tiếp]' : '[Load Game]').setEmoji('1254109782592327783').setStyle(ButtonStyle.Secondary).setDisabled(noSaved)
         )
     ]
 }
@@ -42,8 +41,8 @@ function createGameButtons(UndoUsed = true) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('game-2048')
-        .setDescription('Play 2048 with various modes (not supported save/load game)')
-        .setDescriptionLocalizations({ vi: 'Chơi 2048 với một vài chế độ (hiện không hỗ trợ save/load game)' })
+        .setDescription('Play 2048 with various modes (your game is saved when you stop)')
+        .setDescriptionLocalizations({ vi: 'Chơi 2048 với một vài chế độ (dừng giữa chừng thì ván được lưu lại)' })
         .addStringOption(option => option.setName('game-key')
             .setDescription('The game mode you wanted to play - Default: default')
             .setDescriptionLocalizations({ vi: 'Chế độ game mà bạn muốn chơi - Mặc định: default' })
@@ -60,20 +59,24 @@ module.exports = {
 
         const LangKey = await GetLanguage(interaction)
         if (!LangKey) return
+        const vi = (LangKey === 'vi')
         if (await OnCooldown(interaction, 'Game2048', LangKey)) return
 
         //Saved game = a game that isn't lost yet
         const DbFilter = { guildID: interaction.guild.id, userID: interaction.user.id }
         const GameData = await Game2048Db.findOne(DbFilter).lean()
         const Saved = (GameData?.gameStats?.lost === false) ? GameData.gameStats : null
+        const SavedTime = (Saved) ? `<t:${Math.floor(Saved.timestamp / 1000)}> | <t:${Math.floor(Saved.timestamp / 1000)}:R>` : ''
 
         const MenuEmbed = SeiaEmbed(interaction, 'Grey')
             .setTitle('**2048 Game - Menu**')
             .setDescription((Saved)
-                ? `Welcome back, ${interaction.user}! Would you like to Load The Current Game?\n> **Mode:** \`${Saved.mode}\`\n▸ **Score:** \`${Saved.scores?.current}\` ▸ **Moves:** \`${Saved.moveCount}\`\n> Saved Date: <t:${Math.floor(Saved.timestamp / 1000)}> | <t:${Math.floor(Saved.timestamp / 1000)}:R>`
-                : `Welcome ${interaction.user} to 2048 game, please select button below to Start The Game!`)
+                ? (vi
+                    ? `Chào mừng trở lại, ${interaction.user}! Bạn có muốn chơi tiếp ván đang lưu không?\n> **Chế độ:** \`${Saved.mode}\`\n▸ **Điểm:** \`${Saved.scores?.current}\` ▸ **Số bước:** \`${Saved.moveCount}\`\n> Lưu lúc: ${SavedTime}`
+                    : `Welcome back, ${interaction.user}! Would you like to Load The Current Game?\n> **Mode:** \`${Saved.mode}\`\n▸ **Score:** \`${Saved.scores?.current}\` ▸ **Moves:** \`${Saved.moveCount}\`\n> Saved Date: ${SavedTime}`)
+                : (vi ? `Chào mừng ${interaction.user} đến với game 2048, bấm nút bên dưới để bắt đầu nhé!` : `Welcome ${interaction.user} to 2048 game, please select button below to Start The Game!`))
 
-        const Menu = await interaction.editReply({ embeds: [MenuEmbed], components: createDefaultMenu(!Saved) })
+        const Menu = await interaction.editReply({ embeds: [MenuEmbed], components: createDefaultMenu(!Saved, vi) })
         const choice = await Menu.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 30000 }).catch(() => null)
         if (!choice) return interaction.editReply({ components: [] })
 
@@ -84,20 +87,24 @@ module.exports = {
         if (Load) Game.Load(Saved)
         else Game.CreateGame()
         const Modeinfo = Game.settings
+        const ModeDesc = (vi) ? (Game2048_Modes[gameKey]?.descVi || Modeinfo.desc) : Modeinfo.desc
 
         await choice.update({
             embeds: [SeiaEmbed(interaction)
                 .setTitle(`**Game 2048** (Mode: \`${Modeinfo.name}\`)`)
-                .setDescription(`Please use the **Arrow Buttons** to **Move**, <:undo:1390076263951237240> to **Undo**, and **❌** to quit\n${Modeinfo.desc}\n\n${VI_NOTE}`)],
+                .setDescription(vi
+                    ? `Dùng các **nút mũi tên** để **di chuyển**, <:undo:1390076263951237240> để **Undo**, và **❌** để thoát\n${ModeDesc}`
+                    : `Please use the **Arrow Buttons** to **Move**, <:undo:1390076263951237240> to **Undo**, and **❌** to quit\n${ModeDesc}`)],
             components: []
         })
         await wait(5000)
 
-        const BoardEmbed = (color = 'Yellow', desc = `Use arrows to move, <:undo:1390076263951237240> to Undo, ❌ to Quit.\n${VI_NOTE}`) => SeiaEmbed(interaction, color)
+        const Controls = vi ? 'Dùng mũi tên để di chuyển, <:undo:1390076263951237240> để Undo, ❌ để thoát.' : 'Use arrows to move, <:undo:1390076263951237240> to Undo, ❌ to Quit.'
+        const BoardEmbed = (color = 'Yellow', desc = Controls) => SeiaEmbed(interaction, color)
             .setTitle(`**Game 2048** (Mode: \`${Modeinfo.name}\`)`)
             .setDescription(desc)
             .addFields({
-                name: `► **Score:** \`${Game.score}\` ► **Moves:** \`${Game.moveCount}\``,
+                name: `► **${vi ? 'Điểm' : 'Score'}:** \`${Game.score}\` ► **${vi ? 'Số bước' : 'Moves'}:** \`${Game.moveCount}\``,
                 value: Game.ToString()
             })
         const SaveGame = () => Game2048Db.updateOne(DbFilter, { $set: { gameStats: Game.Save() } }, { upsert: true })
@@ -149,23 +156,23 @@ module.exports = {
             switch (reason) {
                 case 'quit': {
                     if (Modeinfo.hidden) Game.showOnce = true
-                    reasonText = 'Game Saved! Here is the saved board before you left.\n> You manually quit the game.'
+                    reasonText = vi ? 'Đã lưu ván! Đây là bàn cờ trước khi bạn rời đi.\n> Bạn đã tự thoát game.' : 'Game Saved! Here is the saved board before you left.\n> You manually quit the game.'
                     break
                 }
                 case 'lose': {
-                    reasonText = 'Game Over! Here is your result of the game\n> No more valid moves!'
+                    reasonText = vi ? 'Trò chơi kết thúc! Đây là kết quả ván của bạn\n> Hết nước đi rồi!' : 'Game Over! Here is your result of the game\n> No more valid moves!'
                     break
                 }
                 default: {
                     if (Modeinfo.hidden) Game.showOnce = true
-                    reasonText = 'Game Saved! Here is the saved board before you left.\n> You took too long to respond.'
+                    reasonText = vi ? 'Đã lưu ván! Đây là bàn cờ trước khi bạn rời đi.\n> Bạn đã không bấm gì quá lâu.' : 'Game Saved! Here is the saved board before you left.\n> You took too long to respond.'
                 }
             }
 
-            if (NewBest) reasonText += '\n> 🏆 **New best score!** See the leaderboard with `/game-2048-top`'
+            if (NewBest) reasonText += vi ? '\n> 🏆 **Kỷ lục mới!** Xem bảng xếp hạng bằng `/game-2048-top`' : '\n> 🏆 **New best score!** See the leaderboard with `/game-2048-top`'
 
             //The interaction token only lasts 15 minutes, long games edit the message directly
-            const GameOver = { embeds: [BoardEmbed('Grey', `${reasonText}\n\n${VI_NOTE}`)], components: [] }
+            const GameOver = { embeds: [BoardEmbed('Grey', reasonText)], components: [] }
             await interaction.editReply(GameOver).catch(() => InputMessage.edit(GameOver)).catch(() => {})
         })
     }

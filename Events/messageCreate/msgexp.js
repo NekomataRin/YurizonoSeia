@@ -62,7 +62,7 @@ module.exports = async (client, message) => {
     }
     await data.save()
 
-    //Milestone roles (main server) -> "> Granted @user role - @role" lines
+    //Milestone roles (servers with RankRoles) -> "> Granted @user role - @role" lines
     const Granted = await UpdateRankRoles(message.member, data)
     const GrantedNotes = Granted.map(id => `\n> Granted ${message.member} role - <@&${id}>`).join('')
     if (data.level === oldLevel && !GrantedNotes) return

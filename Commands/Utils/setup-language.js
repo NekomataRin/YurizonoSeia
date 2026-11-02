@@ -11,6 +11,7 @@ module.exports = {
         .addStringOption(option =>
             option.setName('lang-key')
                 .setDescription('Choose your default language')
+                .setDescriptionLocalizations({ vi: 'Chọn ngôn ngữ mặc định của bạn' })
                 .addChoices(
                     {
                         name: '[vi] - Tiếng Việt',

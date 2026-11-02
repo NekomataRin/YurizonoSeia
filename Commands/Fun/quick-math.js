@@ -96,7 +96,9 @@ module.exports = {
             if (count === 0 && level > 2 && level % 2 === 1 && level <= QM.CapLevel) {
                 RunTime = SetTime(Difficulty, MsgCount, level)
                 await Send({
-                    embeds: [GameEmbed(`## Timer Range Extended!\n**Difficulty** \`${DifficultyKey}\` | **Attempt Timer** \`${RunTime}s\`\nGood Luck! Still on the same sentence: please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**, and you only have \`3\` Attempts!\n> Note: **The Final Result** is the original difficulty you put (${OfficialKey}) as the scoring method.`)]
+                    embeds: [GameEmbed(vi
+                        ? `## Thời Gian Được Kéo Dài!\n**Độ Khó** \`${DifficultyKey}\` | **Thời Gian Trả Lời** \`${RunTime}s\`\nChúc may mắn nhé! Vẫn câu nói cũ: làm ơn **đừng** có dùng các công cụ hỗ trợ tính toán như **máy tính, bot, A.I, người dùng khác, v.v.**, và bạn chỉ có \`3\` Lượt thôi đấy nhé!\n> Ghi chú: **Kết Quả Cuối Cùng** sẽ là độ khó mà bạn đã đặt lúc đầu (${OfficialKey}) như là phần tính điểm.`
+                        : `## Timer Range Extended!\n**Difficulty** \`${DifficultyKey}\` | **Attempt Timer** \`${RunTime}s\`\nGood Luck! Still on the same sentence: please **don't** use any form of calculation helpers like **caculator, bots, A.I, other ppl, etc.**, and you only have \`3\` Attempts!\n> Note: **The Final Result** is the original difficulty you put (${OfficialKey}) as the scoring method.`)]
                 })
                 await wait(2500)
             }
@@ -118,12 +120,13 @@ module.exports = {
                 if (!collected) {
                     await SetCooldown(interaction.user.id, 'QuickMath', Clock.Now() + cdtime)
 
-                    //Best score per difficulty (for /quick-math-top)
+                    //Best score per server + difficulty (for /quick-math-top)
                     let NewBest = false
                     if (score > 0) {
-                        const best = await QuickMathDb.findOne({ UserID: interaction.user.id, GameKey: OfficialKey }).lean()
+                        const BestFilter = { GuildID: interaction.guild.id, UserID: interaction.user.id, GameKey: OfficialKey }
+                        const best = await QuickMathDb.findOne(BestFilter).lean()
                         if (!best || score > Number(best.Score)) {
-                            await QuickMathDb.updateOne({ UserID: interaction.user.id, GameKey: OfficialKey }, { $set: { Level: level, Score: score, Date: Clock.Now() } }, { upsert: true })
+                            await QuickMathDb.updateOne(BestFilter, { $set: { Level: level, Score: score, Date: Clock.Now() } }, { upsert: true })
                             NewBest = true
                         }
                     }

@@ -19,7 +19,8 @@ function NextReset() {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('omikuji')
-        .setDescription('-Daily- Get your desired fate of today (Reset Time: 22:00 UTC)'),
+        .setDescription('-Daily- Get your desired fate of today (Reset Time: 22:00 UTC)')
+        .setDescriptionLocalizations({ vi: '-Daily- Rút quẻ may mắn của hôm nay (reset lúc 22:00 UTC)' }),
 
     async execute(interaction) {
         await interaction.deferReply()
@@ -33,7 +34,7 @@ module.exports = {
             let err_desc = vi ? `<:SeiaMuted:1244890584276008970> Oi, đây không phải là kênh chat cho bạn dùng, làm ơn qua <#${channelid}> để dùng nhá!` : `<:SeiaMuted:1244890584276008970> Oi, this isn't the channel for you to use this command, please go to <#${channelid}> to use it!`
             if (interaction.guild.id !== process.env.GUILD_ID) err_desc = vi ? `<:SeiaMuted:1244890584276008970> Lệnh này không hỗ trợ ở đây đâu nhá, mặc dù nó có hiển thị!` : `<:SeiaMuted:1244890584276008970> This command is not supported here, though it is shown here!`
             return interaction.editReply({
-                embeds: [SeiaEmbed(interaction, 'Red').setTitle(`Err - Wrong Channel`).setDescription(err_desc)]
+                embeds: [SeiaEmbed(interaction, 'Red').setTitle(vi ? 'Lỗi - Sai kênh' : 'Err - Wrong Channel').setDescription(err_desc)]
             })
         }
 

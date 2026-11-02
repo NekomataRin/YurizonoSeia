@@ -1,7 +1,8 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
 
 const { SeiaEmbed } = require('../../Utils/embed')
-const Config = require('../../Utils/config')
+const { GetLanguage } = require('../../Utils/language')
+const { IsMod } = require('../../Utils/mod')
 const Level = require('../../Database/Ranking/Leveling')
 const UserCards = require('../../Database/Ranking/usercards')
 const { RankCards } = require('../../Assets/RankCards')
@@ -11,33 +12,28 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('rank-background')
         .setDescription('-Mod Only- Set a user\'s background of their rank card, or set yours')
+        .setDescriptionLocalizations({ vi: '-Mod Only- Đặt / thêm / gỡ background rank card của một người dùng (hoặc của bạn)' })
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('The user where you want to set it')
+                .setDescriptionLocalizations({ vi: 'Người dùng bạn muốn đặt' })
                 .setRequired(false)
         )
         .addStringOption(option =>
             option.setName('keyword')
                 .setDescription('The keyword of the background (ex. shiroko, hoshino...)')
+                .setDescriptionLocalizations({ vi: 'Keyword của background (vd: shiroko, hoshino...)' })
                 .setRequired(false)
                 .setAutocomplete(true)
         )
         .addStringOption(option =>
             option.setName('method')
                 .setDescription('Method of the keyword for that user (Default: [Set])')
+                .setDescriptionLocalizations({ vi: 'Cách áp dụng keyword cho người dùng đó (Mặc định: [Set])' })
                 .addChoices(
-                    {
-                        name: '[Add]',
-                        value: 'add'
-                    },
-                    {
-                        name: '[Remove]',
-                        value: 'remove'
-                    },
-                    {
-                        name: '[Set]',
-                        value: 'set'
-                    },
+                    { name: '[Add]', value: 'add', name_localizations: { vi: '[Add] Thêm vào danh sách' } },
+                    { name: '[Remove]', value: 'remove', name_localizations: { vi: '[Remove] Gỡ khỏi danh sách' } },
+                    { name: '[Set]', value: 'set', name_localizations: { vi: '[Set] Đặt làm background' } },
                 )
                 .setRequired(false)
         ),
@@ -51,12 +47,17 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply()
 
+        const LangKey = await GetLanguage(interaction)
+        if (!LangKey) return
+        const vi = (LangKey === 'vi')
+
+        //Mod roles of this server (Utils/config.js Roles), a bot owner or an admin
         const member = await interaction.guild.members.fetch(interaction.user.id)
-        if (!member.roles.cache.has(Config.Roles.Mod) && !BotOwner.includes(member.id) && !member.permissions.has(PermissionFlagsBits.Administrator)) {
+        if (!IsMod(member) && !BotOwner.includes(member.id) && !member.permissions.has(PermissionFlagsBits.Administrator)) {
             return interaction.editReply({
                 embeds: [SeiaEmbed(interaction, 'Red')
-                    .setTitle('<:seiaconcerned:1244128341540208793> • No permissions')
-                    .setDescription('<:seiaehem:1244128370669650060> • You do not have enough permissions to run this command...')]
+                    .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Không đủ quyền' : 'No permissions'}`)
+                    .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Sensei không có đủ quyền để dùng lệnh này...' : 'You do not have enough permissions to run this command...'}`)]
             })
         }
 
@@ -70,48 +71,47 @@ module.exports = {
                 .setTitle(`<:seiaheh:1244128244664504392> • ${title}`)
                 .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)]
         })
+        const Ignored = () => Reply(vi ? 'Key đã bị bỏ qua.' : 'The key has been ignored.', vi ? `Key '\`${key}\`' này chả có tác dụng gì với <@${user}> cả, lol` : `The following key: '\`${key}\`' does not have any efffect on <@${user}>, lol`)
 
         if (!RankCards.some(card => card.Key === key)) {
             return interaction.editReply({
                 embeds: [SeiaEmbed(interaction, 'Red')
-                    .setTitle('<:seiaconcerned:1244128341540208793> • Invaid Key')
-                    .setDescription(`<:seiaehem:1244128370669650060> • You provided an invalid ranking keyword \`${key}\`... It's not in the key list provided...`)]
+                    .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Key không hợp lệ' : 'Invaid Key'}`)
+                    .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? `Keyword \`${key}\` không hợp lệ, nó không có trong danh sách key...` : `You provided an invalid ranking keyword \`${key}\`... It's not in the key list provided...`}`)]
             })
         }
 
         //[Set]: equip it on this server (+ unlock it if needed)
         if (MethodValue === 'set') {
             const data = await Level.findOne({ GuildID: interaction.guild.id, UserID: user })
-            if (!data) return interaction.editReply('<:seiaheh:1244128244664504392> • Looks like the user you chose is currently not active yet... Please try again later...')
+            if (!data) return interaction.editReply(vi ? '<:seiaheh:1244128244664504392> • Có vẻ người dùng này chưa hoạt động ở server... Thử lại sau nhé...' : '<:seiaheh:1244128244664504392> • Looks like the user you chose is currently not active yet... Please try again later...')
 
             if (key === 'none' && data.background === key) {
-                return Reply('Key skipped', `Since you wrote '\`${key}\`', I skipped this for <@${user}> for now...`, 'DarkButNotBlack')
+                return Reply(vi ? 'Bỏ qua key' : 'Key skipped', vi ? `Vì Sensei ghi '\`${key}\`' nên em bỏ qua cho <@${user}> luôn nhé...` : `Since you wrote '\`${key}\`', I skipped this for <@${user}> for now...`, 'DarkButNotBlack')
             }
 
             data.background = key
             await data.save()
 
-            let desc = (key === 'none') ? `Successfully restored the default card background for <@${user}>` : `Successfully set the rank card background '\`${key}\`' for <@${user}>`
+            let desc = (key === 'none')
+                ? (vi ? `Đã khôi phục background mặc định cho <@${user}>` : `Successfully restored the default card background for <@${user}>`)
+                : (vi ? `Đã đặt background rank card '\`${key}\`' cho <@${user}>` : `Successfully set the rank card background '\`${key}\`' for <@${user}>`)
             if (key !== 'none') {
                 const added = await UserCards.updateOne({ UserID: user }, { $addToSet: { Cards: key } }, { upsert: true })
-                if (added.modifiedCount || added.upsertedCount) desc += `\nAlso, I added the rank card background '\`${key}\`' to the list for <@${user}>`
+                if (added.modifiedCount || added.upsertedCount) desc += (vi) ? `\nĐồng thời em đã thêm '\`${key}\`' vào danh sách card của <@${user}>` : `\nAlso, I added the rank card background '\`${key}\`' to the list for <@${user}>`
             }
-            return Reply('The key has been successfully set.', desc)
+            return Reply(vi ? 'Đã đặt key thành công.' : 'The key has been successfully set.', desc)
         }
 
         //[Add] / [Remove]: only change the unlocked list
-        if (key === 'none') {
-            return Reply('The key has been ignored.', `The following key: '\`${key}\`' does not have any efffect on <@${user}>, lol`)
-        }
+        if (key === 'none') return Ignored()
 
         const update = (MethodValue === 'add') ? { $addToSet: { Cards: key } } : { $pull: { Cards: key } }
         const result = await UserCards.updateOne({ UserID: user }, update, { upsert: MethodValue === 'add' })
-        if (!result.modifiedCount && !result.upsertedCount) {
-            return Reply('The key has been ignored.', `The following key: '\`${key}\`' does not have any efffect on <@${user}>, lol`)
-        }
+        if (!result.modifiedCount && !result.upsertedCount) return Ignored()
 
         return (MethodValue === 'add')
-            ? Reply('The key has been successfully added.', `Successfully added the rank card background '\`${key}\`' to the list for <@${user}>`)
-            : Reply('The key has been successfully removed.', `Successfully removed the rank card background '\`${key}\`' to the list for <@${user}>`)
+            ? Reply(vi ? 'Đã thêm key thành công.' : 'The key has been successfully added.', vi ? `Đã thêm background '\`${key}\`' vào danh sách của <@${user}>` : `Successfully added the rank card background '\`${key}\`' to the list for <@${user}>`)
+            : Reply(vi ? 'Đã gỡ key thành công.' : 'The key has been successfully removed.', vi ? `Đã gỡ background '\`${key}\`' khỏi danh sách của <@${user}>` : `Successfully removed the rank card background '\`${key}\`' to the list for <@${user}>`)
     }
 }

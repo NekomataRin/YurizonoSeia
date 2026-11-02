@@ -32,8 +32,8 @@ const HowgayConfig = {
         Rejected: '#0c0f1f'
     },
 
-    // Result <= ChadMax: Giga Chad image (+ role in the main server)
-    // Result >= GayMin: Gay image (+ role in the main server)
+    // Result <= ChadMax: Giga Chad image (+ role in servers that have one in Utils/config.js Roles)
+    // Result >= GayMin: Gay image (+ role in servers that have one in Utils/config.js Roles)
     ChadMax: 1,
     GayMin: 100,
 

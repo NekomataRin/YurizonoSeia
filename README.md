@@ -3,7 +3,46 @@ Yep... Back to my original server - Lazy Gang
 
 Nekorin727 - The TRUE Owner Of This Bot
 
-> v1.4.0 (heh.)
+> v1.4.1 (heh.)
+
+## Changelog - v1.4.1
+
+Lots of commands are back from **Miosha** (Seia's predecessor), Mods get moderation commands, and every command speaks both Vietnamese and English.
+
+### Commands back from Miosha
+- **Fun:** `/coinflip`, `/dice`, `/shiprate`
+- **Misc:** `/pick`, `/roll`, `/number-convert`, `/check-cooldown`, `/minigames`
+- **Server:** `/user-info`
+- `/help` lists every command by category by itself (never outdated), with Changelog, Credits and FAQ pages
+- Mio's emojis were swapped for Seia's; commands Seia already had keep Seia's version
+
+### Moderation (Mod roles only)
+- `/ban`, `/unban`, `/kick`, `/timeout`, `/warn`, `/warn-list`, `/warn-remove`
+- `/announcement` posts an announcement written in a form (modal)
+- `/restrict` + `/unrestrict`: stop someone from using Seia's commands for a while (except `/help`)
+- `/mod-afk`: Mods / bot owners go AFK, whoever pings them gets a reminder
+- `/rank-background-list`, `/data-transfer` (move ranking data to a new account)
+- Only people with a Mod role of that server can use them (bot owners too need one); warnings are saved per server
+- Mod roles per server: **Lazy Gang** (President, Senior Admin, Admin, Mod, Staff, PCB Team ID Card), **All Factor** (Founder, 2nd Factor Leader, All Factor Member Management, All Factor Chunithm Leader)
+
+### Ranking & minigames
+- `/top` → `/leaderboard`, with ◀ ▶ pages and medals for the top 3
+- New permanent **﹝🔥﹞True Member** role at **30000** total EXP (Lazy Gang)
+- `/quick-math` scores are per server now (the old ones stay on Lazy Gang)
+- Mods can reset the server's boards: `/quick-math-reset`, `/game-2048-reset`
+- `/reset-rank` and `/rank-background` work on **All Factor** too
+- When Seia can't give ranking roles in one server, only that server pauses for 10 minutes
+
+### Vietnamese / English
+- Every command has Vietnamese and English descriptions and answers (pick yours with `/setup-language`)
+- `/changelog`: anyone can read it (only they see it), only the bot owners post it
+- `/avatar`: `[Guild + Banner]` fixed: it tells whether it's the server or the global avatar / banner, says when there's no banner, adds a GIF link for animated avatars
+
+### Typhoeus role (All Factor)
+- An owner-only role: Seia makes it on her first start, in lavender `#DCC3E3` (Typhoeus's hair color)
+- Anyone else who gets it loses it right away, with a notice: *"Hey! This role is meant to be only used by my dad, no one else has the perm to do this!"*
+- The notice is sent by DM; when DMs are closed, Seia pings them in a channel and deletes the ping after 10 seconds
+- Lazy Gang is not affected
 
 ## Changelog - v1.4.0
 

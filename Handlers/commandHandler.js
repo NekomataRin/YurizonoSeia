@@ -16,6 +16,8 @@ function LoadCommands(client) {
             }
             // Every command needs a server, so hide them in DMs
             command.data.setContexts?.(InteractionContextType.Guild)
+            // Folder name = category shown by /help
+            command.Category = path.basename(folder)
             client.commands.set(command.data.name, command)
         }
     }

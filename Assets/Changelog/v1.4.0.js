@@ -2,6 +2,8 @@
 Changelog of one version, posted by /changelog (one file per version: vX.Y.Z.js)
 - Image: file in Assets/Misc (optional)
 - Sections: embed fields, each Value must stay under 1024 characters
+- En (optional): English version (Title / Description / Sections) for people reading /changelog in English.
+  The announcement itself is always the Vietnamese one
 */
 const Changelog = {
     Version: '1.4.0',
@@ -87,7 +89,89 @@ const Changelog = {
 ▸ \`/howgay-stats\`, \`/omikuji-stats\`: người khác không bấm vào menu của Sensei được nữa
 -# Riêng \`/omikuji-stats\` này chỉ áp dụng cho Server \`LazyGang\` btw`
         }
-    ]
+    ],
+
+    En: {
+        Description: `<:SeiaSip:1244890166116618340> Hello Sensei! Version **\`1.4.0\`** is officially out, here is everything that changed~
+
+### 💬 A message from the bot owner
+> <:seiaheh:1244128244664504392> - *Well, after a looong time, here is finally the \`1.4.0\` update. From this version on, everything is written with \`Claude Pro\` instructions, but the core logic is the same one you know, don't worry. I'm in control of the prompts, so if there's a bug I can look at it and fix it =)))*`,
+        Sections: [
+            {
+                Name: '<:SeiaSip:1244890166116618340> Rewritten codebase',
+                Value: `▸ Cleaner code that is easier to maintain and runs reliably on a phone (Termux)
+▸ The bot no longer crashes on errors, and reconnects by itself when the network or the database drops
+▸ A command that fails now tells you so, instead of "Seia is thinking..." forever
+▸ Using a command for the first time runs it right away (no more "not in the cooldown database yet")
+▸ Cooldowns and daily resets follow Discord's clock, so a wrong clock doesn't matter (the problem was mostly the local time on the machine)
+-# Note: I haven't fully checked the first-time-use part yet, so not sure!`
+            },
+            {
+                Name: '<:SeiaDespair:1250768714639474791> `/howgay`',
+                Value: `▸ Results now have 4 decimals: \`0.0000%\` → \`101.0000%\`
+▸ Special cases (WYSI \`72.7\`, Error \`404\`...) can **actually** show up now, a bug meant they never appeared before lmao (it tested fine back then, but whatever, debugged early)
+▸ \`/howgay-stats\`: server stats in 2 pages (\`Normal / Special\`), user stats based on the last **100** checks
+▸ Old data was moved over, nothing was lost`
+            },
+            {
+                Name: '<:seiaheh:1244128244664504392> Ranking',
+                Value: `▸ \`/rank\` shows the right position (everyone used to be \`#1\` lol), ranked by total EXP per server, same EXP = same rank
+▸ EXP only counts in **Server Lobby**, **LazyTown**, **Voice** and **PCB HQ**
+▸ Milestone roles from **Level 4 → 48** (the previous milestone role is removed) + a **permanent** role at **10000** total EXP
+▸ Level up messages show \`> Granted @user role - @role\`
+▸ Support for a 2nd server with its own ranking and level up channel
+▸ Rank card backgrounds are per server, \`/background-list\` also shows the card's collection
+-# The ranking roles only apply to the \`LazyGang\` server, but the EXP you get is right everywhere!`
+            },
+            {
+                Name: '<:SeiaConfused:1244890143333158932> `/quick-math`',
+                Value: `▸ Every difficulty was rebalanced:
+> **Easy**: positive numbers only, × ÷ within the times tables
+> **Normal → Lunatic**: integers, negative numbers, divisions always exact
+> **Extra, Phantasm**: + − with decimals, × ÷ with (negative) integers
+> **Asian**: no limits, still Asian =)))
+▸ Every result stays within \`±99999.99\`, nothing gets harder after level 10
+▸ \`3,75\` or \`3.75\` both work, and the solving time can't be negative anymore (that came from the local time on the machine)
+-# Honestly, I don't know if this is a buff or a nerf, it feels way harder (maybe I just have a skill issue lol)`
+            },
+            {
+                Name: '<:SeiaSmug:1250768503431233616> `/game-2048`',
+                Value: `▸ Every player has their own board (players used to share one when playing at the same time...)
+▸ The game ends when no moves are left, you can undo once after each move
+▸ Swap mode swaps 2 real tiles
+▸ Best scores are saved for every mode
+-# Note: I haven't fully checked this one yet, so not sure!`
+            },
+            {
+                Name: '<:SeiaPeek:1244890461592621147> New leaderboards',
+                Value: `▸ \`/quick-math-top\`: leaderboard for each difficulty
+▸ \`/game-2048-top\`: leaderboard for each mode
+▸ Beating your best score shows a 🏆 message at the end of the game
+-# Note: I haven't fully checked this one yet, so not sure!`
+            },
+            {
+                Name: '<:seiaconcerned:1244128341540208793> `/omikuji`',
+                Value: `▸ Fixed a crash when drawing an SS / EX card in Vietnamese
+▸ Fixed being able to draw again and again after 22:00 UTC
+-# This only applies to the \`LazyGang\` server btw`
+            },
+            {
+                Name: '<:seiaehem:1244128370669650060> Logs & moderation',
+                Value: `▸ The edit log only reports **real** edits (no more spam from link previews, pins...)
+▸ The delete log no longer fails on long messages, and logs image-only messages too
+▸ Converted X / Facebook links get a **Context** line (the rest of the message) and never ping anyone
+▸ Invite blocker: broken invite links no longer crash the bot
+-# This only applies to the \`LazyGang\` server btw`
+            },
+            {
+                Name: '<:SeiaMuted:1244890584276008970> Other fixes',
+                Value: `▸ Welcome messages work for users without an avatar
+▸ Fixed \`/avatar\` (banners) and \`/random-user\` (when nobody is online)
+▸ \`/howgay-stats\`, \`/omikuji-stats\`: other people can't click your menu anymore
+-# \`/omikuji-stats\` only applies to the \`LazyGang\` server btw`
+            }
+        ]
+    }
 }
 
 module.exports = (Changelog)

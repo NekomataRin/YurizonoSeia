@@ -4,7 +4,7 @@ const PerPage = 10
 const Medals = ['🥇', '🥈', '🥉']
 
 /*
-Leaderboard pages (10 players each) for /quick-math-top and /game-2048-top
+Leaderboard pages (10 players each) for /leaderboard, /quick-math-top and /game-2048-top
 - Entries: best first, each { UserID, Value (same Value = same rank: 1, 2, 2, 4...), Line }
 - You(entry): line about the user's own rank, NoYou: line when they aren't on the board
 */
@@ -27,13 +27,4 @@ function LeaderboardPages(interaction, { Title, Color, Entries, Empty, You, NoYo
     return Pages
 }
 
-// Only keeps the users that are in this server (cached members first, the rest fetched 100 at a time)
-async function ServerMembers(guild, UserIDs) {
-    const Missing = UserIDs.filter(id => !guild.members.cache.has(id))
-    for (let i = 0; i < Missing.length; i += 100) {
-        await guild.members.fetch({ user: Missing.slice(i, i + 100) }).catch(() => null)
-    }
-    return new Set(UserIDs.filter(id => guild.members.cache.has(id)))
-}
-
-module.exports = { LeaderboardPages, ServerMembers }
+module.exports = { LeaderboardPages }

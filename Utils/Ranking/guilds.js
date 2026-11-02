@@ -4,8 +4,12 @@ Servers where chatting gives EXP. To add a server, add one entry here:
 - ExpCategories (optional): only channels inside these categories give EXP.
   Category name or ID. Names ignore case, spaces, emojis and symbols ('🏠 ┃ Server Lobby' = 'Server Lobby')
 - NoExpChannels: channels that never give EXP (bot test, check rank...), even inside ExpCategories
+- RankRoles (optional): roles given at ranking milestones. They must already exist, Seia never makes them
+  - Levels: reaching a milestone gives its role and removes the other level roles. /reset-rank removes them all.
+  - TotalExp: permanent, never removed (not even by /reset-rank)
 */
 const Guilds = {
+    // Lazy Gang (main server, GUILD_ID in .env)
     '900742301373042809': {
         LevelUpChannel: '900760973953093664',
         ExpCategories: ['Server Lobby', 'LazyTown', 'Voice', 'PCB HQ'],
@@ -62,8 +66,29 @@ const Guilds = {
             "900758966651482143",
             "908943289925906432",
             "900759057835622513"
-        ]
+        ],
+        RankRoles: {
+            Levels: [
+                { Level: 4, Role: '901072984981250059' },
+                { Level: 8, Role: '901072982384992336' },
+                { Level: 12, Role: '901072977033052230' },
+                { Level: 16, Role: '901072969344880691' },
+                { Level: 20, Role: '901072951401656371' },
+                { Level: 24, Role: '901072942241296394' },
+                { Level: 28, Role: '901072938676146176' },
+                { Level: 32, Role: '901072926990807110' },
+                { Level: 36, Role: '901072922121236491' },
+                { Level: 40, Role: '901072917637500959' },
+                { Level: 44, Role: '956597325093027910' },
+                { Level: 48, Role: '956597329434128434' },
+            ],
+            TotalExp: [
+                { Total: 10000, Role: '967803874259898388' }, // ﹝🔒﹞Secret Access
+                { Total: 30000, Role: '900750143605866516' }  // ﹝🔥﹞True Member
+            ]
+        }
     },
+    // All Factor (no ranking roles)
     '1466822964350812222': {
         LevelUpChannel: '1472646633945563300',
         NoExpChannels: [
@@ -91,30 +116,4 @@ const Restrictions = {
     'Code-3': 0.25
 }
 
-/*
-Ranking roles, main server only (GUILD_ID in .env)
-- Levels: reaching a milestone gives its role and removes the other level roles.
-  /reset-rank removes them all.
-- TotalExp: permanent, never removed (not even by /reset-rank)
-*/
-const RankRoles = {
-    Levels: [
-        { Level: 4, Role: '901072984981250059' },
-        { Level: 8, Role: '901072982384992336' },
-        { Level: 12, Role: '901072977033052230' },
-        { Level: 16, Role: '901072969344880691' },
-        { Level: 20, Role: '901072951401656371' },
-        { Level: 24, Role: '901072942241296394' },
-        { Level: 28, Role: '901072938676146176' },
-        { Level: 32, Role: '901072926990807110' },
-        { Level: 36, Role: '901072922121236491' },
-        { Level: 40, Role: '901072917637500959' },
-        { Level: 44, Role: '956597325093027910' },
-        { Level: 48, Role: '956597329434128434' },
-    ],
-    TotalExp: [
-        { Total: 10000, Role: '967803874259898388' }
-    ]
-}
-
-module.exports = { Guilds, Exp, Restrictions, RankRoles }
+module.exports = { Guilds, Exp, Restrictions }

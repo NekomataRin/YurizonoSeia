@@ -31,4 +31,8 @@ async function ConnectDatabase() {
     }
 }
 
-module.exports = { ConnectDatabase }
+// true = connected right now. Checks that run before a command answers use it,
+// so a dropped database fails at once instead of waiting 10s (Discord only gives 3s)
+const DbReady = () => mongoose.connection.readyState === 1
+
+module.exports = { ConnectDatabase, DbReady }

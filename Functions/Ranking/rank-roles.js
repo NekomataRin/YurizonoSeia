@@ -1,26 +1,33 @@
-const { RankRoles } = require('../../Utils/Ranking/guilds')
+const { Guilds } = require('../../Utils/Ranking/guilds')
 const Level = require('../../Database/Ranking/Leveling')
 const Log = require('../../Utils/logger')
 
-const LevelRoleIds = RankRoles.Levels.map(m => m.Role)
-
-// Role of the highest milestone reached (null below the first one)
-function LevelRole(level) {
-    let role = null
-    for (const m of RankRoles.Levels) if (level >= m.Level) role = m.Role
-    return role
+// Ranking roles of a server (Utils/Ranking/guilds.js RankRoles), null = that server has none
+function RankRolesOf(guildId) {
+    const Roles = Guilds[guildId]?.RankRoles
+    if (!Roles) return null
+    const Levels = Roles.Levels || [], TotalExp = Roles.TotalExp || []
+    return { Levels, TotalExp, LevelIds: Levels.map(m => m.Role) }
 }
 
-// When Discord refuses (missing Manage Roles, role above the bot...) stop trying for 10 minutes,
+// Role of the highest milestone reached in that server (null below the first one)
+function LevelRole(guildId, level) {
+    let best = null
+    for (const m of RankRolesOf(guildId)?.Levels || []) if (level >= m.Level && (!best || m.Level > best.Level)) best = m
+    return best?.Role ?? null
+}
+
+// When Discord refuses (missing Manage Roles, role above the bot...) stop trying in that server for 10 minutes,
 // so every message doesn't spam the API with the same error
-let PauseUntil = 0
-function Failed(err) {
-    PauseUntil = Date.now() + 10 * 60 * 1000
-    Log.Error(`Ranking roles paused for 10 minutes: ${err.message}`)
+const PauseUntil = new Map()
+const Paused = (guild) => Date.now() < (PauseUntil.get(guild.id) || 0)
+function Failed(guild, err) {
+    PauseUntil.set(guild.id, Date.now() + 10 * 60 * 1000)
+    Log.Error(`Ranking roles (${guild.name || guild.id}) paused for 10 minutes: ${err.message}`)
 }
 
 /*
-Gives / removes the ranking roles of a member (main server only).
+Gives / removes the ranking roles of a member (servers with RankRoles only).
 Returns the IDs of the roles that were just given.
 - Normal (every EXP gain): gives the milestone role of their level when they don't have it yet,
   and removes their other level roles. Never takes a role away otherwise.
@@ -28,16 +35,16 @@ Returns the IDs of the roles that were just given.
 TotalExp roles are given once reached and never removed.
 */
 async function UpdateRankRoles(member, { level, total }, Sync = false) {
-    if (!member?.roles?.cache || member.guild?.id !== process.env.GUILD_ID) return []
-    if (Date.now() < PauseUntil) return []
+    const Roles = RankRolesOf(member?.guild?.id)
+    if (!Roles || !member.roles?.cache || Paused(member.guild)) return []
 
     const has = (id) => member.roles.cache.has(id)
-    const target = LevelRole(level)
+    const target = LevelRole(member.guild.id, level)
     const add = [], remove = []
 
     if (target && !has(target)) add.push(target)
-    if (Sync || add.length) remove.push(...LevelRoleIds.filter(id => id !== target && has(id)))
-    for (const t of RankRoles.TotalExp) if (total >= t.Total && !has(t.Role)) add.push(t.Role)
+    if (Sync || add.length) remove.push(...Roles.LevelIds.filter(id => id !== target && has(id)))
+    for (const t of Roles.TotalExp) if (total >= t.Total && !has(t.Role)) add.push(t.Role)
     if (!add.length && !remove.length) return []
 
     const granted = []
@@ -48,7 +55,7 @@ async function UpdateRankRoles(member, { level, total }, Sync = false) {
         }
         for (const id of remove) await member.roles.remove(id, 'Ranking milestone')
     } catch (err) {
-        Failed(err)
+        Failed(member.guild, err)
     }
     return granted
 }
@@ -57,11 +64,16 @@ async function UpdateRankRoles(member, { level, total }, Sync = false) {
 // not only on their next message. Only adds missing roles (same rule as above), no messages.
 // Returns how many members got a role
 async function SyncAllRankRoles(guild) {
-    if (guild.id !== process.env.GUILD_ID) return 0
-    const FirstLevel = Math.min(...RankRoles.Levels.map(m => m.Level))
-    const FirstTotal = Math.min(...RankRoles.TotalExp.map(t => t.Total))
-    const Ranked = await Level.find({ GuildID: guild.id, $or: [{ level: { $gte: FirstLevel } }, { total: { $gte: FirstTotal } }] })
-        .select('-_id UserID level total').lean()
+    const Roles = RankRolesOf(guild.id)
+    if (!Roles) return 0
+
+    //Only users past the first level / total EXP milestone
+    const Reached = []
+    if (Roles.Levels.length) Reached.push({ level: { $gte: Math.min(...Roles.Levels.map(m => m.Level)) } })
+    if (Roles.TotalExp.length) Reached.push({ total: { $gte: Math.min(...Roles.TotalExp.map(t => t.Total)) } })
+    if (!Reached.length) return 0
+
+    const Ranked = await Level.find({ GuildID: guild.id, $or: Reached }).select('-_id UserID level total').lean()
     if (!Ranked.length) return 0
 
     const members = await guild.members.fetch()
@@ -69,19 +81,20 @@ async function SyncAllRankRoles(guild) {
     for (const data of Ranked) {
         const member = members.get(data.UserID)
         if (member && (await UpdateRankRoles(member, data)).length) changed++
-        if (Date.now() < PauseUntil) break //Discord refused, no point trying the others
+        if (Paused(guild)) break //Discord refused, no point trying the others
     }
     return changed
 }
 
 // /reset-rank: removes the level roles from every member (TotalExp roles stay). Returns how many members changed
 async function ClearLevelRoles(guild) {
-    if (guild.id !== process.env.GUILD_ID) return 0
+    const LevelIds = RankRolesOf(guild.id)?.LevelIds || []
+    if (!LevelIds.length) return 0
     const members = await guild.members.fetch()
 
     let cleared = 0
     for (const member of members.values()) {
-        const owned = LevelRoleIds.filter(id => member.roles.cache.has(id))
+        const owned = LevelIds.filter(id => member.roles.cache.has(id))
         if (!owned.length) continue
         try {
             for (const id of owned) await member.roles.remove(id, 'Ranking reset')
@@ -93,4 +106,4 @@ async function ClearLevelRoles(guild) {
     return cleared
 }
 
-module.exports = { UpdateRankRoles, SyncAllRankRoles, ClearLevelRoles, LevelRole, LevelRoleIds }
+module.exports = { UpdateRankRoles, SyncAllRankRoles, ClearLevelRoles, LevelRole, RankRolesOf }

@@ -7,7 +7,8 @@ const { OnCooldown } = require('../../Utils/cooldown')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('checkalive')
-        .setDescription('Check the bot\'s current status in the server'),
+        .setDescription('Check the bot\'s current status in the server')
+        .setDescriptionLocalizations({ vi: 'Kiểm tra trạng thái hiện tại của bot trong server' }),
 
     async execute(interaction) {
         await interaction.deferReply()

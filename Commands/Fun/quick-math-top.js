@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js')
 const { GetLanguage } = require('../../Utils/language')
 const { OnCooldown } = require('../../Utils/cooldown')
 const { SendPages } = require('../../Utils/pages')
-const { LeaderboardPages, ServerMembers } = require('../../Functions/Fun/leaderboard')
+const { LeaderboardPages } = require('../../Functions/Fun/leaderboard')
 const QM = require('../../Assets/QuickMath/config')
 const QuickMathDb = require('../../Database/Fun/quickmath')
 
@@ -37,10 +37,9 @@ module.exports = {
         const GameKey = interaction.options.getString('difficulty') || 'Easy'
         const idx = QM.Difficulties.indexOf(GameKey.toLowerCase())
 
-        //Best scores of this difficulty, only players who are in this server
-        const Records = await QuickMathDb.find({ GameKey, Score: { $gt: 0 } }).sort({ Score: -1, Level: -1, Date: 1 }).lean()
-        const InServer = await ServerMembers(interaction.guild, Records.map(r => r.UserID))
-        const Entries = Records.filter(r => InServer.has(r.UserID)).map(r => ({
+        //Best scores of this difficulty on this server
+        const Records = await QuickMathDb.find({ GuildID: interaction.guild.id, GameKey, Score: { $gt: 0 } }).sort({ Score: -1, Level: -1, Date: 1 }).lean()
+        const Entries = Records.map(r => ({
             UserID: r.UserID,
             Value: r.Score,
             Line: `• **${vi ? 'Điểm' : 'Score'}:** \`${r.Score}\` • **Level:** \`${r.Level}\`${(r.Date) ? ` • <t:${Math.floor(r.Date / 1000)}:R>` : ''}`

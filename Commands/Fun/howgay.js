@@ -22,9 +22,10 @@ function Image(file) {
     return { file: new AttachmentBuilder(file), ctx: `attachment://${path.basename(file)}` }
 }
 
-// Text added under the result about the Gay / Giga Chad roles (main server only)
+// Text added under the result about the Gay / Giga Chad roles (only servers that have them in Utils/config.js)
 function RoleNote(LangKey, result, tuser, target) {
-    const { Gay, GigaChad } = Config.Roles
+    const { Gay, GigaChad } = Config.Roles[tuser.guild?.id] || {}
+    if (!Gay || !GigaChad) return null
     const vi = (LangKey === 'vi')
     if (result.value <= HowgayConfig.ChadMax) {
         if (tuser.roles.cache.has(Gay)) return { remove: Gay, note: vi ? `\n-# > Đã gỡ <@&${Gay}> cho ${target}, well, vì chính bản thân họ đã chứng minh họ là con người chính hiệu.` : `\n-# > Successfully removed <@&${Gay}> to ${target}, well then, since they proved themselves to be a real person.` }
@@ -121,7 +122,7 @@ module.exports = {
             "en-US": ["Gayness Test Result", (AvgChr) ? "The calculated gayness of" : "The gayness of", "is", "Comments:", "Gay Factor:", "Giga Chad Factor:"]
         }[LangKey]
 
-        const Role = (interaction.guild.id === process.env.GUILD_ID && tuser) ? RoleNote(LangKey, result, tuser, target) : null
+        const Role = (tuser) ? RoleNote(LangKey, result, tuser, target) : null
         const ResultDesc = `## ${Emoji} - ${ResultArr[0]}\n▸ ${ResultArr[1]} ${target} ${ResultArr[2]} \`${result.text}%\`\n▸ ${ResultArr[4]} \`${result.GayFactor}\`\n▸ ${ResultArr[5]} \`${result.ChadFactor}\`\n### > ${ResultArr[3]}\n\n ${Comment}${Role?.note || ''}`
 
         const GayEmbed = (desc, color = 'White') => SeiaEmbed(interaction, color)
@@ -152,7 +153,7 @@ module.exports = {
             files: [file]
         })
 
-        //Roles (main server only)
+        //Roles (servers with Gay / GigaChad in Utils/config.js Roles)
         if (Role?.add) await tuser.roles.add(Role.add).catch(err => Log.Error('Howgay - cannot add role:', err.message))
         if (Role?.remove) await tuser.roles.remove(Role.remove).catch(err => Log.Error('Howgay - cannot remove role:', err.message))
 
