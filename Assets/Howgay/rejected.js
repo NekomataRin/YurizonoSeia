@@ -1,9 +1,10 @@
 /*
 Users /howgay refuses to check (and /random-user never picks).
-img = file in Assets/Howgay/CaseImg/Rejected/
+- The comment above each one = who it is (display name + @username, only a note, the code doesn't read it)
+- img = the picture shown, a file in Assets/Howgay/CaseImg/Rejected/
 */
 const Rejected = {
-    // Seia
+    // Yurizono Seia (bot)
     "1244213929438089286": {
         "img": "reject-1.png",
         "desc": {
@@ -11,7 +12,7 @@ const Rejected = {
             "vi": "<:SeiaMuted:1244890584276008970> Cậu muốn thử lệnh **`/howgay`** trên tớ (<@1244213929438089286>) sao? **BA ƠI!!!** ĐỨA **KẺ LẠ** NÀY ĐANG CỐ TÌM XEM ĐỨA CON CỦA MÌNH **GAY** CỠ NÀO ĐẤY!!!!"
         }
     },
-    // Rin
+    // ArichiAya (@nekorin727)
     "751225225047179324": {
         "img": "reject-3.png",
         "desc": {
@@ -19,7 +20,7 @@ const Rejected = {
             "vi": "<:MuraAngry:1519660811776167940> Ừ thì... sao cậu lại kiểm tra **`/howgay`** trên <@751225225047179324>? Khi cậu *đã biết* là ông ấy **không thể bị kiểm tra** rồi mà?"
         }
     },
-    // Wakamo
+    // Wakamo Dayo (@shirakami.tohru)
     "786816081032773662": {
         "img": "reject-5.png",
         "desc": {
@@ -27,7 +28,7 @@ const Rejected = {
             "vi": "<:WakamoEvil:1275016475257733121> \"*Hừm*, cậu thật sự muốn **chết** nếu kiểm tra **`/howgay`** trên tui, đúng không?\" -<@786816081032773662>"
         }
     },
-    // None
+    // @welpyes
     "999614067322925087": {
         "img": "reject-0.gif",
         "desc": {
@@ -35,31 +36,15 @@ const Rejected = {
             "vi": "<a:YaeSlap:1251733720600412240> *Này*, cậu không thể dùng lệnh **`/howgay`** trên <@999614067322925087> đâu, đi kiểm tra **người khác** đi nhé!"
         }
     },
-    // None
-    "452041256319582208": {
-        "img": "reject-0.gif",
-        "desc": {
-            "en-US": "<a:YaeSlap:1251733720600412240> *Oi*, you can't check **`/howgay`** command on <@452041256319582208>, please go check **someone else**!",
-            "vi": "<a:YaeSlap:1251733720600412240> *Này*, cậu không thể dùng lệnh **`/howgay`** trên <@452041256319582208> đâu, đi kiểm tra **người khác** đi nhé!"
-        }
-    },
-    // Mika
-    "790882475173609472": {
+    // ❥ NeneKusanagi (@nene.kusanagi)
+    "1453437425501339734": {
         "img": "reject-6.gif",
         "desc": {
-            "en-US": "<:mikacopium:1254110047831720058> You wanna check the **`/howgay`** command on <@790882475173609472>? **Hell no!** This guy belongs to **Misono Mika**!",
-            "vi": "<:mikacopium:1254110047831720058> Cậu muốn kiểm tra lệnh **`/howgay`** trên <@790882475173609472> ư? **Không đời nào!** Khứa này thuộc về **Misono Mika** rồi!"
+            "en-US": "<:mikacopium:1254110047831720058> You wanna check the **`/howgay`** command on <@1453437425501339734>? **Hell no!** This guy belongs to **Misono Mika**!",
+            "vi": "<:mikacopium:1254110047831720058> Cậu muốn kiểm tra lệnh **`/howgay`** trên <@1453437425501339734> ư? **Không đời nào!** Khứa này thuộc về **Misono Mika** rồi!"
         }
     },
-    // Mika
-    "1365442209070972988": {
-        "img": "reject-6.gif",
-        "desc": {
-            "en-US": "<:mikacopium:1254110047831720058> You wanna check the **`/howgay`** command on <@1365442209070972988>? **Hell no!** This guy belongs to **Misono Mika**!",
-            "vi": "<:mikacopium:1254110047831720058> Cậu muốn kiểm tra lệnh **`/howgay`** trên <@1365442209070972988> ư? **Không đời nào!** Khứa này thuộc về **Misono Mika** rồi!"
-        }
-    },
-    // Hirru
+    // H1rru (@h1rru2103)
     "548041429411430440": {
         "img": "reject-2.jpg",
         "desc": {
@@ -67,7 +52,7 @@ const Rejected = {
             "vi": "<:SeiaL:1355916415529521213> *Oya?* Kiểm tra lệnh **`/howgay`** trên <@548041429411430440>? Sau khi thấy tớ đi chơi với **Neru** từ **Millennium Science School** làm cậu **phát điên** à?\nĐừng lo, một *nghệ sĩ thông thái* đã nói: **\"Nam nữ quan trọng éo gì, sướng là được\"**, đúng không?\nVậy nên, đừng **ngại ngùng**, anh bạn, ngay cả *ba tớ* cũng là tớ, đừng lo, ông ấy **KHÔNG GAY** như cậu đâu... và điều đó **LUÔN LUÔN** là thế."
         }
     },
-    // Acid
+    // Youko Kinomiya (@marilemonbr)
     "892054339072438303": {
         "img": "reject-4.png",
         "desc": {
@@ -75,7 +60,7 @@ const Rejected = {
             "vi": "<:AcidFAQ:1392733235699777597> Này nhá, tớ **KHÔNG** phải là nơi mà cậu check lệnh **`/howgay`** được đâu nhá! **Nghe đây, có cái TOAI mà check được nhá!**"
         }
     },
-    // Mori
+    // Mori (@yzkmori)
     "420040094737760268": {
         "img": "reject-7.gif",
         "desc": {

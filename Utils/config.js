@@ -48,12 +48,13 @@ const Config = {
                 '900747360450277456', // Staff
                 '900747529384247336'  // PCB Team ID Card
             ],
-            Gay: '1162944612508377088',
-            GigaChad: '1171750121109733438',
+            // /howgay roles
+            Gay: '1162944612508377088',      // ﹝🌈﹞ I'M GAY
+            GigaChad: '1171750121109733438', // ﹝🔥﹞Giga CHAD
             // /announcement pings this role when the "message" box is left empty
             AnnouncePing: '901074521824559125' // Ping Announcement
         },
-        // All Factor (no Gay / Giga Chad roles)
+        // All Factor
         '1466822964350812222': {
             // Every role with authority (all Administrator), except the "Seia" role
             Mod: [
@@ -61,7 +62,10 @@ const Config = {
                 '1466847989833138383', // 2nd Factor Leader
                 '1467188095228313682', // All Factor Member Management
                 '1473742089543090246'  // All Factor Chunithm Leader
-            ]
+            ],
+            // /howgay roles (copied from Lazy Gang, right above "Member" so their color shows)
+            Gay: '1568176762825871512',      // ﹝🌈﹞ I'M GAY
+            GigaChad: '1568176764897853560'  // ﹝🔥﹞Giga CHAD
         }
     },
 
