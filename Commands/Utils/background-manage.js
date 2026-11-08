@@ -1,22 +1,21 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js')
 
 const { SeiaEmbed } = require('../../Utils/embed')
 const { GetLanguage } = require('../../Utils/language')
-const { IsMod } = require('../../Utils/mod')
 const Level = require('../../Database/Ranking/Leveling')
 const UserCards = require('../../Database/Ranking/usercards')
 const { RankCards } = require('../../Assets/RankCards')
-const BotOwner = require('../../Utils/owners')
+const { RequireMod } = require('../../Functions/Moderation/mod')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('rank-background')
-        .setDescription('-Mod Only- Set a user\'s background of their rank card, or set yours')
-        .setDescriptionLocalizations({ vi: '-Mod Only- Đặt / thêm / gỡ background rank card của một người dùng (hoặc của bạn)' })
+        .setName('background-manage')
+        .setDescription('-Mod/Owner Only- Set / add / remove a rank card of a user (or yours)')
+        .setDescriptionLocalizations({ vi: '-Mod/Owner Only- Đặt / thêm / gỡ rank card của một người dùng (hoặc của bạn)' })
         .addUserOption(option =>
             option.setName('user')
-                .setDescription('The user where you want to set it')
-                .setDescriptionLocalizations({ vi: 'Người dùng bạn muốn đặt' })
+                .setDescription('Whose cards - Default: yours')
+                .setDescriptionLocalizations({ vi: 'Card của ai - Mặc định: của bạn' })
                 .setRequired(false)
         )
         .addStringOption(option =>
@@ -51,17 +50,11 @@ module.exports = {
         if (!LangKey) return
         const vi = (LangKey === 'vi')
 
-        //Mod roles of this server (Utils/config.js Roles), a bot owner or an admin
-        const member = await interaction.guild.members.fetch(interaction.user.id)
-        if (!IsMod(member) && !BotOwner.includes(member.id) && !member.permissions.has(PermissionFlagsBits.Administrator)) {
-            return interaction.editReply({
-                embeds: [SeiaEmbed(interaction, 'Red')
-                    .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Không đủ quyền' : 'No permissions'}`)
-                    .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Sensei không có đủ quyền để dùng lệnh này...' : 'You do not have enough permissions to run this command...'}`)]
-            })
-        }
+        //Mod roles of this server (Utils/config.js Roles) or a bot owner
+        if (!await RequireMod(interaction, LangKey, true)) return
 
         const user = (interaction.options.getUser('user') || interaction.user).id
+        const GuildID = interaction.guild.id
         const key = (interaction.options.getString('keyword') || 'none').trim().toLowerCase()
         const MethodValue = interaction.options.getString('method') || 'set'
 
@@ -71,19 +64,19 @@ module.exports = {
                 .setTitle(`<:seiaheh:1244128244664504392> • ${title}`)
                 .setDescription(`<:seiaehem:1244128370669650060> • ${desc}`)]
         })
-        const Ignored = () => Reply(vi ? 'Key đã bị bỏ qua.' : 'The key has been ignored.', vi ? `Key '\`${key}\`' này chả có tác dụng gì với <@${user}> cả, lol` : `The following key: '\`${key}\`' does not have any efffect on <@${user}>, lol`)
+        const Ignored = () => Reply(vi ? 'Key đã bị bỏ qua.' : 'The key has been ignored.', vi ? `Key '\`${key}\`' này chả có tác dụng gì với <@${user}> cả, lol` : `The following key: '\`${key}\`' does not have any effect on <@${user}>, lol`)
 
         if (!RankCards.some(card => card.Key === key)) {
             return interaction.editReply({
                 embeds: [SeiaEmbed(interaction, 'Red')
-                    .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Key không hợp lệ' : 'Invaid Key'}`)
+                    .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Key không hợp lệ' : 'Invalid Key'}`)
                     .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? `Keyword \`${key}\` không hợp lệ, nó không có trong danh sách key...` : `You provided an invalid ranking keyword \`${key}\`... It's not in the key list provided...`}`)]
             })
         }
 
-        //[Set]: equip it on this server (+ unlock it if needed)
+        //[Set]: equip it on this server (+ unlock it here if needed)
         if (MethodValue === 'set') {
-            const data = await Level.findOne({ GuildID: interaction.guild.id, UserID: user })
+            const data = await Level.findOne({ GuildID, UserID: user })
             if (!data) return interaction.editReply(vi ? '<:seiaheh:1244128244664504392> • Có vẻ người dùng này chưa hoạt động ở server... Thử lại sau nhé...' : '<:seiaheh:1244128244664504392> • Looks like the user you chose is currently not active yet... Please try again later...')
 
             if (key === 'none' && data.background === key) {
@@ -97,21 +90,21 @@ module.exports = {
                 ? (vi ? `Đã khôi phục background mặc định cho <@${user}>` : `Successfully restored the default card background for <@${user}>`)
                 : (vi ? `Đã đặt background rank card '\`${key}\`' cho <@${user}>` : `Successfully set the rank card background '\`${key}\`' for <@${user}>`)
             if (key !== 'none') {
-                const added = await UserCards.updateOne({ UserID: user }, { $addToSet: { Cards: key } }, { upsert: true })
+                const added = await UserCards.updateOne({ GuildID, UserID: user }, { $addToSet: { Cards: key } }, { upsert: true })
                 if (added.modifiedCount || added.upsertedCount) desc += (vi) ? `\nĐồng thời em đã thêm '\`${key}\`' vào danh sách card của <@${user}>` : `\nAlso, I added the rank card background '\`${key}\`' to the list for <@${user}>`
             }
             return Reply(vi ? 'Đã đặt key thành công.' : 'The key has been successfully set.', desc)
         }
 
-        //[Add] / [Remove]: only change the unlocked list
+        //[Add] / [Remove]: only change the unlocked list of this server
         if (key === 'none') return Ignored()
 
         const update = (MethodValue === 'add') ? { $addToSet: { Cards: key } } : { $pull: { Cards: key } }
-        const result = await UserCards.updateOne({ UserID: user }, update, { upsert: MethodValue === 'add' })
+        const result = await UserCards.updateOne({ GuildID, UserID: user }, update, { upsert: MethodValue === 'add' })
         if (!result.modifiedCount && !result.upsertedCount) return Ignored()
 
         return (MethodValue === 'add')
             ? Reply(vi ? 'Đã thêm key thành công.' : 'The key has been successfully added.', vi ? `Đã thêm background '\`${key}\`' vào danh sách của <@${user}>` : `Successfully added the rank card background '\`${key}\`' to the list for <@${user}>`)
-            : Reply(vi ? 'Đã gỡ key thành công.' : 'The key has been successfully removed.', vi ? `Đã gỡ background '\`${key}\`' khỏi danh sách của <@${user}>` : `Successfully removed the rank card background '\`${key}\`' to the list for <@${user}>`)
+            : Reply(vi ? 'Đã gỡ key thành công.' : 'The key has been successfully removed.', vi ? `Đã gỡ background '\`${key}\`' khỏi danh sách của <@${user}>` : `Successfully removed the rank card background '\`${key}\`' from the list of <@${user}>`)
     }
 }

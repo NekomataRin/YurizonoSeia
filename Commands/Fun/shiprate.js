@@ -9,7 +9,7 @@ const { Tiers, Comments } = require('../../Assets/Shiprate/comments')
 const Pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
 const Genders = {
     male: { Emoji: '<:Wanderer_Heh:1059112869020586004>', EmojiId: '1059112869020586004', vi: 'Nam', en: 'Male' },
-    female: { Emoji: '<:ChenNya:1167062115442495510>', EmojiId: '1167062115442495510', vi: 'Nữ', en: 'Female' }
+    female: { Emoji: '<:MikaNya:1416618271767265350>', EmojiId: '1416618271767265350', vi: 'Nữ', en: 'Female' }
 }
 
 module.exports = {
@@ -37,7 +37,7 @@ module.exports = {
 
         const user1 = interaction.options.getUser('user1')
         const user2 = interaction.options.getUser('user2')
-        const Title = `<:MarisaThink:1152871970606694480> **${vi ? 'Kiểm tra mối quan hệ của hai người dùng nào đó...' : 'Checking the relationship of two users...'}**`
+        const Title = `<:KayokoThinking:1262268455499862036> **${vi ? 'Kiểm tra mối quan hệ của hai người dùng nào đó...' : 'Checking the relationship of two users...'}**`
         const Note = vi ? '**Lưu ý:** Lệnh chỉ để cho vui, không có ý tứ nào nhá' : '**Note:** Just for fun, no hidden meaning!'
         const Embed = (color, desc) => SeiaEmbed(interaction, color).setTitle(Title).setDescription(`${desc}\n\n${Note}`)
 
@@ -67,12 +67,12 @@ module.exports = {
         //Step 2: calculating... then the result (0.0% → 101.0%)
         await wait(1000)
         const People = `> ${user1} ${Gender(keys[0])}\n> ${user2} ${Gender(keys[1])}`
-        await interaction.editReply({ embeds: [Embed('White', `<:LYG_Okayu_Mogu:1089566808719237210> ${vi ? 'Hệ thống đang tính toán mức độ hợp nhau giữa hai người' : 'Calculating how well these two match'}\n\n${People}\n\n> <a:LYG_Slot:900776450137935872> ${vi ? 'Xin vui lòng chờ một lát...' : 'Please wait a moment...'}`)] })
+        await interaction.editReply({ embeds: [Embed('White', `<:mikaeat:1254109782592327783> ${vi ? 'Hệ thống đang tính toán mức độ hợp nhau giữa hai người' : 'Calculating how well these two match'}\n\n${People}\n\n> <a:LYG_Slot:900776450137935872> ${vi ? 'Xin vui lòng chờ một lát...' : 'Please wait a moment...'}`)] })
         await wait(2000)
 
         const Rate = Math.floor(Math.random() * 1011) / 10
         const t = Tiers.findIndex(tier => Rate <= tier.Max)
         const Comment = `${Tiers[t].Emoji} • ${Pick(Comments[LangKey][t])}`
-        await interaction.editReply({ embeds: [Embed(Tiers[t].Color, `<:OrinWink:1152868455016562738> ${vi ? 'Đã tính toán xong!' : 'Done!'}\n\n${People}\n\n> ${vi ? 'Độ hợp nhau của hai người là' : 'Their match rate is'}: **${Rate.toFixed(1)}%**\n\n> **${vi ? 'Nhận xét' : 'Comment'}:** ${Comment}`)] })
+        await interaction.editReply({ embeds: [Embed(Tiers[t].Color, `<:KikyouWink:1415972415204491405> ${vi ? 'Đã tính toán xong!' : 'Done!'}\n\n${People}\n\n> ${vi ? 'Độ hợp nhau của hai người là' : 'Their match rate is'}: **${Rate.toFixed(1)}%**\n\n> **${vi ? 'Nhận xét' : 'Comment'}:** ${Comment}`)] })
     }
 }

@@ -9,9 +9,9 @@ const { UpdateRankRoles } = require('../../Functions/Ranking/rank-roles')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('set-exp')
-        .setDescription('-NekoRin\'s Only- Set the exp level for the user')
-        .setDescriptionLocalizations({ vi: '-NekoRin\'s Only- Đặt tổng EXP cho một người dùng' })
+        .setName('exp-set')
+        .setDescription('-NekoRin\'s Only- Set the total EXP of a user (or yours)')
+        .setDescriptionLocalizations({ vi: '-NekoRin\'s Only- Đặt tổng EXP cho một người dùng (hoặc cho bạn)' })
         .addIntegerOption(option =>
             option.setName('total-exp')
                 .setDescription('Set the total exp of that user')

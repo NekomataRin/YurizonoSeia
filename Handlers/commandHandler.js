@@ -30,6 +30,11 @@ async function RegisterCommands(client) {
         const body = client.commands.map(command => command.data.toJSON())
         const rest = new REST({ version: '10' }).setToken(process.env.TOKEN)
         const data = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body })
+        // Command IDs: /help shows clickable commands with them (</name:id>)
+        for (const registered of data) {
+            const command = client.commands.get(registered.name)
+            if (command) command.Id = registered.id
+        }
         Log.Info(`Successfully Registered ${data.length} Commands`)
     } catch (err) {
         Log.Error('Cannot register slash commands:', err)

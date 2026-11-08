@@ -3,7 +3,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 /*
 Shows embeds as pages with ◀ ▶ buttons (only the user who used the command can flip them).
 Label(i, total) = text of the middle button. The buttons go away after `Time` ms.
-Used by /howgay-stats, /leaderboard, /quick-math-top, /game-2048-top, /warn-list and /rank-background-list.
+Used by /howgay-stats, /leaderboard, /quick-math-top, /game-2048-top, /warn-list and /background-manage-list.
 */
 async function SendPages(interaction, Embeds, Label = (i, n) => `| Page ${i + 1}/${n} |`, Time = 120000) {
     const Buttons = (i) => new ActionRowBuilder().addComponents(

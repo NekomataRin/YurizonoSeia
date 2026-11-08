@@ -14,8 +14,8 @@ const ForeverAfter = 100 * 365 * 86400000
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('restrict')
-        .setDescription('-Mod Only- Stop someone from using Seia\'s commands for a while (except /help)')
-        .setDescriptionLocalizations({ vi: '-Mod Only- Cấm một người dùng lệnh của Seia trong một khoảng thời gian (trừ /help)' })
+        .setDescription('-Mod/Owner Only- Stop someone from using Seia\'s commands for a while (except /help)')
+        .setDescriptionLocalizations({ vi: '-Mod/Owner Only- Cấm một người dùng lệnh của Seia trong một khoảng thời gian (trừ /help)' })
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('Who you want to restrict')
@@ -40,7 +40,8 @@ module.exports = {
         const LangKey = await GetLanguage(interaction)
         if (!LangKey) return
         const vi = (LangKey === 'vi')
-        if (!await RequireMod(interaction, LangKey)) return
+        //Mod roles of this server or a bot owner (one of the Moderation exceptions)
+        if (!await RequireMod(interaction, LangKey, true)) return
 
         const target = interaction.options.getUser('user')
         const member = await interaction.guild.members.fetch(target.id).catch(() => null)
@@ -62,9 +63,9 @@ module.exports = {
 
         const Length = (Until == null) ? (vi ? '**vô thời hạn**' : '**forever**') : `**${FormatDuration(ms, LangKey)}** - ${UntilText(Saved, vi)}`
         await interaction.editReply({ embeds: [Embed('Red', vi
-            ? `<:OrinMenace:1169857691456372766> | Đã cấm ${target} dùng lệnh của Seia ở server này\n> **Thời gian:** ${Length}\n> **Lí do:** ${reason}`
-            : `<:OrinMenace:1169857691456372766> | ${target} can't use Seia's commands on this server\n> **Duration:** ${Length}\n> **Reason:** ${reason}`)] })
-        await ModLog(interaction, 'Red', LogText(vi, '<:OrinMenace:1169857691456372766>', 'Restrict', vi
+            ? `<:SeiaMenacing:1244890322090201162> | Đã cấm ${target} dùng lệnh của Seia ở server này\n> **Thời gian:** ${Length}\n> **Lí do:** ${reason}`
+            : `<:SeiaMenacing:1244890322090201162> | ${target} can't use Seia's commands on this server\n> **Duration:** ${Length}\n> **Reason:** ${reason}`)] })
+        await ModLog(interaction, 'Red', LogText(vi, '<:SeiaMenacing:1244890322090201162>', 'Restrict', vi
             ? [`**Người dùng:** ${target} (\`${target.id}\`)`, `**Thời gian:** ${Length}`, `**Lí do:** ${reason}`, `**Người thực hiện:** ${interaction.user}`]
             : [`**User:** ${target} (\`${target.id}\`)`, `**Duration:** ${Length}`, `**Reason:** ${reason}`, `**By:** ${interaction.user}`]))
     }

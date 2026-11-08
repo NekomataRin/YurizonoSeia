@@ -7,6 +7,7 @@ const { OmikujiUser, OmikujiGuild } = require('./Fun/omikuji')
 const QuickMathDb = require('./Fun/quickmath')
 const Game2048Db = require('./Fun/game-2048')
 const Game2048Best = require('./Fun/game-2048-best')
+const UserCards = require('./Ranking/usercards')
 const OmikujiConfig = require('../Assets/Omikuji/config')
 const RankingGuilds = require('../Utils/Ranking/guilds')
 
@@ -21,7 +22,9 @@ const Steps = [
     // /quick-math scores saved as text -> numbers (so they sort), /game-2048 saved games -> first best scores
     { Key: 'v3-2026-10-minigames', Run: MigrateV3 },
     // /quick-math best scores are per server now: the old ones (no server) go to the main server
-    { Key: 'v4-2026-11-quickmath-guilds', Run: MigrateV4 }
+    { Key: 'v4-2026-11-quickmath-guilds', Run: MigrateV4 },
+    // Unlocked rank cards are per server now: the old shared lists go to the main server
+    { Key: 'v5-2026-11-usercards-guilds', Run: MigrateV5 }
 ]
 
 async function RunMigrations() {
@@ -224,6 +227,21 @@ async function MigrateV4() {
     if (!process.env.GUILD_ID) throw new Error('GUILD_ID is not set in .env')
     const result = await QuickMathDb.collection.updateMany({ GuildID: { $exists: false } }, { $set: { GuildID: process.env.GUILD_ID } })
     return { quickmath: result.modifiedCount }
+}
+
+// Unlocked rank cards without a server -> the main server. Several documents of the same user are merged
+// (written first, the old ones deleted after: a crash in between just runs it again)
+async function MigrateV5() {
+    if (!process.env.GUILD_ID) throw new Error('GUILD_ID is not set in .env')
+    const docs = await UserCards.collection.find({ GuildID: { $exists: false } }).toArray()
+    const byUser = new Map()
+    for (const doc of docs) byUser.set(doc.UserID, [...(byUser.get(doc.UserID) || []), doc])
+    for (const [UserID, list] of byUser) {
+        const Cards = [...new Set(list.flatMap(doc => doc.Cards || []))]
+        await UserCards.collection.updateOne({ GuildID: process.env.GUILD_ID, UserID }, { $addToSet: { Cards: { $each: Cards } } }, { upsert: true })
+        await UserCards.collection.deleteMany({ _id: { $in: list.map(doc => doc._id) } })
+    }
+    return { usercards: docs.length, users: byUser.size }
 }
 
 // createIndexes only adds missing indexes, it never drops anything

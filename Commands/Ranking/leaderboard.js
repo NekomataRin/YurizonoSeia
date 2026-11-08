@@ -31,7 +31,7 @@ module.exports = {
                 UserID: u.UserID,
                 Value: u.total,
                 Line: `• [${FindCard(u.background).Emoji}] **${vi ? 'Tổng PP' : 'Total PP'}:** \`${u.total}\` • **Level:** \`${u.level}\` • **${vi ? 'Tiến độ' : 'Progress'}:** \`[${(u.exp / Req * 100).toFixed(2)}%] ${u.exp}/${Req}\``
-                    + ((Restricted) ? `\n-# ${vi ? 'Người dùng này đang bị hạn chế' : 'This user is restricted'} (\`${u.restrict}\`)` : '')
+                    + ((Restricted) ? `\n-# ${vi ? 'Người dùng này đang bị phạt EXP' : 'This user has an EXP penalty'} (\`${u.restrict}\`)` : '')
             }
         })
 

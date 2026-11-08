@@ -7,21 +7,21 @@ const BotOwner = require('../../Utils/owners')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ranking-restriction')
-        .setDescription('-Owner Only- Restrict a user from getting some aspect from the ranking system')
-        .setDescriptionLocalizations({ vi: '-Owner Only- Hạn chế một người dùng nhận EXP từ hệ thống ranking' })
+        .setName('exp-penalty')
+        .setDescription('-Owner Only- Lower (or stop) the EXP a user gets on this server')
+        .setDescriptionLocalizations({ vi: '-Owner Only- Giảm (hoặc chặn) EXP một người dùng nhận được ở server này' })
         .addUserOption(option =>
             option.setName('user')
-                .setDescription('The user you want to restrict')
-                .setDescriptionLocalizations({ vi: 'Người dùng bạn muốn hạn chế' })
+                .setDescription('Who gets the penalty')
+                .setDescriptionLocalizations({ vi: 'Người bị phạt' })
                 .setRequired(true)
         )
         .addStringOption(option =>
-            option.setName('restrict-code')
-                .setDescription('The Restriction Code for that user, with detail explanation')
-                .setDescriptionLocalizations({ vi: 'Mã hạn chế cho người dùng đó (kèm giải thích)' })
+            option.setName('code')
+                .setDescription('The penalty code (how much EXP they still get)')
+                .setDescriptionLocalizations({ vi: 'Mã phạt (họ còn nhận được bao nhiêu EXP)' })
                 .addChoices(
-                    { name: '[Code-0] - No Restrictions', value: 'Code-0', name_localizations: { vi: '[Code-0] - Không hạn chế' } },
+                    { name: '[Code-0] - No Penalty', value: 'Code-0', name_localizations: { vi: '[Code-0] - Không phạt' } },
                     { name: '[Code-1] - No Exp', value: 'Code-1', name_localizations: { vi: '[Code-1] - Không nhận EXP' } },
                     { name: '[Code-2] - 50% Exp', value: 'Code-2', name_localizations: { vi: '[Code-2] - 50% EXP' } },
                     { name: '[Code-3] - 25% Exp', value: 'Code-3', name_localizations: { vi: '[Code-3] - 25% EXP' } },
@@ -44,7 +44,7 @@ module.exports = {
         }
 
         const user = interaction.options.getUser('user')
-        const restrict_key = interaction.options.getString('restrict-code')
+        const restrict_key = interaction.options.getString('code')
 
         const data = await Level.findOneAndUpdate(
             { GuildID: interaction.guild.id, UserID: user.id },
@@ -59,8 +59,8 @@ module.exports = {
         const Restricted = (restrict_key !== 'Code-0')
         await interaction.editReply({
             embeds: [SeiaEmbed(interaction, (Restricted) ? 'Red' : 'Green')
-                .setTitle(`<:seiaconcerned:1244128341540208793> • ${(Restricted) ? (vi ? 'Đã hạn chế ranking!' : 'Ranking Restricted!') : (vi ? 'Đã gỡ hạn chế ranking!' : 'Ranking Unrestricted!')}`)
-                .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Người dùng' : 'User'}: ${user} | ${vi ? 'Mã hạn chế' : 'Restrict Key'}: ${restrict_key}`)]
+                .setTitle(`<:seiaconcerned:1244128341540208793> • ${(Restricted) ? (vi ? 'Đã phạt EXP!' : 'EXP Penalty Set!') : (vi ? 'Đã gỡ phạt EXP!' : 'EXP Penalty Removed!')}`)
+                .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Người dùng' : 'User'}: ${user} | ${vi ? 'Mã phạt' : 'Penalty Code'}: ${restrict_key}`)]
         })
     }
 }

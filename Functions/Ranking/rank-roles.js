@@ -31,7 +31,7 @@ Gives / removes the ranking roles of a member (servers with RankRoles only).
 Returns the IDs of the roles that were just given.
 - Normal (every EXP gain): gives the milestone role of their level when they don't have it yet,
   and removes their other level roles. Never takes a role away otherwise.
-- Sync = true (/set-exp): level roles match the level exactly.
+- Sync = true (/exp-set): level roles match the level exactly.
 TotalExp roles are given once reached and never removed.
 */
 async function UpdateRankRoles(member, { level, total }, Sync = false) {
@@ -86,7 +86,7 @@ async function SyncAllRankRoles(guild) {
     return changed
 }
 
-// /reset-rank: removes the level roles from every member (TotalExp roles stay). Returns how many members changed
+// /leaderboard-reset: removes the level roles from every member (TotalExp roles stay). Returns how many members changed
 async function ClearLevelRoles(guild) {
     const LevelIds = RankRolesOf(guild.id)?.LevelIds || []
     if (!LevelIds.length) return 0

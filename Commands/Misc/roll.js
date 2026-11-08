@@ -38,7 +38,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [SeiaEmbed(interaction, 'DarkButNotBlack')
-                .setTitle('<a:LYG_FubukiBorger:975937199486951464> **Number Roll**')
+                .setTitle('<a:ShirokoSparkle:1230151011205648504> **Number Roll**')
                 .setDescription(vi ? `> ${interaction.user} đã roll được **${Result}** điểm\n-# Khoảng: \`${Min}\` - \`${Max}\`` : `> ${interaction.user} rolled **${Result}** points\n-# Range: \`${Min}\` - \`${Max}\``)]
         })
     }

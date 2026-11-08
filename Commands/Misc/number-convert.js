@@ -53,7 +53,7 @@ module.exports = {
 
         //Which base is the typed number in?
         const message = await interaction.editReply({
-            embeds: [Embed('Default', `<:LYG_FubukiPing1:1084085915368050788> | ${vi ? 'Quy đổi số' : 'Number'}: (**${Input}**)\n\n**${vi ? 'Hãy chọn nút bên dưới để chọn kiểu giá trị nhập vào nhé!!!' : 'Pick the base of that number with the buttons below!!!'}**\n• [DEC] • [HEX] • [BIN] • [OCT]`)],
+            embeds: [Embed('Default', `<:NoaNoted:1247028261847040050> | ${vi ? 'Quy đổi số' : 'Number'}: (**${Input}**)\n\n**${vi ? 'Hãy chọn nút bên dưới để chọn kiểu giá trị nhập vào nhé!!!' : 'Pick the base of that number with the buttons below!!!'}**\n• [DEC] • [HEX] • [BIN] • [OCT]`)],
             components: [Buttons]
         })
         const click = await message.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 30000 }).catch(() => null)
@@ -62,7 +62,7 @@ module.exports = {
         const Base = click.customId
         const Value = Parse(Input, Base)
         if (Value === null) {
-            return click.update({ embeds: [Embed('Red', `<:LYG_FubukiPing1:1084085915368050788> | ${vi ? `Oi! Bạn đã nhập sai định dạng số **[${Base}]** rồi! (**${Input}**)` : `Oi! **${Input}** isn't a valid **[${Base}]** number!`}`)], components: [] })
+            return click.update({ embeds: [Embed('Red', `<:NoaNoted:1247028261847040050> | ${vi ? `Oi! Bạn đã nhập sai định dạng số **[${Base}]** rồi! (**${Input}**)` : `Oi! **${Input}** isn't a valid **[${Base}]** number!`}`)], components: [] })
         }
 
         await click.update({ embeds: [Embed('Grey', `<a:LYG_Loading:900784653701627925> | ${vi ? `${interaction.user}... xin chờ một lát, số sẽ được chuyển đổi: **[${Base}]** \`${Input}\`` : `${interaction.user}... please wait, converting **[${Base}]** \`${Input}\``}`)], components: [] })

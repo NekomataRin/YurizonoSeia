@@ -13,7 +13,7 @@ async function GetRank(GuildID, total) {
     return await Level.countDocuments({ GuildID, total: { $gt: total } }) + 1
 }
 
-// Restricted users get their own card colors
+// Users with an EXP penalty (/exp-penalty) get their own card colors
 const RestrictStyle = {
     'Code-1': { Color: '#222222', RankingColor: '#000000', DefaultCard: true },
     'Code-2': { Color: '#abad03', RankingColor: '#abad03' },
@@ -62,7 +62,7 @@ module.exports = {
         const Card = { ...((Style?.DefaultCard) ? RankCards[0] : FindCard(FetchedLevel.background)) }
         if (Style) {
             Card.Color = Style.Color
-            Card.Title = `Restricted: ${Restrict}`
+            Card.Title = `EXP Penalty: ${Restrict}`
         }
 
         const Image = await RankCard({
@@ -77,7 +77,7 @@ module.exports = {
         const attachment = new AttachmentBuilder(Image, { name: `${user.id}-rank.png` })
 
         let desc = vi ? `[${Card.Emoji}] Thứ Hạng Của ${user}` : `[${Card.Emoji}] ${user}'s Ranking`
-        if (Style) desc += vi ? `\n-# ==NGƯỜI DỤNG NÀY HIỆN ĐANG BỊ HẠN CHẾ [${Restrict}]==` : `\n-# ==THIS USER HAS BEEN RESTRICTED [${Restrict}]==`
+        if (Style) desc += vi ? `\n-# ==NGƯỜI DÙNG NÀY ĐANG BỊ PHẠT EXP [${Restrict}]==` : `\n-# ==THIS USER HAS AN EXP PENALTY [${Restrict}]==`
 
         await interaction.editReply({
             embeds: [SeiaEmbed(interaction, Card.Color)

@@ -5,8 +5,8 @@ Servers where chatting gives EXP. To add a server, add one entry here:
   Category name or ID. Names ignore case, spaces, emojis and symbols ('🏠 ┃ Server Lobby' = 'Server Lobby')
 - NoExpChannels: channels that never give EXP (bot test, check rank...), even inside ExpCategories
 - RankRoles (optional): roles given at ranking milestones. They must already exist, Seia never makes them
-  - Levels: reaching a milestone gives its role and removes the other level roles. /reset-rank removes them all.
-  - TotalExp: permanent, never removed (not even by /reset-rank)
+  - Levels: reaching a milestone gives its role and removes the other level roles. /leaderboard-reset removes them all.
+  - TotalExp: permanent, never removed (not even by /leaderboard-reset)
 */
 const Guilds = {
     // Lazy Gang (main server, GUILD_ID in .env)
@@ -108,7 +108,7 @@ const Exp = {
     Event: { End: 1794329999, Exp: [5, 25], Cooldown: [10, 25] }
 }
 
-// Restriction codes from /ranking-restriction -> EXP multiplier
+// Penalty codes from /exp-penalty -> EXP multiplier
 const Restrictions = {
     'Code-0': 1,
     'Code-1': 0,

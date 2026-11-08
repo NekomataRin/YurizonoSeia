@@ -35,7 +35,7 @@ const Config = {
     },
 
     // Roles of every server, by guild ID
-    // Mod: roles that can use the mod commands (/reset-rank, /rank-background)
+    // Mod: roles that can use the mod commands (Commands/Moderation, + the "-Mod/Owner Only-" ones like /leaderboard-reset, /background-manage)
     Roles: {
         // Lazy Gang (main server, GUILD_ID in .env)
         '900742301373042809': {

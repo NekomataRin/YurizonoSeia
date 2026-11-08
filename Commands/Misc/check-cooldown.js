@@ -43,7 +43,7 @@ module.exports = {
             const Until = Number(data?.[Key]) || 0
             return `> **${Name}:** ${(Until > now) ? `<t:${Math.floor(Until / 1000)}:R>` : (vi ? 'Có thể dùng' : 'Ready')}`
         })
-        const RestrictLine = (Restricted) ? `\n\n<:OrinMenace:1169857691456372766> **${vi ? 'Đang bị cấm dùng lệnh đến' : 'Restricted from commands until'}** ${UntilText(Restricted, vi)}` : ''
+        const RestrictLine = (Restricted) ? `\n\n<:SeiaMenacing:1244890322090201162> **${vi ? 'Đang bị cấm dùng lệnh đến' : 'Restricted from commands until'}** ${UntilText(Restricted, vi)}` : ''
 
         await interaction.editReply({
             embeds: [SeiaEmbed(interaction)

@@ -2,17 +2,18 @@ const { MessageFlags } = require('discord.js')
 const { SeiaEmbed } = require('../../Utils/embed')
 const { IsMod } = require('../../Utils/mod')
 const Config = require('../../Utils/config')
+const BotOwner = require('../../Utils/owners')
 const Log = require('../../Utils/logger')
 
-// Emojis of the moderation commands (from Miosha, the ones Seia can't use were swapped for Seia's)
+// Emojis of the moderation commands (Blue Archive / Senren*Banka since v1.4.2, never All Factor's)
 const ModE = {
-    Bruh: '<:OrinBruh:1160295126996881448>',
+    Bruh: '<:MuraAngry:1519660811776167940>',
     Doi: '<:LYG_KeqingDoi:1086190826536849499>',
     Menacing: '<:SeiaMenacing:1244890322090201162>',
     Sip: '<:SeiaSip:1244890166116618340>',
-    What: '<:CirnoWhat:1150565251562078249>',
-    Police: '<:OrinPolice:1152868958148501534>',
-    Orin: '<:JustOrin:1156221079988215879>'
+    What: '<:KikyouWhat:1415972956567375925>',
+    Police: '<:ShirokoGun:1243750682759008268>',
+    Note: '<:KikyouNote:1415973430339043379>'
 }
 
 // Answers whether the interaction was deferred or not (a modal command checks before deferring)
@@ -20,16 +21,22 @@ const Answer = (interaction, payload) => (interaction.deferred || interaction.re
     ? interaction.editReply(payload)
     : interaction.reply({ ...payload, flags: MessageFlags.Ephemeral })
 
-// Mod commands: only the Mod roles of the server (Utils/config.js Roles[guildId].Mod). Bot owners need one too.
+// Mod commands: only the Mod roles of the server (Utils/config.js Roles[guildId].Mod).
+// - Commands/Moderation: Mod only, bot owners need a Mod role too. Exceptions: /restrict, /unrestrict (OwnerToo) and /mod-afk
+// - OwnerToo = true (ranking / leaderboard commands, /restrict, /unrestrict, "-Mod/Owner Only-"): bot owners can always use them
 // Returns the member, or null after telling them they can't
-async function RequireMod(interaction, LangKey) {
+async function RequireMod(interaction, LangKey, OwnerToo = false) {
     const member = interaction.member ?? await interaction.guild.members.fetch(interaction.user.id).catch(() => null)
     if (member && IsMod(member)) return member
+    if (OwnerToo && BotOwner.includes(interaction.user.id)) return member ?? interaction.user
     const vi = (LangKey === 'vi')
+    const Why = (OwnerToo)
+        ? (vi ? 'Bạn không có role Mod của server này (cũng không phải chủ bot), làm thế nào bạn dùng được lệnh này hả???' : 'You don\'t have a Mod role of this server (and you\'re not a bot owner), how could you use this command???')
+        : (vi ? 'Bạn không có role Mod của server này, làm thế nào bạn dùng được lệnh này hả???' : 'You don\'t have a Mod role of this server, how could you use this command???')
     await Answer(interaction, {
         embeds: [SeiaEmbed(interaction, 'DarkAqua')
             .setTitle(`${ModE.Bruh} ${vi ? 'Không đủ thẩm quyền' : 'Not enough authority'}`)
-            .setDescription(`${ModE.Doi} | ${vi ? 'Bạn không có role Mod của server này, làm thế nào bạn dùng được lệnh này hả???' : 'You don\'t have a Mod role of this server, how could you use this command???'}`)]
+            .setDescription(`${ModE.Doi} | ${Why}`)]
     })
     return null
 }

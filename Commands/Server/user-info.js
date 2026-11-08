@@ -38,7 +38,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [SeiaEmbed(interaction)
-                .setTitle(`<:LYG_Okayu_Mogu:1089566808719237210> **${vi ? 'Thông tin của user' : 'User Info'}**`)
+                .setTitle(`<:mikaeat:1254109782592327783> **${vi ? 'Thông tin của user' : 'User Info'}**`)
                 .setDescription(Lines.join('\n'))
                 .setThumbnail(AvatarOf(member || user))]
         })

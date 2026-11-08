@@ -36,10 +36,10 @@ async function BlockRestricted(interaction) {
     const vi = ((await SavedLanguage(interaction.user.id).catch(() => null)) || LocaleLang(interaction)) === 'vi'
     await interaction.reply({
         embeds: [SeiaEmbed(interaction, 'Red')
-            .setTitle(`<:OrinMenace:1169857691456372766> ${vi ? 'Bị hạn chế dùng lệnh' : 'Restricted from commands'}`)
+            .setTitle(`<:SeiaMenacing:1244890322090201162> ${vi ? 'Bị hạn chế dùng lệnh' : 'Restricted from commands'}`)
             .setDescription(vi
-                ? `<:LYG_KeqingDoi:1086190826536849499> | Sensei đã bị Mod hạn chế dùng lệnh của Seia ở server này đến ${UntilText(R, vi)}\n> **Lí do:** ${R.Reason}`
-                : `<:LYG_KeqingDoi:1086190826536849499> | A Mod restricted you from using Seia's commands on this server until ${UntilText(R, vi)}\n> **Reason:** ${R.Reason}`)],
+                ? `<:LYG_KeqingDoi:1086190826536849499> | Sensei đang bị hạn chế dùng lệnh của Seia ở server này đến ${UntilText(R, vi)}\n> **Lí do:** ${R.Reason}`
+                : `<:LYG_KeqingDoi:1086190826536849499> | You're restricted from using Seia's commands on this server until ${UntilText(R, vi)}\n> **Reason:** ${R.Reason}`)],
         flags: MessageFlags.Ephemeral
     }).catch(() => {})
     return true

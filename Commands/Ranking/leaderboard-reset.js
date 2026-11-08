@@ -4,15 +4,14 @@ const wait = require('node:timers/promises').setTimeout
 const { SeiaEmbed } = require('../../Utils/embed')
 const { GetLanguage } = require('../../Utils/language')
 const Level = require('../../Database/Ranking/Leveling')
-const BotOwner = require('../../Utils/owners')
-const { IsMod } = require('../../Utils/mod')
+const { RequireMod } = require('../../Functions/Moderation/mod')
 const { ClearLevelRoles } = require('../../Functions/Ranking/rank-roles')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('reset-rank')
-        .setDescription('-Mod/Owner Only- Reset all exp in the server')
-        .setDescriptionLocalizations({ vi: '-Mod/Owner Only- Reset toàn bộ EXP trong server' }),
+        .setName('leaderboard-reset')
+        .setDescription('-Mod/Owner Only- Reset the EXP of everyone on this server (cannot be undone)')
+        .setDescriptionLocalizations({ vi: '-Mod/Owner Only- Reset EXP của mọi người trong server này (không hoàn tác được)' }),
 
     async execute(interaction) {
         await interaction.deferReply()
@@ -22,14 +21,7 @@ module.exports = {
         const vi = (LangKey === 'vi')
 
         //Mod roles of this server (Utils/config.js Roles) or a bot owner
-        const member = await interaction.guild.members.fetch(interaction.user.id)
-        if (!IsMod(member) && !BotOwner.includes(interaction.user.id)) {
-            return interaction.editReply({
-                embeds: [SeiaEmbed(interaction, 'Red')
-                    .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Không đủ quyền' : 'No permissions'}`)
-                    .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Sensei không có đủ quyền để dùng lệnh này...' : 'You do not have enough permissions to run this command...'}`)]
-            })
-        }
+        if (!await RequireMod(interaction, LangKey, true)) return
 
         const ChoicesButton = new ActionRowBuilder()
             .addComponents(
@@ -41,16 +33,16 @@ module.exports = {
                 new ButtonBuilder()
                     .setCustomId('no')
                     .setLabel(vi ? '| Không' : '| No')
-                    .setEmoji('1138231827140706304')
+                    .setEmoji('1230898036205682778')
                     .setStyle(ButtonStyle.Secondary)
             )
 
         const message = await interaction.editReply({
             embeds: [SeiaEmbed(interaction)
-                .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Reset Rank - Lưu ý' : 'Reset Rank - Notice'}`)
+                .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Reset Bảng Xếp Hạng - Lưu ý' : 'Leaderboard Reset - Notice'}`)
                 .setDescription(vi
-                    ? '<:SeiaSip:1244890166116618340> • Sensei có chắc muốn reset toàn bộ dữ liệu ranking của mọi thành viên không? Trước khi làm, có vài điều cần biết:\n1. Toàn bộ EXP sẽ bị xoá\n2. Đã làm rồi thì không thể hoàn tác được nữa'
-                    : '<:SeiaSip:1244890166116618340> • Are you sure you want to reset all ranking data from all server members? Before you do, here are some things before you proceed:\n1. This will delete all EXP data\n2. Once this process has been done, it cannot be reverted back')],
+                    ? '<:SeiaSip:1244890166116618340> • Sensei có chắc muốn reset toàn bộ dữ liệu ranking của mọi thành viên trong server này không? Trước khi làm, có vài điều cần biết:\n1. Toàn bộ EXP sẽ bị xoá\n2. Đã làm rồi thì không thể hoàn tác được nữa\n3. Rank card đã mở khoá và background đang dùng vẫn được giữ'
+                    : '<:SeiaSip:1244890166116618340> • Are you sure you want to reset all ranking data from all members of this server? Before you do, here are some things before you proceed:\n1. This will delete all EXP data\n2. Once this process has been done, it cannot be reverted back\n3. Unlocked rank cards and equipped backgrounds are kept')],
             components: [ChoicesButton]
         })
 
@@ -58,14 +50,14 @@ module.exports = {
         const choice = await message.awaitMessageComponent({ filter: a => a.user.id === interaction.user.id, time: 60000 }).catch(() => null)
         if (!choice || choice.customId === 'no') {
             const ResetReject = SeiaEmbed(interaction, 'Green')
-                .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Reset Rank - Đã huỷ' : 'Reset Rank - Aborted'}`)
+                .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Reset Bảng Xếp Hạng - Đã huỷ' : 'Leaderboard Reset - Aborted'}`)
                 .setDescription(vi ? '<:SeiaSip:1244890166116618340> • Bảng xếp hạng EXP của server vẫn y như cũ nhé...' : '<:SeiaSip:1244890166116618340> • Well, the server\'s exp leaderboard is still the same as before...')
             return (choice) ? choice.update({ embeds: [ResetReject], components: [] }) : interaction.editReply({ embeds: [ResetReject], components: [] })
         }
 
         await choice.update({
             embeds: [SeiaEmbed(interaction, 'Yellow')
-                .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Reset Rank - Đang tiến hành' : 'Reset Rank - Proceeding'}`)
+                .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Reset Bảng Xếp Hạng - Đang tiến hành' : 'Leaderboard Reset - Proceeding'}`)
                 .setDescription(vi ? '<:SeiaSip:1244890166116618340> • Đang reset hệ thống EXP của server... Xin chờ một chút...' : '<:SeiaSip:1244890166116618340> • Resetting the server\'s exp system... Please wait...')],
             components: []
         })
@@ -81,7 +73,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [SeiaEmbed(interaction, 'Red')
-                .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Reset Rank - Xong!' : 'Reset Rank - Done!'}`)
+                .setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Reset Bảng Xếp Hạng - Xong!' : 'Leaderboard Reset - Done!'}`)
                 .setDescription(vi
                     ? `<:seiaheh:1244128244664504392> • Dữ liệu ranking của các thành viên đã bị xoá, mong là Sensei không hối hận nha, hihi${(Cleared) ? `\n> Đã gỡ role ranking của \`${Cleared}\` thành viên` : ''}`
                     : `<:seiaheh:1244128244664504392> • The server members' ranking data has been deleted, hope you won't regret it, heehee${(Cleared) ? `\n> Removed the ranking roles from \`${Cleared}\` members` : ''}`)]

@@ -11,9 +11,9 @@ const PerPage = 10
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('rank-background-list')
-        .setDescription('-Mod Only- See which members use a rank card background on this server')
-        .setDescriptionLocalizations({ vi: '-Mod Only- Xem các thành viên đang dùng background rank card trong server' }),
+        .setName('background-manage-list')
+        .setDescription('-Mod/Owner Only- See which members use a rank card on this server')
+        .setDescriptionLocalizations({ vi: '-Mod/Owner Only- Xem các thành viên đang dùng rank card nào trong server' }),
 
     async execute(interaction) {
         await interaction.deferReply()
@@ -21,11 +21,11 @@ module.exports = {
         const LangKey = await GetLanguage(interaction)
         if (!LangKey) return
         const vi = (LangKey === 'vi')
-        if (!await RequireMod(interaction, LangKey)) return
+        if (!await RequireMod(interaction, LangKey, true)) return
 
         //Everyone with a background (not the default card) on this server, grouped by card
         const Users = await Level.find({ GuildID: interaction.guild.id, background: { $nin: ['none', null] } }).select('-_id UserID background').sort({ background: 1, UserID: 1 }).lean()
-        const Title = `<:YuyukoWoah:1152872168439423050> **${interaction.guild.name} - Keyword Ranking**`
+        const Title = `<:MikaSurprised:1416618240720900167> **${interaction.guild.name} - Keyword Ranking**`
         if (!Users.length) {
             return interaction.editReply({ embeds: [SeiaEmbed(interaction, 'Blurple').setTitle(Title)
                 .setDescription(vi ? '<:seiaconcerned:1244128341540208793> **Không có đủ số liệu**, chưa có ai dùng background nào cả... Chờ đến khi nào có người dùng rồi xem tiếp nhé!' : '<:seiaconcerned:1244128341540208793> **No data yet**, nobody uses a background on this server... Check again later!')] })

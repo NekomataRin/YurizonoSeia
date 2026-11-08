@@ -40,7 +40,7 @@ module.exports = {
         const Rolls = Array.from({ length: interaction.options.getInteger('quantity') || 1 }, () => Math.floor(Math.random() * 6) + 1)
         const Embed = (color, desc) => SeiaEmbed(interaction, color).setTitle(`<a:LYG_DiceRoll:1090613205149175941> ${vi ? 'Game: Tung xúc xắc' : 'Game: Dice'}`).setDescription(desc)
 
-        await interaction.editReply({ embeds: [Embed('White', `<a:LYG_FubukiWhat:1084085930266218556> ${vi ? `Đang tung xúc xắc cho ${user}... *(xin chờ một lát...)*` : `Rolling the dice for ${user}... *(please wait...)*`}`)] })
+        await interaction.editReply({ embeds: [Embed('White', `<a:ShirokoWot:1230151146249781298> ${vi ? `Đang tung xúc xắc cho ${user}... *(xin chờ một lát...)*` : `Rolling the dice for ${user}... *(please wait...)*`}`)] })
         await wait(2500)
 
         //One die at a time, then the total
@@ -51,6 +51,6 @@ module.exports = {
             await wait(1000)
         }
         const Total = Rolls.reduce((a, b) => a + b, 0)
-        await interaction.editReply({ embeds: [Embed('White', `${Lines.join('\n')}\n<a:LYG_FubukiWhat:1084085930266218556> ${vi ? `Tổng số nút đã roll của ${user} là: **${Total} nút**` : `${user}'s total: **${Total}**`}`)] })
+        await interaction.editReply({ embeds: [Embed('White', `${Lines.join('\n')}\n<a:ShirokoWot:1230151146249781298> ${vi ? `Tổng số nút đã roll của ${user} là: **${Total} nút**` : `${user}'s total: **${Total}**`}`)] })
     }
 }

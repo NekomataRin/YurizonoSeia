@@ -3,12 +3,13 @@ const path = require('path')
 const Log = require('../../Utils/logger')
 
 /*
-Rank cards, grouped in collections (one folder each: cards.js + <Key>.png images)
+Rank cards, grouped in collections (one folder each: cards.js + <Key>.png images).
+Every server has all of them, but cards are unlocked per server (Functions/Ranking/cards.js)
 - New card: put <key>.png in the collection folder + add a line in its cards.js
 - New collection: new folder with cards.js + its name in the list below
 Order in /background-list = this list, then the order inside each cards.js
 */
-const Collections = ['Blue Archive', 'Touhou', 'Senren Banka', 'GekiChuMai']
+const Collections = ['Blue Archive', 'Touhou', 'Senren Banka', 'GekiChuMai', 'ArknightsEndfield']
 
 // Default card (key 'none', image: none.png next to this file)
 const DefaultCard = { Key: 'none', Color: '#ffffff', Emoji: '<:LYG_blank:1097172753985056859>', Title: 'Ordinary Member' }

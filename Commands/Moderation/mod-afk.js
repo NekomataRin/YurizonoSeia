@@ -25,7 +25,7 @@ module.exports = {
         const LangKey = await GetLanguage(interaction)
         if (!LangKey) return
         const vi = (LangKey === 'vi')
-        const Embed = (color, title, desc) => SeiaEmbed(interaction, color).setTitle(`${ModE.Orin} **${title}**`).setDescription(`${interaction.user}\n> ${desc}`)
+        const Embed = (color, title, desc) => SeiaEmbed(interaction, color).setTitle(`${ModE.Note} **${title}**`).setDescription(`${interaction.user}\n> ${desc}`)
 
         //Mod roles of this server, or a bot owner
         if (!IsMod(interaction.member) && !BotOwner.includes(interaction.user.id)) {

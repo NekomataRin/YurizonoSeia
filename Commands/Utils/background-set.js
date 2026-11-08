@@ -3,19 +3,16 @@ const { SlashCommandBuilder } = require('discord.js')
 const { SeiaEmbed } = require('../../Utils/embed')
 const { GetLanguage } = require('../../Utils/language')
 const Level = require('../../Database/Ranking/Leveling')
-const UserCards = require('../../Database/Ranking/usercards')
+const { UnlockedCards } = require('../../Functions/Ranking/cards')
 
-// 'none' (default card) + every card the user unlocked
-async function UnlockedCards(UserID) {
-    const data = await UserCards.findOne({ UserID }).select('-_id Cards').lean()
-    return ['none', ...(data?.Cards || [])]
-}
+// 'none' (default card) + every card the user unlocked on this server
+const Choices = async (interaction) => ['none', ...await UnlockedCards(interaction.guild.id, interaction.user.id)]
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('set-background')
-        .setDescription('Set your rank card in this server')
-        .setDescriptionLocalizations({ vi: 'Đặt rank card của bạn trong server này' })
+        .setName('background-set')
+        .setDescription('Use one of your unlocked rank cards on this server')
+        .setDescriptionLocalizations({ vi: 'Dùng một rank card bạn đã mở khoá ở server này' })
         .addStringOption(option =>
             option.setName('keyword')
                 .setDescription('The rank card you unlocked')
@@ -26,7 +23,7 @@ module.exports = {
 
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused().toLowerCase()
-        const filtered = (await UnlockedCards(interaction.user.id)).filter(choice => choice.startsWith(focusedValue)).slice(0, 25)
+        const filtered = (await Choices(interaction)).filter(choice => choice.startsWith(focusedValue)).slice(0, 25)
         await interaction.respond(filtered.map(choice => ({ name: choice, value: choice })))
     },
 
@@ -38,11 +35,11 @@ module.exports = {
         const vi = (LangKey === 'vi')
         const key = interaction.options.getString('keyword').trim().toLowerCase()
 
-        if (!(await UnlockedCards(interaction.user.id)).includes(key)) {
+        if (!(await Choices(interaction)).includes(key)) {
             return interaction.editReply({
                 embeds: [SeiaEmbed(interaction, 'Red')
                     .setTitle(vi ? 'Lỗi - Key không hợp lệ' : 'Error - Invalid Key')
-                    .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Em không đặt được key này vì nó không có trong danh sách card của Sensei, xin lỗi nha!' : 'I cannot set this key because it is invalid from the database, sorry!'}`)]
+                    .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Em không đặt được key này vì nó không có trong danh sách card của Sensei ở server này, xin lỗi nha!' : 'I cannot set this key because you don\'t have it on this server, sorry!'}`)]
             })
         }
 

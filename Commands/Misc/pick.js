@@ -30,7 +30,7 @@ module.exports = {
         const vi = (LangKey === 'vi')
 
         const Options = interaction.options.getString('options').split(',').map(o => o.trim()).filter(Boolean)
-        const Embed = (desc) => SeiaEmbed(interaction, 'DarkButNotBlack').setTitle(`<a:LYG_FubukiBorger:975937199486951464> **${vi ? 'Ý trời mà Sensei nhận được' : 'The heavens have decided'}**`).setDescription(desc)
+        const Embed = (desc) => SeiaEmbed(interaction, 'DarkButNotBlack').setTitle(`<a:ShirokoSparkle:1230151011205648504> **${vi ? 'Ý trời mà Sensei nhận được' : 'The heavens have decided'}**`).setDescription(desc)
         if (!Options.length) return interaction.editReply({ embeds: [Embed(vi ? '> Sensei chưa ghi lựa chọn nào cả... Ví dụ: `pizza, sushi, phở`' : '> You didn\'t write any option... e.g. `pizza, sushi, phở`')] })
         if (await OnCooldown(interaction, 'Pick', LangKey, 10000)) return
 

@@ -46,12 +46,12 @@ module.exports = {
         const Pick = interaction.options.getString('facing')
         const Face = Flip()
         const Title = `<a:LYG_cflip:1090615324551942225> ${vi ? 'Game: Tung xu' : 'Game: Coinflip'}`
-        const Picked = `<a:LYG_FubukiWhat:1084085930266218556> ${vi ? `Mặt lựa chọn của ${user}... là mặt: **${Name(Pick)}**` : `${user} picked... **${Name(Pick)}**`}`
+        const Picked = `<a:ShirokoWot:1230151146249781298> ${vi ? `Mặt lựa chọn của ${user}... là mặt: **${Name(Pick)}**` : `${user} picked... **${Name(Pick)}**`}`
         const Embed = (color, desc) => SeiaEmbed(interaction, color).setTitle(Title).setDescription(desc)
 
         await interaction.editReply({ embeds: [Embed('Yellow', Picked)] })
         await wait(1000)
-        await interaction.editReply({ embeds: [Embed('Grey', `<a:LYG_FubukiWhat:1084085930266218556> ${vi ? `Đang tung xu cho ${user}... *(xin chờ một lát...)*` : `Flipping the coin for ${user}... *(please wait...)*`}`)] })
+        await interaction.editReply({ embeds: [Embed('Grey', `<a:ShirokoWot:1230151146249781298> ${vi ? `Đang tung xu cho ${user}... *(xin chờ một lát...)*` : `Flipping the coin for ${user}... *(please wait...)*`}`)] })
         await wait(2500)
 
         const Won = (Pick === Face)
@@ -59,12 +59,12 @@ module.exports = {
         const Lines = [
             vi ? `**Kết quả tung xu của ${user}:** ${Faces[Face].Emoji} \`[${Name(Face)}]\`` : `**${user}'s coin landed on:** ${Faces[Face].Emoji} \`[${Name(Face)}]\``,
             (Won)
-                ? `<:LYG_OkayuYay:1084085932254298122> **${vi ? 'Bạn đã thắng! Chúc mừng bạn!' : 'You won! Congratulations!'}**`
+                ? `<:YoshinoCiallo:1519655487560355912> **${vi ? 'Bạn đã thắng! Chúc mừng bạn!' : 'You won! Congratulations!'}**`
                 : `<:LYG_XD:1087375888276000788> **${vi ? 'Bạn đã thua, chúc bạn may mắn lần sau!' : 'You lost, better luck next time!'}**`
         ]
         if (StandInvolved) Lines.push((Won)
             ? `Note: <:LYG_higod:1086172130254798858> **${vi ? 'Thưa ngài, ngài đã vào được coinflip HÀNG HIẾM NHẤT `1/6000` đấy ạ' : 'Sir, you just hit the RAREST coinflip, `1/6000`!'}**`
-            : `Note: <:LYG_FubukiSmug:1090619361389191268> **${vi ? 'Bro à, tỉ lệ `1/6000` không dễ ăn đâu nhé!!!' : 'Bro, a `1/6000` chance isn\'t that easy!!!'}**`)
+            : `Note: <:MakoFufu:1519656509246799944> **${vi ? 'Bro à, tỉ lệ `1/6000` không dễ ăn đâu nhé!!!' : 'Bro, a `1/6000` chance isn\'t that easy!!!'}**`)
 
         const Color = (StandInvolved) ? Colors.Stand : (Won) ? Colors.Win : Colors.Lose
         await interaction.editReply({ embeds: [Embed(Color, `${Picked}\n${Lines.map(l => `> ${l}`).join('\n')}`)] })

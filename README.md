@@ -3,7 +3,46 @@ Yep... Back to my original server - Lazy Gang
 
 Nekorin727 - The TRUE Owner Of This Bot
 
-> v1.4.1 (heh.)
+> v1.4.2 (heh.)
+
+## Changelog - v1.4.2
+
+A small clean-up: some commands got new names so member commands and staff commands are easy to tell apart, unlocked rank cards are per server, and there's a new card.
+
+### Clearer command names
+Commands of the same group now sit next to each other when you type `/`, and **manage** means a staff command. Only the names changed, the data is the same.
+
+| Old | New | Who |
+|---|---|---|
+| `/set-background` | `/background-set` | members |
+| `/background-view` | `/background-owned` | members |
+| `/rank-background` | `/background-manage` | Mod / bot owners |
+| `/rank-background-list` | `/background-manage-list` | Mod / bot owners |
+| `/reset-rank` | `/leaderboard-reset` | Mod / bot owners |
+| `/ranking-restriction` | `/exp-penalty` | bot owners |
+| `/set-exp` | `/exp-set` | NekoRin |
+
+### Who can use what
+- The **Moderation** group is still for the server's Mod roles only (bot owners need one too), except `/restrict`, `/unrestrict` and `/mod-afk`: bot owners can always use those
+- Ranking / leaderboard commands can always be used by the bot owners: `/leaderboard-reset`, `/background-manage`, `/background-manage-list`, `/data-transfer`, `/quick-math-reset`, `/game-2048-reset`
+- Command descriptions say who can use them: `-Mod Only-`, `-Mod/Owner Only-`, `-Owner Only-`
+- New `/help`: the menu goes straight to each command group, each group is split into 👥 Everyone / 🛡️ Mod / 👑 Owner, command names are clickable, and the home page sums up every group
+- Every `/background-*` command is on the Utils page, `/exp-set` + `/exp-penalty` on the Ranking page
+
+### Rank cards per server
+- Unlocked cards are per server: a card unlocked on Lazy Gang isn't on All Factor, and the other way around
+- Cards unlocked before stay on Lazy Gang
+- Every server has the same card collection; `/background-list` shows which ones you have on the server you're in
+- `/data-transfer` only moves the cards of the server it's used on; `/leaderboard-reset` keeps unlocked cards and equipped backgrounds
+- New **ArknightsEndfield** collection with the `typhoeus` card
+
+### Misc
+- `/howgay` on All Factor has the **﹝🌈﹞ I'M GAY** and **﹝🔥﹞Giga CHAD** roles too, right above Member so their color shows
+- Updated the list of users `/howgay` can't check
+- `/mod-afk`: pinging the main bot owner while he's AFK gets its own reminder (an embed in the Typhoeus color with "AFK since"); other staff keep the normal one
+- `/rank` and `/leaderboard` say "EXP penalty" instead of "restricted"
+- The old Hololive / Touhou emojis in command answers were swapped for Blue Archive / Senren Banka ones (Touhou cards and game assets stay)
+- `/background-list` page button in Vietnamese, typos fixed in `/background-manage`
 
 ## Changelog - v1.4.1
 

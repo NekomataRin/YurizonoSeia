@@ -49,9 +49,9 @@ module.exports = {
         await Warns.updateOne({ _id: data._id }, { $set: { Warns: List.filter((_, i) => i !== pos - 1) } })
 
         await interaction.editReply({ embeds: [Embed('Green', vi ? '**Đã xoá cảnh cáo**' : '**Warning removed**', vi
-            ? `${ModE.Orin} Đã xoá cảnh cáo số **${pos}** của ${target}\n> **Nội dung cảnh cáo:** ${Removed.Reason}`
-            : `${ModE.Orin} Removed warning **#${pos}** of ${target}\n> **Warning:** ${Removed.Reason}`)] })
-        await ModLog(interaction, 'Green', LogText(vi, ModE.Orin, vi ? 'Xoá cảnh cáo' : 'Remove warning', vi
+            ? `${ModE.Note} Đã xoá cảnh cáo số **${pos}** của ${target}\n> **Nội dung cảnh cáo:** ${Removed.Reason}`
+            : `${ModE.Note} Removed warning **#${pos}** of ${target}\n> **Warning:** ${Removed.Reason}`)] })
+        await ModLog(interaction, 'Green', LogText(vi, ModE.Note, vi ? 'Xoá cảnh cáo' : 'Remove warning', vi
             ? [`**Người dùng:** ${target} (\`${target.id}\`)`, `**Nội dung cảnh cáo khi xoá:** ${Removed.Reason}`, `**Người thực hiện:** ${interaction.user}`]
             : [`**User:** ${target} (\`${target.id}\`)`, `**Removed warning:** ${Removed.Reason}`, `**By:** ${interaction.user}`]))
     }
