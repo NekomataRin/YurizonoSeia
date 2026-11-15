@@ -47,8 +47,8 @@ module.exports = {
             Color: 'Yellow',
             Entries,
             Empty: vi ? `<:seiaconcerned:1244128341540208793> Chưa ai chơi chế độ \`${Mode.name}\` ở server này cả... Thử \`/game-2048\` đi nào!` : `<:seiaconcerned:1244128341540208793> Nobody has played \`${Mode.name}\` on this server yet... Try \`/game-2048\`!`,
-            You: (e) => vi ? `-# Hạng của cậu: **#${e.Rank}** • Điểm \`${e.Value}\`` : `-# Your rank: **#${e.Rank}** • Score \`${e.Value}\``,
-            NoYou: vi ? `-# Cậu chưa có điểm ở chế độ này` : `-# You don't have a score in this mode yet`
+            You: (e) => vi ? `-# Hạng của Sensei: **#${e.Rank}** • Điểm \`${e.Value}\`` : `-# Your rank: **#${e.Rank}** • Score \`${e.Value}\``,
+            NoYou: vi ? `-# Sensei chưa có điểm ở chế độ này` : `-# You don't have a score in this mode yet`
         })
         await SendPages(interaction, Pages, (i, n) => `| ${vi ? 'Trang' : 'Page'} ${i + 1}/${n} |`)
     }

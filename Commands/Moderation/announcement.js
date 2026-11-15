@@ -37,7 +37,7 @@ module.exports = {
 
         await interaction.showModal(new ModalBuilder()
             .setCustomId(ModalID)
-            .setTitle(vi ? 'Bạn sẽ thông báo gì cho server?' : 'What will you announce?')
+            .setTitle(vi ? 'Sensei muốn thông báo gì cho server?' : 'What do you want to announce, Sensei?')
             .addLabelComponents(
                 Box(vi ? 'Tiêu đề' : 'Title', vi ? 'Tiêu đề của thông báo' : 'Title of the announcement',
                     new TextInputBuilder().setCustomId('title').setStyle(TextInputStyle.Short).setMinLength(1).setMaxLength(256).setRequired(true)),

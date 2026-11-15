@@ -46,7 +46,7 @@ module.exports = {
         const Embed = (color, desc) => SeiaEmbed(interaction, color).setTitle('Yurizono Seia - Timeout').setDescription(desc)
 
         if (ms === null || ms === Infinity) {
-            return interaction.editReply({ embeds: [Embed('Red', vi ? `${ModE.Doi} | Hãy nhập thời gian hợp lệ đi bạn!!! (vd: \`10m\`, \`1h\`, \`1d\`, \`1h30m\`, \`0\` để gỡ)` : `${ModE.Doi} | Please type a valid duration!!! (e.g. \`10m\`, \`1h\`, \`1d\`, \`1h30m\`, \`0\` to remove)`)] })
+            return interaction.editReply({ embeds: [Embed('Red', vi ? `${ModE.Doi} | Sensei nhập thời gian hợp lệ giúp em với!!! (vd: \`10m\`, \`1h\`, \`1d\`, \`1h30m\`, \`0\` để gỡ)` : `${ModE.Doi} | Please type a valid duration!!! (e.g. \`10m\`, \`1h\`, \`1d\`, \`1h30m\`, \`0\` to remove)`)] })
         }
         if (!member) return interaction.editReply({ embeds: [Embed('Green', `${ModE.Doi} | ${vi ? `${target} đâu có ở trong server này?` : `${target} isn't in this server`}`)] })
         const problem = TargetProblem(interaction, target, member, LangKey, 'moderatable')
@@ -71,7 +71,7 @@ module.exports = {
 
         const End = Math.floor((Clock.Now() + Time) / 1000)
         const Length = `**${FormatDuration(Time, LangKey)}** (<t:${End}> | <t:${End}:R>)`
-        const Note = (Capped) ? (vi ? '\n-# Thời gian bạn nhập quá 28 ngày, Discord chỉ cho timeout tối đa 28 ngày thôi' : '\n-# That was more than 28 days, Discord only allows 28 days at most') : ''
+        const Note = (Capped) ? (vi ? '\n-# Thời gian Sensei nhập quá 28 ngày, Discord chỉ cho timeout tối đa 28 ngày thôi' : '\n-# That was more than 28 days, Discord only allows 28 days at most') : ''
         await interaction.editReply({ embeds: [Embed('Red', vi
             ? `${ModE.Sip} | Đã timeout ${target}\n> **Thời gian:** ${Length}\n> **Lí do:** ${reason}${Note}`
             : `${ModE.Sip} | ${target} is timed out\n> **Duration:** ${Length}\n> **Reason:** ${reason}${Note}`)] })

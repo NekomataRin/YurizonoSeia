@@ -67,7 +67,7 @@ module.exports = {
             return interaction.editReply({
                 embeds: [SeiaEmbed(interaction, 'Red')
                     .setTitle(`Err - Timed Out`)
-                    .setDescription(vi ? `Anh bạn à, cậu không chọn gì à, làm ơn thử lại đi!` : `Bro, you forget to choose anything, please try again!`)],
+                    .setDescription(vi ? `Sensei chưa chọn gì cả, chọn lại giúp em nhé!` : `Sensei, you didn't pick anything, please try again!`)],
                 components: []
             })
         }
@@ -77,7 +77,7 @@ module.exports = {
         if (confirm.customId === 'user-selector') {
             const targetid = confirm.values[0]
             await interaction.editReply({
-                embeds: [SeiaEmbed(interaction).setTitle(UserTitle).setDescription(vi ? `Xin hãy chờ để tớ load thống kê của <@${targetid}>...` : `Please wait for the stats of <@${targetid}>...`)],
+                embeds: [SeiaEmbed(interaction).setTitle(UserTitle).setDescription(vi ? `Chờ em load thống kê của <@${targetid}> một chút nhé...` : `Please wait for the stats of <@${targetid}>...`)],
                 components: []
             })
 

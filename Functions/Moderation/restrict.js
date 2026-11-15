@@ -4,6 +4,7 @@ const Restriction = require('../../Database/Moderation/restrictions')
 const { DbReady } = require('../../Database/connect')
 const { SeiaEmbed } = require('../../Utils/embed')
 const { SavedLanguage, LocaleLang } = require('../../Utils/language')
+const BotOwner = require('../../Utils/owners')
 const Clock = require('../../Utils/clock')
 
 // Commands a restricted member can still use
@@ -24,9 +25,10 @@ async function ActiveRestriction(GuildID, UserID) {
 const UntilText = (R, vi) => (R.Until == null) ? (vi ? '**vô thời hạn**' : '**forever**') : `<t:${Math.floor(R.Until / 1000)}> (<t:${Math.floor(R.Until / 1000)}:R>)`
 
 // Called before every command: true = blocked (Seia already answered, only them can see it).
+// Only the bot owners restrict (/restrict), so they are never blocked themselves.
 // Runs before the command answers Discord (3s max): a down / slow database lets the command through
 async function BlockRestricted(interaction) {
-    if (Allowed.includes(interaction.commandName) || !DbReady()) return false
+    if (Allowed.includes(interaction.commandName) || BotOwner.includes(interaction.user.id) || !DbReady()) return false
     const R = await Promise.race([
         ActiveRestriction(interaction.guildId, interaction.user.id).catch(() => null),
         wait(1000).then(() => null)
@@ -38,8 +40,8 @@ async function BlockRestricted(interaction) {
         embeds: [SeiaEmbed(interaction, 'Red')
             .setTitle(`<:SeiaMenacing:1244890322090201162> ${vi ? 'Bị hạn chế dùng lệnh' : 'Restricted from commands'}`)
             .setDescription(vi
-                ? `<:LYG_KeqingDoi:1086190826536849499> | Sensei đang bị hạn chế dùng lệnh của Seia ở server này đến ${UntilText(R, vi)}\n> **Lí do:** ${R.Reason}`
-                : `<:LYG_KeqingDoi:1086190826536849499> | You're restricted from using Seia's commands on this server until ${UntilText(R, vi)}\n> **Reason:** ${R.Reason}`)],
+                ? `<:LYG_KeqingDoi:1086190826536849499> | Sensei đã bị chủ bot cấm dùng lệnh của Seia ở server này đến ${UntilText(R, vi)}\n> **Lí do:** ${R.Reason}`
+                : `<:LYG_KeqingDoi:1086190826536849499> | The bot owner restricted you from using Seia's commands on this server until ${UntilText(R, vi)}\n> **Reason:** ${R.Reason}`)],
         flags: MessageFlags.Ephemeral
     }).catch(() => {})
     return true

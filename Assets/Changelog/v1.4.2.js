@@ -21,13 +21,14 @@ const Changelog = {
 ▸ \`/rank-background\` → \`/background-manage\` (Mod/Owner)
 ▸ \`/rank-background-list\` → \`/background-manage-list\` (Mod/Owner)
 ▸ \`/reset-rank\` → \`/leaderboard-reset\` (Mod/Owner)
-▸ \`/ranking-restriction\` → \`/exp-penalty\` (Owner), hết trùng chữ với \`/restrict\` của Mod
+▸ \`/ranking-restriction\` → \`/exp-penalty\` (Owner), hết trùng chữ với \`/restrict\`
 ▸ \`/set-exp\` → \`/exp-set\` (NekoRin)
 -# Chỉ đổi tên thôi, dữ liệu của mọi người vẫn y nguyên nhé!`
         },
         {
             Name: '<a:ShirokoAlert:1230150424334438421> Ai dùng được lệnh nào',
-            Value: `▸ Nhóm **Quản lí (Mod)** vẫn chỉ dành cho role Mod của server (chủ bot cũng phải có role Mod), trừ \`/restrict\`, \`/unrestrict\` và \`/mod-afk\`: chủ bot luôn dùng được
+            Value: `▸ Nhóm **Quản lí (Mod)** vẫn chỉ dành cho role Mod của server (chủ bot cũng phải có role Mod), trừ \`/mod-afk\` (Mod hoặc chủ bot)
+▸ \`/restrict\` + \`/unrestrict\` giờ **chỉ chủ bot** mới dùng được: cấm ai dùng lệnh của Seia là việc chủ bot quyết, Mod cũng bị cấm như thường
 ▸ Lệnh ranking / bảng điểm thì chủ bot luôn dùng được: \`/leaderboard-reset\`, \`/background-manage\`, \`/background-manage-list\`, \`/data-transfer\`, \`/quick-math-reset\`, \`/game-2048-reset\`
 ▸ Mô tả lệnh ghi rõ ai dùng được: \`-Mod Only-\`, \`-Mod/Owner Only-\`, \`-Owner Only-\`
 ▸ \`/help\` làm mới: menu chọn thẳng từng nhóm lệnh, mỗi nhóm chia phần 👥 Mọi người / 🛡️ Mod / 👑 Owner, bấm vào tên lệnh là dùng được luôn
@@ -52,6 +53,7 @@ const Changelog = {
 ▸ Cập nhật danh sách người dùng không thể check bằng \`/howgay\`
 ▸ \`/mod-afk\`: ping chủ bot lúc ổng đang AFK sẽ thấy một lời nhắc đặc biệt của Seia, thử là biết~
 ▸ \`/rank\` và \`/leaderboard\` ghi rõ "bị phạt EXP" thay vì "bị hạn chế" (để khỏi nhầm với \`/restrict\`)
+▸ Các lệnh hồi sinh từ Miosha giờ xưng hô đúng kiểu Seia: em - Sensei
 ▸ Emoji Hololive / Touhou cũ trong câu trả lời của lệnh đã đổi sang emoji Blue Archive / Senren Banka (card Touhou và các asset của game vẫn giữ nguyên)
 ▸ \`/background-list\`: nút trang có tiếng Việt, sửa vài lỗi chính tả trong câu trả lời của \`/background-manage\``
         }
@@ -68,13 +70,14 @@ const Changelog = {
 ▸ \`/rank-background\` → \`/background-manage\` (Mod/Owner)
 ▸ \`/rank-background-list\` → \`/background-manage-list\` (Mod/Owner)
 ▸ \`/reset-rank\` → \`/leaderboard-reset\` (Mod/Owner)
-▸ \`/ranking-restriction\` → \`/exp-penalty\` (Owner), no more mix-up with the Mods' \`/restrict\`
+▸ \`/ranking-restriction\` → \`/exp-penalty\` (Owner), no more mix-up with \`/restrict\`
 ▸ \`/set-exp\` → \`/exp-set\` (NekoRin)
 -# Only the names changed, everyone's data is the same!`
             },
             {
                 Name: '<a:ShirokoAlert:1230150424334438421> Who can use what',
-                Value: `▸ The **Moderation (Mod)** group is still for the server's Mod roles only (bot owners need one too), except \`/restrict\`, \`/unrestrict\` and \`/mod-afk\`: bot owners can always use those
+                Value: `▸ The **Moderation (Mod)** group is still for the server's Mod roles only (bot owners need one too), except \`/mod-afk\` (Mods or bot owners)
+▸ \`/restrict\` + \`/unrestrict\` are **bot owner only** now: who can't use Seia's commands is the owner's call, and Mods can be restricted too
 ▸ Ranking / leaderboard commands can always be used by the bot owners: \`/leaderboard-reset\`, \`/background-manage\`, \`/background-manage-list\`, \`/data-transfer\`, \`/quick-math-reset\`, \`/game-2048-reset\`
 ▸ Command descriptions say who can use them: \`-Mod Only-\`, \`-Mod/Owner Only-\`, \`-Owner Only-\`
 ▸ New \`/help\`: the menu goes straight to each command group, each group is split into 👥 Everyone / 🛡️ Mod / 👑 Owner, and you can click a command to use it
@@ -99,6 +102,7 @@ const Changelog = {
 ▸ Updated the list of users \`/howgay\` can't check
 ▸ \`/mod-afk\`: ping the bot owner while he's AFK and Seia has a special reminder for you, try it~
 ▸ \`/rank\` and \`/leaderboard\` say "EXP penalty" instead of "restricted" (no mix-up with \`/restrict\`)
+▸ Commands revived from Miosha now talk like Seia (em / Sensei in Vietnamese)
 ▸ The old Hololive / Touhou emojis in command answers were swapped for Blue Archive / Senren Banka ones (Touhou cards and game assets stay)
 ▸ \`/background-list\`: Vietnamese page button, a few typos fixed in \`/background-manage\`'s answers`
             }

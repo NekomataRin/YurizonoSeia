@@ -48,7 +48,7 @@ module.exports = {
 
         const choice = await Confirm(interaction, LangKey,
             Embed('Blurple', vi
-                ? `<:KayokoConfused:1262266983739691138> **Bạn có chắc chắn muốn chuyển dữ liệu chứ?**\n${Users}\n> Rank (Level \`${Old.level}\`, tổng \`${Old.total}\` EXP, background) + card đã mở khoá của server này\n<:SeiaMenacing:1244890322090201162> **CẢNH BÁO:** Dữ liệu ranking của người dùng mới ở server này sẽ bị thay thế, một khi đã làm là không thể sửa!`
+                ? `<:KayokoConfused:1262266983739691138> **Sensei có chắc muốn chuyển dữ liệu không?**\n${Users}\n> Rank (Level \`${Old.level}\`, tổng \`${Old.total}\` EXP, background) + card đã mở khoá của server này\n<:SeiaMenacing:1244890322090201162> **CẢNH BÁO:** Dữ liệu ranking của người dùng mới ở server này sẽ bị thay thế, một khi đã làm là không thể sửa!`
                 : `<:KayokoConfused:1262266983739691138> **Are you sure you want to move the data?**\n${Users}\n> Ranking of this server (Level \`${Old.level}\`, \`${Old.total}\` total EXP, background) + cards unlocked on this server\n<:SeiaMenacing:1244890322090201162> **WARNING:** The new account's ranking data on this server gets replaced, this can't be undone!`),
             Embed('Blue', vi ? '<:KazusaThumbsup:1245237990108696667> **Đã huỷ bỏ chuyển dữ liệu rồi nhé!**' : '<:KazusaThumbsup:1245237990108696667> **Data transfer cancelled!**'))
         if (!choice) return

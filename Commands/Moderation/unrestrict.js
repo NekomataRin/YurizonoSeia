@@ -4,13 +4,13 @@ const { SeiaEmbed } = require('../../Utils/embed')
 const { GetLanguage } = require('../../Utils/language')
 const Restriction = require('../../Database/Moderation/restrictions')
 const { ActiveRestriction } = require('../../Functions/Moderation/restrict')
-const { RequireMod, ModLog, LogText } = require('../../Functions/Moderation/mod')
+const { RequireOwner, ModLog, LogText } = require('../../Functions/Moderation/mod')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('unrestrict')
-        .setDescription('-Mod/Owner Only- Let someone use Seia\'s commands again')
-        .setDescriptionLocalizations({ vi: '-Mod/Owner Only- Gỡ cấm dùng lệnh cho một người' })
+        .setDescription('-Owner Only- Let someone use Seia\'s commands again')
+        .setDescriptionLocalizations({ vi: '-Owner Only- Gỡ cấm dùng lệnh cho một người' })
         .addUserOption(option =>
             option.setName('user')
                 .setDescription('Who you want to unrestrict')
@@ -23,8 +23,8 @@ module.exports = {
         const LangKey = await GetLanguage(interaction)
         if (!LangKey) return
         const vi = (LangKey === 'vi')
-        //Mod roles of this server or a bot owner (one of the Moderation exceptions)
-        if (!await RequireMod(interaction, LangKey, true)) return
+        //Only the bot owners decide
+        if (!await RequireOwner(interaction, LangKey)) return
 
         const target = interaction.options.getUser('user')
         if (!await ActiveRestriction(interaction.guild.id, target.id)) {

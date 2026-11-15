@@ -24,7 +24,7 @@ module.exports = {
         const Embed = (color, desc) => SeiaEmbed(interaction, color).setTitle('**Game 2048 - Reset**').setDescription(desc)
         const choice = await Confirm(interaction, LangKey,
             Embed('White', vi
-                ? `<a:LYG_Warning:900776122726367342> **CẢNH BÁO TRƯỚC KHI RESET ĐIỂM SỐ:**\n${interaction.user} • Đây là hành động reset bảng xếp hạng Game 2048 **TOÀN BỘ CHẾ ĐỘ** của server này (server khác không bị ảnh hưởng, ván đang lưu vẫn còn), bạn có chắc rằng bạn muốn reset nó chứ?\n\n<:MikaTired:1416618244281991258> **Đồng ý** || <:murasmile:1519644173118996550> **Giữ lại**`
+                ? `<a:LYG_Warning:900776122726367342> **CẢNH BÁO TRƯỚC KHI RESET ĐIỂM SỐ:**\n${interaction.user} • Đây là hành động reset bảng xếp hạng Game 2048 **TOÀN BỘ CHẾ ĐỘ** của server này (server khác không bị ảnh hưởng, ván đang lưu vẫn còn), Sensei có chắc muốn reset không?\n\n<:MikaTired:1416618244281991258> **Đồng ý** || <:murasmile:1519644173118996550> **Giữ lại**`
                 : `<a:LYG_Warning:900776122726367342> **WARNING BEFORE RESETTING THE SCORES:**\n${interaction.user} • This resets the Game 2048 leaderboard of **EVERY MODE** on this server (other servers and saved games are kept), are you sure?\n\n<:MikaTired:1416618244281991258> **Agree** || <:murasmile:1519644173118996550> **Keep**`),
             Embed('Blue', vi ? '**Đã huỷ bỏ reset điểm số Game 2048 trong server rồi nhé!**' : '**Game 2048 scores of this server were kept!**'))
         if (!choice) return

@@ -23,7 +23,8 @@ Commands of the same group now sit next to each other when you type `/`, and **m
 | `/set-exp` | `/exp-set` | NekoRin |
 
 ### Who can use what
-- The **Moderation** group is still for the server's Mod roles only (bot owners need one too), except `/restrict`, `/unrestrict` and `/mod-afk`: bot owners can always use those
+- The **Moderation** group is still for the server's Mod roles only (bot owners need one too), except `/mod-afk` (Mods or bot owners)
+- `/restrict` + `/unrestrict` are **bot owner only** now: who can't use Seia's commands is the owner's call, and Mods can be restricted too (other bot owners can't)
 - Ranking / leaderboard commands can always be used by the bot owners: `/leaderboard-reset`, `/background-manage`, `/background-manage-list`, `/data-transfer`, `/quick-math-reset`, `/game-2048-reset`
 - Command descriptions say who can use them: `-Mod Only-`, `-Mod/Owner Only-`, `-Owner Only-`
 - New `/help`: the menu goes straight to each command group, each group is split into 👥 Everyone / 🛡️ Mod / 👑 Owner, command names are clickable, and the home page sums up every group
@@ -41,6 +42,7 @@ Commands of the same group now sit next to each other when you type `/`, and **m
 - Updated the list of users `/howgay` can't check
 - `/mod-afk`: pinging the main bot owner while he's AFK gets its own reminder (an embed in the Typhoeus color with "AFK since"); other staff keep the normal one
 - `/rank` and `/leaderboard` say "EXP penalty" instead of "restricted"
+- Commands revived from Miosha now talk like Seia (Vietnamese: "em" / "Sensei" instead of "bạn", "cậu", "tớ"...)
 - The old Hololive / Touhou emojis in command answers were swapped for Blue Archive / Senren Banka ones (Touhou cards and game assets stay)
 - `/background-list` page button in Vietnamese, typos fixed in `/background-manage`
 

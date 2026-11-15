@@ -42,7 +42,7 @@ module.exports = {
         const Embed = (color, desc) => SeiaEmbed(interaction, color).setTitle(Title).setDescription(`${desc}\n\n${Note}`)
 
         if (user1.id === user2.id) {
-            return interaction.editReply({ embeds: [Embed('Red', vi ? `Bạn đi kiểm tra mối quan hệ giữa ${user1} và ${user2} sao? Thôi bỏ đi một người mà :V` : `Checking the relationship between ${user1} and ${user2}? Come on, pick two different people :V`)] })
+            return interaction.editReply({ embeds: [Embed('Red', vi ? `Sensei định kiểm tra mối quan hệ giữa ${user1} với chính ${user2} sao? Chọn hai người khác nhau đi mà :V` : `Checking ${user1} with themselves, Sensei? Come on, pick two different people :V`)] })
         }
         if (await OnCooldown(interaction, 'Shiprate', LangKey, 45000)) return
 

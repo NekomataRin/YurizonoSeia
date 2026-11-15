@@ -21,7 +21,7 @@ function OwnerEmbed(message, away, vi) {
         .setColor(OwnerColor)
         .setTitle(vi ? '<:SeiaPeek:1244890461592621147> Papa của em đang AFK~' : '<:SeiaPeek:1244890461592621147> My dad is AFK~')
         .setDescription(vi
-            ? `Suỵt! Người bạn vừa ping là **papa của em** (<@${MainOwner}>) đó${Since}\n> Có việc gì thì cứ để lại lời nhắn, ổng về sẽ đọc nhé!`
+            ? `Suỵt! Người Sensei vừa ping là **papa của em** (<@${MainOwner}>) đó${Since}\n> Có việc gì thì cứ để lại lời nhắn, ổng về sẽ đọc nhé!`
             : `Shh! You just pinged **my dad** (<@${MainOwner}>)${Since}\n> Leave a message, he'll read it when he's back!`)
         .setThumbnail(message.mentions.users.get(MainOwner)?.displayAvatarURL?.({ size: 128 }) ?? null)
         .setTimestamp()
@@ -54,8 +54,8 @@ module.exports = async (client, message) => {
         content: (!Staff.length)
             ? `${message.author}`
             : vi
-                ? `<:SeiaMenacing:1244890322090201162> ${message.author}, oi! Bạn ping người trong **Staff Team** (${Names}) thế này lúc họ đang bận hay AFK... Nếu họ cáu thì bạn tính sao?`
-                : `<:SeiaMenacing:1244890322090201162> ${message.author}, hey! You pinged someone from the **Staff Team** (${Names}) while they're busy or AFK... What if they get mad?`,
+                ? `<:SeiaMenacing:1244890322090201162> ${message.author}, oi! Sensei ping người trong **Staff Team** (${Names}) lúc họ đang bận hay AFK thế này... Lỡ họ cáu thì Sensei tính sao đây?`
+                : `<:SeiaMenacing:1244890322090201162> ${message.author}, hey! You pinged someone from the **Staff Team** (${Names}) while they're busy or AFK... What if they get mad, Sensei?`,
         embeds: (Owner) ? [OwnerEmbed(message, Owner, vi)] : [],
         //Only the one who pinged gets pinged back, not the AFK staff again
         allowedMentions: { users: [message.author.id], repliedUser: false }

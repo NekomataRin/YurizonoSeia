@@ -40,13 +40,13 @@ module.exports = {
         if (AFK) {
             const before = await ModAfk.findOneAndUpdate(filter, { $setOnInsert: { Since: Clock.Now() } }, { upsert: true }).lean()
             return interaction.editReply({ embeds: [(before)
-                ? Embed('Green', vi ? 'AFK vẫn đang bật' : 'Still AFK', vi ? `Bạn đã AFK từ <t:${Math.floor(before.Since / 1000)}:R> rồi mà` : `You've been AFK since <t:${Math.floor(before.Since / 1000)}:R>`)
-                : Embed('Green', vi ? 'Đã bật AFK!' : 'AFK on!', vi ? 'Đã set trạng thái AFK của bạn là `True`, ai ping bạn sẽ bị em nhắc nhở nhé' : 'Your AFK status is now `True`, I\'ll warn whoever pings you')] })
+                ? Embed('Green', vi ? 'AFK vẫn đang bật' : 'Still AFK', vi ? `Sensei đã AFK từ <t:${Math.floor(before.Since / 1000)}:R> rồi mà` : `You've been AFK since <t:${Math.floor(before.Since / 1000)}:R>`)
+                : Embed('Green', vi ? 'Đã bật AFK!' : 'AFK on!', vi ? 'Đã bật AFK cho Sensei (`True`), ai ping Sensei sẽ bị em nhắc nhở nhé' : 'Your AFK status is now `True`, I\'ll warn whoever pings you')] })
         }
 
         const removed = await ModAfk.deleteOne(filter)
         await interaction.editReply({ embeds: [(removed.deletedCount)
-            ? Embed('Green', vi ? 'Đã tắt AFK!' : 'AFK off!', vi ? 'Đã set trạng thái AFK của bạn là `False`, chào mừng trở lại!' : 'Your AFK status is now `False`, welcome back!')
-            : Embed('DarkButNotBlack', vi ? 'Bỏ qua!' : 'Skipped!', vi ? 'Lạy bác, đang không AFK mà set `False` thì skip luôn, thêm gì cho mệt vậy!' : 'You weren\'t AFK, so `False` changes nothing, lol')] })
+            ? Embed('Green', vi ? 'Đã tắt AFK!' : 'AFK off!', vi ? 'Đã tắt AFK cho Sensei (`False`), mừng Sensei trở lại!' : 'Your AFK status is now `False`, welcome back!')
+            : Embed('DarkButNotBlack', vi ? 'Bỏ qua!' : 'Skipped!', vi ? 'Sensei đang không AFK mà, set `False` thì em bỏ qua luôn nhé!' : 'You weren\'t AFK, so `False` changes nothing, lol')] })
     }
 }

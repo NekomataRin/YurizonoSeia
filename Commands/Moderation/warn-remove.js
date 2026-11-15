@@ -41,7 +41,7 @@ module.exports = {
         }
         if (pos > List.length) {
             return interaction.editReply({ embeds: [Embed('Yellow', vi ? '**Quá giới hạn**' : '**Out of range**', vi
-                ? `${ModE.Doi} | Bạn nhập số nằm ngoài số lượng cảnh cáo của ${target} rồi! (hiện có **${List.length}**)`
+                ? `${ModE.Doi} | Sensei nhập số nằm ngoài số cảnh cáo của ${target} rồi! (hiện có **${List.length}**)`
                 : `${ModE.Doi} | ${target} only has **${List.length}** warning(s)!`)] })
         }
 

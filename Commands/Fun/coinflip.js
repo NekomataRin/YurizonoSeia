@@ -59,12 +59,12 @@ module.exports = {
         const Lines = [
             vi ? `**Kết quả tung xu của ${user}:** ${Faces[Face].Emoji} \`[${Name(Face)}]\`` : `**${user}'s coin landed on:** ${Faces[Face].Emoji} \`[${Name(Face)}]\``,
             (Won)
-                ? `<:YoshinoCiallo:1519655487560355912> **${vi ? 'Bạn đã thắng! Chúc mừng bạn!' : 'You won! Congratulations!'}**`
-                : `<:LYG_XD:1087375888276000788> **${vi ? 'Bạn đã thua, chúc bạn may mắn lần sau!' : 'You lost, better luck next time!'}**`
+                ? `<:YoshinoCiallo:1519655487560355912> **${vi ? 'Sensei thắng rồi! Chúc mừng Sensei!' : 'You won! Congratulations!'}**`
+                : `<:LYG_XD:1087375888276000788> **${vi ? 'Sensei thua mất rồi, lần sau may mắn hơn nhé!' : 'You lost, better luck next time!'}**`
         ]
         if (StandInvolved) Lines.push((Won)
             ? `Note: <:LYG_higod:1086172130254798858> **${vi ? 'Thưa ngài, ngài đã vào được coinflip HÀNG HIẾM NHẤT `1/6000` đấy ạ' : 'Sir, you just hit the RAREST coinflip, `1/6000`!'}**`
-            : `Note: <:MakoFufu:1519656509246799944> **${vi ? 'Bro à, tỉ lệ `1/6000` không dễ ăn đâu nhé!!!' : 'Bro, a `1/6000` chance isn\'t that easy!!!'}**`)
+            : `Note: <:MakoFufu:1519656509246799944> **${vi ? 'Sensei à, tỉ lệ `1/6000` đâu có dễ ăn vậy!!!' : 'Sensei, a `1/6000` chance isn\'t that easy!!!'}**`)
 
         const Color = (StandInvolved) ? Colors.Stand : (Won) ? Colors.Win : Colors.Lose
         await interaction.editReply({ embeds: [Embed(Color, `${Picked}\n${Lines.map(l => `> ${l}`).join('\n')}`)] })

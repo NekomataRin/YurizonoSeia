@@ -62,7 +62,7 @@ module.exports = {
         const Base = click.customId
         const Value = Parse(Input, Base)
         if (Value === null) {
-            return click.update({ embeds: [Embed('Red', `<:NoaNoted:1247028261847040050> | ${vi ? `Oi! Bạn đã nhập sai định dạng số **[${Base}]** rồi! (**${Input}**)` : `Oi! **${Input}** isn't a valid **[${Base}]** number!`}`)], components: [] })
+            return click.update({ embeds: [Embed('Red', `<:NoaNoted:1247028261847040050> | ${vi ? `Oi! Sensei nhập sai định dạng số **[${Base}]** rồi! (**${Input}**)` : `Oi! **${Input}** isn't a valid **[${Base}]** number!`}`)], components: [] })
         }
 
         await click.update({ embeds: [Embed('Grey', `<a:LYG_Loading:900784653701627925> | ${vi ? `${interaction.user}... xin chờ một lát, số sẽ được chuyển đổi: **[${Base}]** \`${Input}\`` : `${interaction.user}... please wait, converting **[${Base}]** \`${Input}\``}`)], components: [] })

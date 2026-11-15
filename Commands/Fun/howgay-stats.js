@@ -52,7 +52,7 @@ module.exports = {
             return interaction.editReply({
                 embeds: [SeiaEmbed(interaction, 'Red')
                     .setTitle(`Err - Timed Out`)
-                    .setDescription(vi ? `Anh bạn à, cậu không chọn gì à, làm ơn thử lại đi!` : `Bro, you forget to choose anything, please try again!`)],
+                    .setDescription(vi ? `Sensei chưa chọn gì cả, chọn lại giúp em nhé!` : `Sensei, you didn't pick anything, please try again!`)],
                 components: []
             })
         }
@@ -62,14 +62,14 @@ module.exports = {
         if (confirm.customId === 'user-selector') {
             const targetid = confirm.values[0]
             await interaction.editReply({
-                embeds: [SeiaEmbed(interaction).setTitle(UserTitle).setDescription(vi ? `Xin hãy chờ để tớ load thống kê của <@${targetid}>...` : `Please wait for the stats of <@${targetid}>...`)],
+                embeds: [SeiaEmbed(interaction).setTitle(UserTitle).setDescription(vi ? `Chờ em load thống kê của <@${targetid}> một chút nhé...` : `Please wait for the stats of <@${targetid}>...`)],
                 components: []
             })
 
             const UserObj = await HowgayUser.findOne({ GuildID: interaction.guild.id, UserID: targetid }).lean()
             let desc
             if (!UserObj) {
-                desc = vi ? `<a:SeiaMuted:1336385867136241705> Chà, người dùng này <@${targetid}> hiện không có thống kê (có lẽ cậu ta ở trong danh sách miễn hoặc chưa bao giờ dùng lệnh này, lmao)` : `<a:SeiaMuted:1336385867136241705> Well, <@${targetid}> doesn't have any stats for this (maybe they are in the rejection list or have never tested before, lmao)`
+                desc = vi ? `<a:SeiaMuted:1336385867136241705> Chà, người dùng này <@${targetid}> hiện không có thống kê (có lẽ người này nằm trong danh sách miễn hoặc chưa từng bị check, lmao)` : `<a:SeiaMuted:1336385867136241705> Well, <@${targetid}> doesn't have any stats for this (maybe they are in the rejection list or have never tested before, lmao)`
             } else {
                 const Total = UserObj.Total || 0, Special = UserObj.Special || 0
                 const Single = UserObj.Single, Average = UserObj.Average

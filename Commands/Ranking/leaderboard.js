@@ -40,8 +40,8 @@ module.exports = {
             Color: 'Yellow',
             Entries,
             Empty: vi ? '<:seiaconcerned:1244128341540208793> Hmm... bảng xếp hạng vẫn còn trống trơn... Chắc thời gian sẽ trả lời thôi?' : '<:seiaconcerned:1244128341540208793> Hmm... looks like the leaderboard\'s so empty right now... Maybe time will tell the answer?',
-            You: (e) => vi ? `-# Hạng của cậu: **#${e.Rank}** • Tổng PP \`${e.Value}\`` : `-# Your rank: **#${e.Rank}** • Total PP \`${e.Value}\``,
-            NoYou: vi ? '-# Cậu chưa có EXP ở server này, chat để lên bảng nhé!' : '-# You have no EXP on this server yet, chat to get on the board!'
+            You: (e) => vi ? `-# Hạng của Sensei: **#${e.Rank}** • Tổng PP \`${e.Value}\`` : `-# Your rank: **#${e.Rank}** • Total PP \`${e.Value}\``,
+            NoYou: vi ? '-# Sensei chưa có EXP ở server này, chat để lên bảng nhé!' : '-# You have no EXP on this server yet, chat to get on the board!'
         })
         await SendPages(interaction, Pages, (i, n) => `| ${vi ? 'Trang' : 'Page'} ${i + 1}/${n} |`)
     }

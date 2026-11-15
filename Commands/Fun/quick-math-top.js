@@ -50,8 +50,8 @@ module.exports = {
             Color: QM.Colors[idx],
             Entries,
             Empty: vi ? `<:seiaconcerned:1244128341540208793> Chưa ai có điểm ở độ khó \`${GameKey}\` cả... Thử \`/quick-math\` đi nào!` : `<:seiaconcerned:1244128341540208793> Nobody has a score in \`${GameKey}\` yet... Try \`/quick-math\`!`,
-            You: (e) => vi ? `-# Hạng của cậu: **#${e.Rank}** • Điểm \`${e.Value}\`` : `-# Your rank: **#${e.Rank}** • Score \`${e.Value}\``,
-            NoYou: vi ? `-# Cậu chưa có điểm ở độ khó này` : `-# You don't have a score in this difficulty yet`
+            You: (e) => vi ? `-# Hạng của Sensei: **#${e.Rank}** • Điểm \`${e.Value}\`` : `-# Your rank: **#${e.Rank}** • Score \`${e.Value}\``,
+            NoYou: vi ? `-# Sensei chưa có điểm ở độ khó này` : `-# You don't have a score in this difficulty yet`
         })
         await SendPages(interaction, Pages, (i, n) => `| ${vi ? 'Trang' : 'Page'} ${i + 1}/${n} |`)
     }
