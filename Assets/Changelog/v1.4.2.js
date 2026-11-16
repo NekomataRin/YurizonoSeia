@@ -57,7 +57,8 @@ const Changelog = {
 ▸ \`/rank\` và \`/leaderboard\` ghi rõ "bị phạt EXP" thay vì "bị hạn chế" (để khỏi nhầm với \`/restrict\`)
 ▸ Các lệnh hồi sinh từ Miosha giờ xưng hô đúng kiểu Seia: em - Sensei
 ▸ Emoji Hololive / Touhou cũ trong câu trả lời của lệnh đã đổi sang emoji Blue Archive / Senren Banka (card Touhou và các asset của game vẫn giữ nguyên)
-▸ \`/background-list\`: nút trang có tiếng Việt, sửa vài lỗi chính tả trong câu trả lời của \`/background-manage\``
+▸ \`/background-list\` làm mới: chọn bộ sưu tập rồi chọn card trong menu thả xuống, khỏi bấm ◀ ▶ qua 66 trang; \`card\` để mở thẳng một card, có trang "Card của Sensei"
+▸ Sửa vài lỗi chính tả trong câu trả lời của \`/background-manage\``
         }
     ],
 
@@ -108,7 +109,8 @@ const Changelog = {
 ▸ \`/rank\` and \`/leaderboard\` say "EXP penalty" instead of "restricted" (no mix-up with \`/restrict\`)
 ▸ Commands revived from Miosha now talk like Seia (em / Sensei in Vietnamese)
 ▸ The old Hololive / Touhou emojis in command answers were swapped for Blue Archive / Senren Banka ones (Touhou cards and game assets stay)
-▸ \`/background-list\`: Vietnamese page button, a few typos fixed in \`/background-manage\`'s answers`
+▸ New \`/background-list\`: pick a collection, then a card, in drop-down menus instead of ◀ ▶ through 66 pages; \`card\` opens one card directly, plus a "Your cards" page
+▸ A few typos fixed in \`/background-manage\`'s answers`
             }
         ]
     }

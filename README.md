@@ -46,7 +46,8 @@ Commands of the same group now sit next to each other when you type `/`, and **m
 - `/rank` and `/leaderboard` say "EXP penalty" instead of "restricted"
 - Commands revived from Miosha now talk like Seia (Vietnamese: "em" / "Sensei" instead of "bạn", "cậu", "tớ"...)
 - The old Hololive / Touhou emojis in command answers were swapped for Blue Archive / Senren Banka ones (Touhou cards and game assets stay)
-- `/background-list` page button in Vietnamese, typos fixed in `/background-manage`
+- New `/background-list`: an overview of every collection, then drop-down menus to pick a collection and a card (instead of ◀ ▶ through 66 pages); the `card` option opens one card directly, and "Your cards" lists what you have on this server
+- Typos fixed in `/background-manage`
 
 ## Changelog - v1.4.1
 
