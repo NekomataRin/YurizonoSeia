@@ -16,4 +16,14 @@ module.exports = [
     { Key: 'marisa', Color: '#fff500', Emoji: '<:MarisaHappy:1152871855514984460>', Title: 'Touhou - Kirisame Marisa' },
     { Key: 'reimu', Color: '#eb1e1e', Emoji: '<:Reimu_Money:1110239685017612318>', Title: 'Touhou - Hakurei Reimu' },
     { Key: 'tenshi', Color: '#64fff1', Emoji: '<:TenshiSmug:1205836795527569469>', Title: 'Touhou 10.5 - Hinanawi Tenshi' },
+    // Revived in v1.4.2 (old Seia / IochiMari cards)
+    { Key: 'okuu', Color: '#00d309', Emoji: '<:OkuuFlare:1165494255733715007>', Title: 'Touhou 11 - Reiuji Utsuho' },
+    { Key: 'seiran', Color: '#78b6ff', Emoji: '<:seiran:1165494670575538237>', Title: 'Touhou 15 - Seiran' },
+    { Key: 'yukari-2', Color: '#fff16b', Emoji: '<:YukariSmile:1152874226458558464>', Title: 'Touhou 7 - Yakumo Yukari' },
+    { Key: 'ran', Color: '#f2d337', Emoji: '<:RanSleep:1152867071332466689>', Title: 'Touhou 7 - Yakumo Ran (Senior Admin)' },
+    { Key: 'yuyuko', Color: '#ff94fa', Emoji: '<:yuyuko_happy:1167060024548401202>', Title: 'Touhou 7 - Saigyouji Yuyuko (Admin)' },
+    { Key: 'youmu', Color: '#edfffe', Emoji: '<:youmuIrritated:1167060667929460800>', Title: 'Touhou 7 - Konpaku Youmu (Mod)' },
+    { Key: 'chen', Color: '#965959', Emoji: '<:ChenNya:1167062115442495510>', Title: 'Touhou 7 - Chen (Staff)' },
+    { Key: 'patchouli', Color: '#d490ff', Emoji: '<:PatchyWhat:1182981567983931423>', Title: 'Touhou 6 - Patchouli Knowledge' },
+    { Key: 'shinki', Color: '#fff8f8', Emoji: '<:Smug_Shinki:1184437410982002688>', Title: 'Touhou 5 - Shinki' },
 ]

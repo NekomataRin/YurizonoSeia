@@ -43,9 +43,11 @@ const Changelog = {
 ▸ \`/leaderboard-reset\` không đụng tới card đã mở khoá và background đang dùng`
         },
         {
-            Name: '<:typhoYahoo:1568985448762843237> Card mới: Arknights: Endfield',
+            Name: '<:typhoYahoo:1568985448762843237> Card mới, card cũ & EXP cũ trở lại',
             Value: `▸ Bộ sưu tập mới **ArknightsEndfield** với card \`typhoeus\`
-▸ Xem thử bằng \`/background-list\` (card cuối cùng đó)`
+▸ 21 card cũ trở lại: Touhou (\`okuu\`, \`seiran\`, \`yukari-2\`, \`ran\`, \`yuyuko\`, \`youmu\`, \`chen\`, \`patchouli\`, \`shinki\`), **HoyoGames** (\`furina\`, \`ayaka\`, \`castorice\`, \`sparkle\`), **Arcaea** (\`maya-167\`, \`lagrange\`, \`hikatai-re\`, \`hikari-fr\`, \`tairitsu-gl\`), **VTubers** (\`neuro\`, \`evil-neuro\`, \`fubuki\`)
+▸ EXP cũ ở \`LazyGang\` (05/2024 → 04/2025) đã được trả lại, cộng dồn với EXP từ 06/2026, background cũ cũng hiện lại như xưa
+▸ Xem hết bằng \`/background-list\` (66 card)`
         },
         {
             Name: '<:SeiaSip:1244890166116618340> Linh tinh',
@@ -92,9 +94,11 @@ const Changelog = {
 ▸ \`/leaderboard-reset\` keeps unlocked cards and equipped backgrounds`
             },
             {
-                Name: '<:typhoYahoo:1568985448762843237> New card: Arknights: Endfield',
+                Name: '<:typhoYahoo:1568985448762843237> New card, old cards & old EXP are back',
                 Value: `▸ New **ArknightsEndfield** collection with the \`typhoeus\` card
-▸ Take a look with \`/background-list\` (it's the last card)`
+▸ 21 old cards are back: Touhou (\`okuu\`, \`seiran\`, \`yukari-2\`, \`ran\`, \`yuyuko\`, \`youmu\`, \`chen\`, \`patchouli\`, \`shinki\`), **HoyoGames** (\`furina\`, \`ayaka\`, \`castorice\`, \`sparkle\`), **Arcaea** (\`maya-167\`, \`lagrange\`, \`hikatai-re\`, \`hikari-fr\`, \`tairitsu-gl\`), **VTubers** (\`neuro\`, \`evil-neuro\`, \`fubuki\`)
+▸ Old EXP on \`LazyGang\` (05/2024 → 04/2025) is back, added to the EXP earned since 06/2026, and old backgrounds show up again
+▸ See them all with \`/background-list\` (66 cards)`
             },
             {
                 Name: '<:SeiaSip:1244890166116618340> Misc',

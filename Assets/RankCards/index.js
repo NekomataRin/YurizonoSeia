@@ -9,7 +9,7 @@ Every server has all of them, but cards are unlocked per server (Functions/Ranki
 - New collection: new folder with cards.js + its name in the list below
 Order in /background-list = this list, then the order inside each cards.js
 */
-const Collections = ['Blue Archive', 'Touhou', 'Senren Banka', 'GekiChuMai', 'ArknightsEndfield']
+const Collections = ['Blue Archive', 'Touhou', 'Senren Banka', 'GekiChuMai', 'ArknightsEndfield', 'HoyoGames', 'Arcaea', 'VTubers']
 
 // Default card (key 'none', image: none.png next to this file)
 const DefaultCard = { Key: 'none', Color: '#ffffff', Emoji: '<:LYG_blank:1097172753985056859>', Title: 'Ordinary Member' }

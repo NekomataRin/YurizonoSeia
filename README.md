@@ -36,6 +36,8 @@ Commands of the same group now sit next to each other when you type `/`, and **m
 - Every server has the same card collection; `/background-list` shows which ones you have on the server you're in
 - `/data-transfer` only moves the cards of the server it's used on; `/leaderboard-reset` keeps unlocked cards and equipped backgrounds
 - New **ArknightsEndfield** collection with the `typhoeus` card
+- 21 old cards are back (from the old Seia / IochiMari card lists, keys already in use were skipped): Touhou `okuu` `seiran` `yukari-2` `ran` `yuyuko` `youmu` `chen` `patchouli` `shinki`, **HoyoGames** `furina` `ayaka` `castorice` `sparkle`, **Arcaea** `maya-167` `lagrange` `hikatai-re` `hikari-fr` `tairitsu-gl`, **VTubers** `neuro` `evil-neuro` `fubuki` (66 cards in total)
+- Old EXP on Lazy Gang (05/2024 → 04/2025) is back, added to the EXP earned since 06/2026; old backgrounds show up again
 
 ### Misc
 - `/howgay` on All Factor has the **﹝🌈﹞ I'M GAY** and **﹝🔥﹞Giga CHAD** roles too, right above Member so their color shows
