@@ -8,5 +8,5 @@ VTubers rank cards (revived in v1.4.2 from the old Seia / IochiMari cards)
 module.exports = [
     { Key: 'neuro', Color: '#ffed9e', Emoji: '<:neurogun:1383359463351779338>', Title: 'Neuro-sama' },
     { Key: 'evil-neuro', Color: '#8a0010', Emoji: '<:evilharpoon:1383359507081728154>', Title: 'Evil Neuro' },
-    { Key: 'fubuki', Color: '#00ffff', Emoji: '<:FubukiBliss:1190535308639473705>', Title: 'Hololive JP - Fubuki' },
+    { Key: 'fubuki', Color: '#00ffff', Emoji: '<:FubukiBliss:1190535308639473705>', Title: 'hololive - Fubuki' },
 ]
