@@ -9,6 +9,7 @@ const BotOwner = require('../../Utils/owners')
 const Log = require('../../Utils/logger')
 const { Changelogs, Versions } = require('../../Assets/Changelog')
 const { version: CurrentVersion } = require('../../package.json')
+const { V2 } = require('../../Utils/container')
 
 // Discord allows 6000 characters per message (all embeds together), keep some room
 const MAX_EMBED = 5800
@@ -117,9 +118,10 @@ module.exports = {
         const Publish = (SendTo === 'publish')
         const Channels = (Publish) ? Object.values(Config.Channels.Announcements) : [Config.Channels.ChangelogTest]
 
-        //Publishing asks once more (30s), so it isn't posted twice by mistake
+        //Publishing asks once more (30s), so it isn't posted twice by mistake.
+        //Components V2 box (buttons inside): the next edits of this message are V2 too
         if (Publish) {
-            const message = await interaction.editReply({
+            const message = await interaction.editReply(V2({
                 embeds: [SeiaEmbed(interaction, 'Yellow')
                     .setTitle(`<:SeiaSip:1244890166116618340> • ${vi ? `Đăng changelog v${version}?` : `Publish changelog v${version}?`}`)
                     .setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Sẽ được đăng ở' : 'It will be posted in'}: ${Channels.map(id => `<#${id}>`).join(', ')}\n-# ${vi ? 'Bố đã thử với `send-to: [Test]` trước chưa đó?' : 'Did you try it with `send-to: [Test]` first, Dad?'}`)],
@@ -127,13 +129,13 @@ module.exports = {
                     new ButtonBuilder().setCustomId('publish-yes').setLabel(vi ? '| Đăng' : '| Publish').setEmoji('1244128244664504392').setStyle(ButtonStyle.Success),
                     new ButtonBuilder().setCustomId('publish-no').setLabel(vi ? '| Huỷ' : '| Cancel').setEmoji('1244890584276008970').setStyle(ButtonStyle.Secondary)
                 )]
-            })
+            }))
             const choice = await message.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 30000 }).catch(() => null)
             if (choice?.customId !== 'publish-yes') {
-                const Cancelled = { embeds: [SeiaEmbed(interaction, 'Grey').setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Đã huỷ đăng' : 'Publish cancelled'}`).setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Chưa có gì được đăng cả.' : 'Nothing was posted.'}`)], components: [] }
+                const Cancelled = V2({ embeds: [SeiaEmbed(interaction, 'Grey').setTitle(`<:seiaconcerned:1244128341540208793> • ${vi ? 'Đã huỷ đăng' : 'Publish cancelled'}`).setDescription(`<:seiaehem:1244128370669650060> • ${vi ? 'Chưa có gì được đăng cả.' : 'Nothing was posted.'}`)] })
                 return (choice) ? choice.update(Cancelled) : interaction.editReply(Cancelled)
             }
-            await choice.update({ embeds: [SeiaEmbed(interaction, 'Yellow').setTitle(`<:SeiaSip:1244890166116618340> • ${vi ? 'Đang đăng...' : 'Posting...'}`)], components: [] })
+            await choice.update(V2({ embeds: [SeiaEmbed(interaction, 'Yellow').setTitle(`<:SeiaSip:1244890166116618340> • ${vi ? 'Đang đăng...' : 'Posting...'}`)] }))
         }
 
         //The announcement itself is always the Vietnamese one
@@ -149,11 +151,10 @@ module.exports = {
             }
         }
 
-        await interaction.editReply({
+        await interaction.editReply(V2({
             embeds: [SeiaEmbed(interaction, (Results.every(r => r.startsWith('✅'))) ? 'Green' : 'Red')
                 .setTitle(`<:seiaheh:1244128244664504392> • Changelog v${version} - ${(Publish) ? 'Published' : 'Test'}`)
-                .setDescription(Results.join('\n'))],
-            components: []
-        })
+                .setDescription(Results.join('\n'))]
+        }))
     }
 }

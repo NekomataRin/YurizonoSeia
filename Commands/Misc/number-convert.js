@@ -4,6 +4,7 @@ const wait = require('node:timers/promises').setTimeout
 const { SeiaEmbed } = require('../../Utils/embed')
 const { GetLanguage } = require('../../Utils/language')
 const { OnCooldown } = require('../../Utils/cooldown')
+const { V2 } = require('../../Utils/container')
 
 const Bases = {
     DEC: { Radix: 10n, Color: 'Green' },
@@ -51,24 +52,22 @@ module.exports = {
         const Embed = (color, desc) => SeiaEmbed(interaction, color).setTitle(Title).setDescription(desc)
         const Buttons = new ActionRowBuilder().addComponents(Object.keys(Bases).map(b => new ButtonBuilder().setCustomId(b).setLabel(`[${b}]`).setStyle(ButtonStyle.Primary)))
 
-        //Which base is the typed number in?
-        const message = await interaction.editReply({
-            embeds: [Embed('Default', `<:NoaNoted:1247028261847040050> | ${vi ? 'Quy đổi số' : 'Number'}: (**${Input}**)\n\n**${vi ? 'Hãy chọn nút bên dưới để chọn kiểu giá trị nhập vào nhé!!!' : 'Pick the base of that number with the buttons below!!!'}**\n• [DEC] • [HEX] • [BIN] • [OCT]`)],
-            components: [Buttons]
-        })
+        //Which base is the typed number in? (Components V2 box: the buttons sit inside, every later edit is V2 too)
+        const Ask = Embed('Default', `<:NoaNoted:1247028261847040050> | ${vi ? 'Quy đổi số' : 'Number'}: (**${Input}**)\n\n**${vi ? 'Hãy chọn nút bên dưới để chọn kiểu giá trị nhập vào nhé!!!' : 'Pick the base of that number with the buttons below!!!'}**\n• [DEC] • [HEX] • [BIN] • [OCT]`)
+        const message = await interaction.editReply(V2({ embeds: [Ask], components: [Buttons] }))
         const click = await message.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 30000 }).catch(() => null)
-        if (!click) return interaction.editReply({ components: [] }).catch(() => {})
+        if (!click) return interaction.editReply(V2({ embeds: [Ask] })).catch(() => {})
 
         const Base = click.customId
         const Value = Parse(Input, Base)
         if (Value === null) {
-            return click.update({ embeds: [Embed('Red', `<:NoaNoted:1247028261847040050> | ${vi ? `Oi! Sensei nhập sai định dạng số **[${Base}]** rồi! (**${Input}**)` : `Oi! **${Input}** isn't a valid **[${Base}]** number!`}`)], components: [] })
+            return click.update(V2({ embeds: [Embed('Red', `<:NoaNoted:1247028261847040050> | ${vi ? `Oi! Sensei nhập sai định dạng số **[${Base}]** rồi! (**${Input}**)` : `Oi! **${Input}** isn't a valid **[${Base}]** number!`}`)] }))
         }
 
-        await click.update({ embeds: [Embed('Grey', `<a:LYG_Loading:900784653701627925> | ${vi ? `${interaction.user}... xin chờ một lát, số sẽ được chuyển đổi: **[${Base}]** \`${Input}\`` : `${interaction.user}... please wait, converting **[${Base}]** \`${Input}\``}`)], components: [] })
+        await click.update(V2({ embeds: [Embed('Grey', `<a:LYG_Loading:900784653701627925> | ${vi ? `${interaction.user}... xin chờ một lát, số sẽ được chuyển đổi: **[${Base}]** \`${Input}\`` : `${interaction.user}... please wait, converting **[${Base}]** \`${Input}\``}`)] }))
         await wait(2500)
 
         const Results = Object.keys(Bases).filter(b => b !== Base).map(b => `> [${b}] ${Value.toString(Number(Bases[b].Radix)).toUpperCase()}`)
-        await interaction.editReply({ embeds: [Embed(Bases[Base].Color, `<a:LYG_TighnariNotes:1090126010571300874> | **${vi ? 'Số cần quy đổi' : 'Number'}:** **[${Base}]** \`${Input}\`\n\n${Results.join('\n')}`)] })
+        await interaction.editReply(V2({ embeds: [Embed(Bases[Base].Color, `<a:LYG_TighnariNotes:1090126010571300874> | **${vi ? 'Số cần quy đổi' : 'Number'}:** **[${Base}]** \`${Input}\`\n\n${Results.join('\n')}`)] }))
     }
 }

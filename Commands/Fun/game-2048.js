@@ -9,6 +9,7 @@ const Log = require('../../Utils/logger')
 const { Game2048, Game2048_Modes } = require('../../Functions/Fun/Game-2048/Game-2048')
 const Game2048Db = require('../../Database/Fun/game-2048')
 const Game2048Best = require('../../Database/Fun/game-2048-best')
+const { V2 } = require('../../Utils/container')
 
 const BLANK = '1097172753985056859'
 
@@ -76,9 +77,10 @@ module.exports = {
                     : `Welcome back, ${interaction.user}! Would you like to Load The Current Game?\n> **Mode:** \`${Saved.mode}\`\n▸ **Score:** \`${Saved.scores?.current}\` ▸ **Moves:** \`${Saved.moveCount}\`\n> Saved Date: ${SavedTime}`)
                 : (vi ? `Chào mừng ${interaction.user} đến với game 2048, bấm nút bên dưới để bắt đầu nhé!` : `Welcome ${interaction.user} to 2048 game, please select button below to Start The Game!`))
 
-        const Menu = await interaction.editReply({ embeds: [MenuEmbed], components: createDefaultMenu(!Saved, vi) })
+        //Components V2 box: buttons inside it, every later edit of this message is V2 too
+        const Menu = await interaction.editReply(V2({ embeds: [MenuEmbed], components: createDefaultMenu(!Saved, vi) }))
         const choice = await Menu.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 30000 }).catch(() => null)
-        if (!choice) return interaction.editReply({ components: [] })
+        if (!choice) return interaction.editReply(V2({ embeds: [MenuEmbed] }))
 
         //New game (mode from the option) or the saved one
         const Load = (choice.customId === 'load-game' && Saved)
@@ -89,14 +91,13 @@ module.exports = {
         const Modeinfo = Game.settings
         const ModeDesc = (vi) ? (Game2048_Modes[gameKey]?.descVi || Modeinfo.desc) : Modeinfo.desc
 
-        await choice.update({
+        await choice.update(V2({
             embeds: [SeiaEmbed(interaction)
                 .setTitle(`**Game 2048** (Mode: \`${Modeinfo.name}\`)`)
                 .setDescription(vi
                     ? `Dùng các **nút mũi tên** để **di chuyển**, <:undo:1390076263951237240> để **Undo**, và **❌** để thoát\n${ModeDesc}`
-                    : `Please use the **Arrow Buttons** to **Move**, <:undo:1390076263951237240> to **Undo**, and **❌** to quit\n${ModeDesc}`)],
-            components: []
-        })
+                    : `Please use the **Arrow Buttons** to **Move**, <:undo:1390076263951237240> to **Undo**, and **❌** to quit\n${ModeDesc}`)]
+        }))
         await wait(5000)
 
         const Controls = vi ? 'Dùng mũi tên để di chuyển, <:undo:1390076263951237240> để Undo, ❌ để thoát.' : 'Use arrows to move, <:undo:1390076263951237240> to Undo, ❌ to Quit.'
@@ -110,7 +111,7 @@ module.exports = {
         const SaveGame = () => Game2048Db.updateOne(DbFilter, { $set: { gameStats: Game.Save() } }, { upsert: true })
             .catch(err => Log.Error('Game 2048 - cannot save:', err.message))
 
-        const InputMessage = await interaction.editReply({ embeds: [BoardEmbed()], components: createGameButtons(true) })
+        const InputMessage = await interaction.editReply(V2({ embeds: [BoardEmbed()], components: createGameButtons(true) }))
         const collector = InputMessage.createMessageComponentCollector({
             filter: i => i.user.id === interaction.user.id,
             time: 180000
@@ -130,7 +131,7 @@ module.exports = {
                 if (!moved) return i.deferUpdate().catch(() => {})
 
                 collector.resetTimer()
-                await i.update({ embeds: [BoardEmbed()], components: createGameButtons(Game.undoUsed) })
+                await i.update(V2({ embeds: [BoardEmbed()], components: createGameButtons(Game.undoUsed) }))
                 await SaveGame()
                 if (Game.lost) collector.stop('lose')
             }).catch(err => Log.Error('Game 2048:', err))
@@ -172,7 +173,7 @@ module.exports = {
             if (NewBest) reasonText += vi ? '\n> 🏆 **Kỷ lục mới!** Xem bảng xếp hạng bằng `/game-2048-top`' : '\n> 🏆 **New best score!** See the leaderboard with `/game-2048-top`'
 
             //The interaction token only lasts 15 minutes, long games edit the message directly
-            const GameOver = { embeds: [BoardEmbed('Grey', reasonText)], components: [] }
+            const GameOver = V2({ embeds: [BoardEmbed('Grey', reasonText)] })
             await interaction.editReply(GameOver).catch(() => InputMessage.edit(GameOver)).catch(() => {})
         })
     }

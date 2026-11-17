@@ -3,7 +3,15 @@ Yep... Back to my original server - Lazy Gang
 
 Nekorin727 - The TRUE Owner Of This Bot
 
-> v1.4.2 (heh.)
+> v1.4.3 (heh.)
+
+## Changelog - v1.4.3
+
+A small one: buttons and menus now sit inside Seia's message box (Discord's Components V2) instead of floating under it.
+
+- Messages with buttons / menus are one box with a colored edge like an embed, the buttons and menus are inside it: `/help`, `/background-list`, `/leaderboard`, `/quick-math-top`, `/game-2048-top`, `/game-2048`, `/howgay-stats`, `/omikuji-stats`, `/shiprate`, `/number-convert`, `/warn-list`, `/background-manage-list`, the reset commands with a confirm button, `/data-transfer`, and posting `/changelog`
+- When the time is up, the buttons / menus go away and the content stays
+- Commands without buttons still show embeds like before
 
 ## Changelog - v1.4.2
 

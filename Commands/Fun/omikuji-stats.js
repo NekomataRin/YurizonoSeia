@@ -4,6 +4,7 @@ const { SeiaEmbed, AvatarOf } = require('../../Utils/embed')
 const { GetLanguage } = require('../../Utils/language')
 const OmikujiConfig = require('../../Assets/Omikuji/config')
 const { OmikujiUser, OmikujiGuild } = require('../../Database/Fun/omikuji')
+const { V2 } = require('../../Utils/container')
 
 // Counts -> "• **C-Tier:** `n`" lines (+ one line per card for SS)
 function StatsLines(Counts = {}) {
@@ -55,31 +56,30 @@ module.exports = {
                 .setStyle(ButtonStyle.Secondary)
         )
 
-        const InputEmbed = await interaction.editReply({
+        //Components V2 box: the user menu + [Skip] sit inside it, every later edit of this message is V2 too
+        const InputEmbed = await interaction.editReply(V2({
             embeds: [SeiaEmbed(interaction)
                 .setTitle(UserTitle)
                 .setDescription(vi ? `Hãy chọn người dùng để xem thông kê, hoặc bấm nút [<:HikariREE:1356028568961941636> Skip] để xem thống kê của server` : `Please choose the user you want to check the stats, or press [<:HikariREE:1356028568961941636> Skip] for the server's stats`)],
             components: [UserRow, SkipRow]
-        })
+        }))
 
         const confirm = await InputEmbed.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 30000 }).catch(() => null)
         if (!confirm) {
-            return interaction.editReply({
+            return interaction.editReply(V2({
                 embeds: [SeiaEmbed(interaction, 'Red')
                     .setTitle(`Err - Timed Out`)
-                    .setDescription(vi ? `Sensei chưa chọn gì cả, chọn lại giúp em nhé!` : `Sensei, you didn't pick anything, please try again!`)],
-                components: []
-            })
+                    .setDescription(vi ? `Sensei chưa chọn gì cả, chọn lại giúp em nhé!` : `Sensei, you didn't pick anything, please try again!`)]
+            }))
         }
         await confirm.deferUpdate()
 
         //User stats
         if (confirm.customId === 'user-selector') {
             const targetid = confirm.values[0]
-            await interaction.editReply({
-                embeds: [SeiaEmbed(interaction).setTitle(UserTitle).setDescription(vi ? `Chờ em load thống kê của <@${targetid}> một chút nhé...` : `Please wait for the stats of <@${targetid}>...`)],
-                components: []
-            })
+            await interaction.editReply(V2({
+                embeds: [SeiaEmbed(interaction).setTitle(UserTitle).setDescription(vi ? `Chờ em load thống kê của <@${targetid}> một chút nhé...` : `Please wait for the stats of <@${targetid}>...`)]
+            }))
 
             const UserObj = await OmikujiUser.findOne({ GuildID: interaction.guild.id, UserID: targetid }).lean()
             const { total, lines } = StatsLines(UserObj?.Counts)
@@ -87,12 +87,12 @@ module.exports = {
                 ? (vi ? `<a:SeiaMuted:1336385867136241705> Chà, <@${targetid}> không hề có thống kê luôn á, đồng nghĩa họ chưa bao giờ test nhân phẩm mỗi ngày cả... ` : `<a:SeiaMuted:1336385867136241705> Well, <@${targetid}> doesn't have any stats for this, which means they have never test their daily luck, after all...`)
                 : (vi ? `### Người Dùng: <@${targetid}>\n▸ **Tổng số lần dùng:** \`${total}\`${lines}` : `### User: <@${targetid}>\n▸ **Total Checking Usage:** \`${total}\`${lines}`)
 
-            return interaction.editReply({
+            return interaction.editReply(V2({
                 embeds: [SeiaEmbed(interaction)
                     .setTitle(UserTitle)
                     .setDescription(desc)
                     .setThumbnail(AvatarOf(confirm.members?.get(targetid) || confirm.users.get(targetid)))]
-            })
+            }))
         }
 
         //Server stats
@@ -103,15 +103,13 @@ module.exports = {
         const OmikujiData = await OmikujiGuild.findOne({ GuildID: interaction.guild.id }).lean()
         const { total, lines } = StatsLines(OmikujiData?.Counts)
         if (total === 0) {
-            return interaction.editReply({
-                embeds: [ServerEmbed.setDescription(vi ? `<a:SeiaMuted:1336385867136241705> Chà, server **${interaction.guild.name}** chưa có dữ liệu thống kê... xin hãy thử lại sau.` : `<a:SeiaMuted:1336385867136241705> Well, server **${interaction.guild.name}** doesn't have actual data for this... please try again later.`)],
-                components: []
-            })
+            return interaction.editReply(V2({
+                embeds: [ServerEmbed.setDescription(vi ? `<a:SeiaMuted:1336385867136241705> Chà, server **${interaction.guild.name}** chưa có dữ liệu thống kê... xin hãy thử lại sau.` : `<a:SeiaMuted:1336385867136241705> Well, server **${interaction.guild.name}** doesn't have actual data for this... please try again later.`)]
+            }))
         }
 
-        await interaction.editReply({
-            embeds: [ServerEmbed.setDescription(vi ? `### Server: \`${interaction.guild.name}\`\n▸ **Tổng Lượt Dùng Lệnh:** \`${total}\`${lines}` : `### Server: \`${interaction.guild.name}\`\n▸ **Total Checking Usage:** \`${total}\`${lines}`)],
-            components: []
-        })
+        await interaction.editReply(V2({
+            embeds: [ServerEmbed.setDescription(vi ? `### Server: \`${interaction.guild.name}\`\n▸ **Tổng Lượt Dùng Lệnh:** \`${total}\`${lines}` : `### Server: \`${interaction.guild.name}\`\n▸ **Total Checking Usage:** \`${total}\`${lines}`)]
+        }))
     }
 }

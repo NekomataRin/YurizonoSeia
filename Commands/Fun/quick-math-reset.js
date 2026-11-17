@@ -6,6 +6,7 @@ const { GetLanguage } = require('../../Utils/language')
 const QuickMathDb = require('../../Database/Fun/quickmath')
 const { RequireMod } = require('../../Functions/Moderation/mod')
 const { Confirm } = require('../../Functions/Server/confirm')
+const { V2 } = require('../../Utils/container')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,9 +30,10 @@ module.exports = {
             Embed('Blue', vi ? '**Đã huỷ bỏ reset điểm số QuickMath trong server rồi nhé!**' : '**QuickMath scores of this server were kept!**'))
         if (!choice) return
 
-        await choice.update({ embeds: [Embed('Yellow', `<:MikaLoading:1416620663405412432> **${vi ? 'Đang reset điểm số của minigame QuickMath...' : 'Resetting the QuickMath scores...'}**`)], components: [] })
+        //The confirm message is a Components V2 box: its next edits are V2 too
+        await choice.update(V2({ embeds: [Embed('Yellow', `<:MikaLoading:1416620663405412432> **${vi ? 'Đang reset điểm số của minigame QuickMath...' : 'Resetting the QuickMath scores...'}**`)] }))
         await wait(2000)
         const { deletedCount } = await QuickMathDb.deleteMany({ GuildID: interaction.guild.id })
-        await interaction.editReply({ embeds: [Embed('Red', vi ? `**Reset thành công toàn bộ điểm số ở game QuickMath của server rồi nhé!** (\`${deletedCount}\` kỷ lục)` : `**Every QuickMath score of this server was reset!** (\`${deletedCount}\` records)`)] })
+        await interaction.editReply(V2({ embeds: [Embed('Red', vi ? `**Reset thành công toàn bộ điểm số ở game QuickMath của server rồi nhé!** (\`${deletedCount}\` kỷ lục)` : `**Every QuickMath score of this server was reset!** (\`${deletedCount}\` records)`)] }))
     }
 }

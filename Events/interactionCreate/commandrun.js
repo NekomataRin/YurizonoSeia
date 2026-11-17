@@ -3,6 +3,7 @@ const Log = require('../../Utils/logger')
 const Clock = require('../../Utils/clock')
 const { BlockRestricted } = require('../../Functions/Moderation/restrict')
 const { SavedLanguage, LocaleLang } = require('../../Utils/language')
+const { V2 } = require('../../Utils/container')
 
 module.exports = async (client, interaction) => {
     //Keeps Seia's clock in line with Discord's (cooldowns use it)
@@ -38,7 +39,12 @@ module.exports = async (client, interaction) => {
         const content = (vi)
             ? '<a:SeiaMuted:1336385867136241705> Sensei... có lỗi gì đó khi chạy lệnh này rồi. Sensei thử lại sau nhé!'
             : '<a:SeiaMuted:1336385867136241705> Sensei... something went wrong while running this command. Please try again later!'
-        if (interaction.deferred || interaction.replied) await interaction.editReply({ content, embeds: [], components: [], files: [] }).catch(() => {})
+        //A message that already became a Components V2 box only accepts V2 edits
+        if (interaction.deferred || interaction.replied) {
+            await interaction.editReply({ content, embeds: [], components: [], files: [] })
+                .catch(() => interaction.editReply(V2({ content, files: [], attachments: [] })))
+                .catch(() => {})
+        }
         else await interaction.reply({ content, flags: MessageFlags.Ephemeral }).catch(() => {})
     }
 }

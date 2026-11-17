@@ -6,6 +6,7 @@ const { GetLanguage } = require('../../Utils/language')
 const Level = require('../../Database/Ranking/Leveling')
 const { RankCards, FindCard, Collections } = require('../../Assets/RankCards')
 const { UnlockedCards } = require('../../Functions/Ranking/cards')
+const { V2 } = require('../../Utils/container')
 
 // A select menu holds 25 options: bigger collections are cut into parts ("Blue Archive (1-25)", "Blue Archive (26-29)")
 const PerMenu = 25
@@ -128,7 +129,9 @@ module.exports = {
         } else {
             first = Home((Asked) ? `<:seiaconcerned:1244128341540208793> ${vi ? `Không có card \`${Cut(Asked, 30)}\`, Sensei xem danh sách bên dưới nhé` : `There's no \`${Cut(Asked, 30)}\` card, have a look below`}\n\n` : '')
         }
-        const message = await interaction.editReply(first)
+        //Components V2: both menus sit inside the box, under the card
+        let last = first
+        const message = await interaction.editReply(V2(first))
 
         const collector = message.createMessageComponentCollector({ filter: a => a.user.id === interaction.user.id, time: 300000 })
         collector.on('collect', async (a) => {
@@ -140,8 +143,11 @@ module.exports = {
             } else if (a.customId === 'bg-card') {
                 payload = Card(value, view)
             }
-            if (payload) await a.update(payload).catch(() => {})
+            if (!payload) return
+            last = payload
+            await a.update(V2(payload)).catch(() => {})
         })
-        collector.on('end', () => interaction.editReply({ components: [] }).catch(() => {}))
+        //Time is up: the last page stays, without the menus
+        collector.on('end', () => interaction.editReply(V2({ ...last, components: [] })).catch(() => {}))
     }
 }

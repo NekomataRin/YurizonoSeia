@@ -7,6 +7,7 @@ const HowgayConfig = require('../../Assets/Howgay/config')
 const SpecialCases = require('../../Assets/Howgay/special-cases')
 const { SpecialDbKey } = require('../../Functions/Fun/howgay')
 const { HowgayUser, HowgayGuild } = require('../../Database/Fun/howgay')
+const { V2 } = require('../../Utils/container')
 
 const Percent = (list, fn) => (list?.length) ? `${Number(fn(...list)).toFixed(4)}` : '--'
 
@@ -40,31 +41,30 @@ module.exports = {
                 .setStyle(ButtonStyle.Secondary)
         )
 
-        const InputEmbed = await interaction.editReply({
+        //Components V2 box: the user menu + [Skip] sit inside it, every later edit of this message is V2 too
+        const InputEmbed = await interaction.editReply(V2({
             embeds: [SeiaEmbed(interaction)
                 .setTitle(UserTitle)
                 .setDescription(vi ? `Hãy chọn người dùng để xem thông kê, hoặc bấm nút [<:HikariREE:1356028568961941636> Skip] để xem thống kê của server` : `Please choose the user you want to check the stats, or press [<:HikariREE:1356028568961941636> Skip] for the server's stats`)],
             components: [UserRow, SkipRow]
-        })
+        }))
 
         const confirm = await InputEmbed.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 30000 }).catch(() => null)
         if (!confirm) {
-            return interaction.editReply({
+            return interaction.editReply(V2({
                 embeds: [SeiaEmbed(interaction, 'Red')
                     .setTitle(`Err - Timed Out`)
-                    .setDescription(vi ? `Sensei chưa chọn gì cả, chọn lại giúp em nhé!` : `Sensei, you didn't pick anything, please try again!`)],
-                components: []
-            })
+                    .setDescription(vi ? `Sensei chưa chọn gì cả, chọn lại giúp em nhé!` : `Sensei, you didn't pick anything, please try again!`)]
+            }))
         }
         await confirm.deferUpdate()
 
         //User stats
         if (confirm.customId === 'user-selector') {
             const targetid = confirm.values[0]
-            await interaction.editReply({
-                embeds: [SeiaEmbed(interaction).setTitle(UserTitle).setDescription(vi ? `Chờ em load thống kê của <@${targetid}> một chút nhé...` : `Please wait for the stats of <@${targetid}>...`)],
-                components: []
-            })
+            await interaction.editReply(V2({
+                embeds: [SeiaEmbed(interaction).setTitle(UserTitle).setDescription(vi ? `Chờ em load thống kê của <@${targetid}> một chút nhé...` : `Please wait for the stats of <@${targetid}>...`)]
+            }))
 
             const UserObj = await HowgayUser.findOne({ GuildID: interaction.guild.id, UserID: targetid }).lean()
             let desc
@@ -78,12 +78,12 @@ module.exports = {
                     : `### User: <@${targetid}>\n▸ **Total Checking Usage:** \`${Total}\`\n• **Normal Cases:** \`${Total - Special}\`\n• **Special Cases:** \`${Special}\`\n\n▸ **Max/Min of The ${HowgayConfig.KeepRecent} Recent Usages:**\n• **Non-Average:** (Max: \`${Percent(Single, Math.max)}%\` -- Min: \`${Percent(Single, Math.min)}%\`)\n• **Average:** (Max: \`${Percent(Average, Math.max)}%\` -- Min: \`${Percent(Average, Math.min)}%\`)`
             }
 
-            return interaction.editReply({
+            return interaction.editReply(V2({
                 embeds: [SeiaEmbed(interaction)
                     .setTitle(UserTitle)
                     .setDescription(desc)
                     .setThumbnail(AvatarOf(confirm.members?.get(targetid) || confirm.users.get(targetid)))]
-            })
+            }))
         }
 
         //Server stats: page 1 = normal ranges, page 2 = special cases
@@ -97,10 +97,9 @@ module.exports = {
         const STotal = Object.values(Normal).reduce((a, b) => a + b, 0)
 
         if (STotal === 0) {
-            return interaction.editReply({
-                embeds: [PageEmbed(vi ? `<a:SeiaMuted:1336385867136241705> Chà, server **${interaction.guild.name}** chưa có dữ liệu thống kê... xin hãy thử lại sau.` : `<a:SeiaMuted:1336385867136241705> Well, server **${interaction.guild.name}** doesn't have actual data for this... please try again later.`)],
-                components: []
-            })
+            return interaction.editReply(V2({
+                embeds: [PageEmbed(vi ? `<a:SeiaMuted:1336385867136241705> Chà, server **${interaction.guild.name}** chưa có dữ liệu thống kê... xin hãy thử lại sau.` : `<a:SeiaMuted:1336385867136241705> Well, server **${interaction.guild.name}** doesn't have actual data for this... please try again later.`)]
+            }))
         }
 
         const Head = `## Server: ${interaction.guild.name}\n`
@@ -121,10 +120,10 @@ module.exports = {
         const SSpecial = SpecialLines.reduce((a, b) => a + b.count, 0)
         const SpecialHead = Head + (vi ? `### **Đặc Biệt:** \`[${SSpecial}]\`\n` : `### **Special Cases:** \`[${SSpecial}]\`\n`)
 
-        //A very long special list continues on the next page instead of breaking the embed
+        //A very long special list continues on the next page (a Components V2 page holds 4000 characters, title + footer included)
         const SpecialPages = [SpecialHead]
         for (const { line } of SpecialLines) {
-            if ((SpecialPages[SpecialPages.length - 1] + line).length > 4000) SpecialPages.push(SpecialHead)
+            if ((SpecialPages[SpecialPages.length - 1] + line).length > 3400) SpecialPages.push(SpecialHead)
             SpecialPages[SpecialPages.length - 1] += line
         }
         if (SpecialLines.length === 0) SpecialPages[0] += vi ? '-# Chưa có case đặc biệt nào...' : '-# No special cases yet...'

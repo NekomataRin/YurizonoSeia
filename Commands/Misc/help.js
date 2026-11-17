@@ -4,10 +4,12 @@ const { SeiaEmbed, Cut } = require('../../Utils/embed')
 const { GetLanguage } = require('../../Utils/language')
 const { Changelogs } = require('../../Assets/Changelog')
 const { version: Version } = require('../../package.json')
+const { V2 } = require('../../Utils/container')
 
 const Sparkle = '<a:LYG_Sparkle:1084084997398470747>'
 const Invite = 'https://discord.gg/bQBQYU5vhb'
-const MaxPage = 3800
+// A Components V2 message holds 4000 characters of text, title + footer included
+const MaxPage = 3500
 
 // Command folders (Commands/<Category>) in menu order. A new folder shows up at the end by itself
 const Categories = {
@@ -157,9 +159,11 @@ module.exports = {
         const Sections = { home: Home, clog: Changelog, credits: Credits, faq: FAQ }
         const Pages = {}
         const PagesOf = (section) => (section.startsWith('cat:')) ? (Pages[section] ??= CategoryPages(interaction, section.slice(4), vi)) : [Sections[section]]
-        const Render = (section, page) => {
+        //Components V2: the menu (and ◀ ▶ when a category has more pages) sits inside the box
+        const Render = (section, page, rows = true) => {
             const List = PagesOf(section)
-            return { embeds: [List[page]], components: (List.length > 1) ? [PageRow(page, List.length), Menu(section)] : [Menu(section)] }
+            const Rows = (!rows) ? [] : (List.length > 1) ? [PageRow(page, List.length), Menu(section)] : [Menu(section)]
+            return V2({ embeds: [List[page]], components: Rows })
         }
 
         let section = 'home', page = 0
@@ -174,6 +178,6 @@ module.exports = {
             }
             await i.update(Render(section, page)).catch(() => {})
         })
-        collector.on('end', () => interaction.editReply({ components: [] }).catch(() => {}))
+        collector.on('end', () => interaction.editReply(Render(section, page, false)).catch(() => {}))
     }
 }

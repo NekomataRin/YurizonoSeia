@@ -5,6 +5,7 @@ const { SeiaEmbed } = require('../../Utils/embed')
 const { GetLanguage } = require('../../Utils/language')
 const { OnCooldown } = require('../../Utils/cooldown')
 const { Tiers, Comments } = require('../../Assets/Shiprate/comments')
+const { V2 } = require('../../Utils/container')
 
 const Pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
 const Genders = {
@@ -55,24 +56,25 @@ module.exports = {
             new ButtonBuilder().setCustomId('female').setLabel(vi ? 'GT: Nữ' : 'Female').setEmoji(Genders.female.EmojiId).setStyle(ButtonStyle.Secondary)
         )
 
-        const message = await interaction.editReply({ embeds: [Ask([])], components: [Buttons] })
+        //Components V2 box: the buttons sit inside it, every later edit of this message is V2 too
+        const message = await interaction.editReply(V2({ embeds: [Ask([])], components: [Buttons] }))
         const keys = []
         while (keys.length < 2) {
             const click = await message.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 5 * 60 * 1000 }).catch(() => null)
-            if (!click) return interaction.editReply({ components: [] }).catch(() => {})
+            if (!click) return interaction.editReply(V2({ embeds: [Ask(keys)] })).catch(() => {})
             keys.push(click.customId)
-            await click.update({ embeds: [Ask(keys, keys.length === 2)], components: (keys.length < 2) ? [Buttons] : [] })
+            await click.update(V2({ embeds: [Ask(keys, keys.length === 2)], components: (keys.length < 2) ? [Buttons] : [] }))
         }
 
         //Step 2: calculating... then the result (0.0% → 101.0%)
         await wait(1000)
         const People = `> ${user1} ${Gender(keys[0])}\n> ${user2} ${Gender(keys[1])}`
-        await interaction.editReply({ embeds: [Embed('White', `<:mikaeat:1254109782592327783> ${vi ? 'Hệ thống đang tính toán mức độ hợp nhau giữa hai người' : 'Calculating how well these two match'}\n\n${People}\n\n> <a:LYG_Slot:900776450137935872> ${vi ? 'Xin vui lòng chờ một lát...' : 'Please wait a moment...'}`)] })
+        await interaction.editReply(V2({ embeds: [Embed('White', `<:mikaeat:1254109782592327783> ${vi ? 'Hệ thống đang tính toán mức độ hợp nhau giữa hai người' : 'Calculating how well these two match'}\n\n${People}\n\n> <a:LYG_Slot:900776450137935872> ${vi ? 'Xin vui lòng chờ một lát...' : 'Please wait a moment...'}`)] }))
         await wait(2000)
 
         const Rate = Math.floor(Math.random() * 1011) / 10
         const t = Tiers.findIndex(tier => Rate <= tier.Max)
         const Comment = `${Tiers[t].Emoji} • ${Pick(Comments[LangKey][t])}`
-        await interaction.editReply({ embeds: [Embed(Tiers[t].Color, `<:KikyouWink:1415972415204491405> ${vi ? 'Đã tính toán xong!' : 'Done!'}\n\n${People}\n\n> ${vi ? 'Độ hợp nhau của hai người là' : 'Their match rate is'}: **${Rate.toFixed(1)}%**\n\n> **${vi ? 'Nhận xét' : 'Comment'}:** ${Comment}`)] })
+        await interaction.editReply(V2({ embeds: [Embed(Tiers[t].Color, `<:KikyouWink:1415972415204491405> ${vi ? 'Đã tính toán xong!' : 'Done!'}\n\n${People}\n\n> ${vi ? 'Độ hợp nhau của hai người là' : 'Their match rate is'}: **${Rate.toFixed(1)}%**\n\n> **${vi ? 'Nhận xét' : 'Comment'}:** ${Comment}`)] }))
     }
 }

@@ -7,6 +7,7 @@ const Level = require('../../Database/Ranking/Leveling')
 const UserCards = require('../../Database/Ranking/usercards')
 const { RequireMod } = require('../../Functions/Moderation/mod')
 const { Confirm } = require('../../Functions/Server/confirm')
+const { V2 } = require('../../Utils/container')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -53,7 +54,8 @@ module.exports = {
             Embed('Blue', vi ? '<:KazusaThumbsup:1245237990108696667> **Đã huỷ bỏ chuyển dữ liệu rồi nhé!**' : '<:KazusaThumbsup:1245237990108696667> **Data transfer cancelled!**'))
         if (!choice) return
 
-        await choice.update({ embeds: [Embed('Yellow', `<:MikaLoading:1416620663405412432> **${vi ? 'Đang chuyển dữ liệu...' : 'Moving the data...'}**\n${Users}`)], components: [] })
+        //The confirm message is a Components V2 box: its next edits are V2 too
+        await choice.update(V2({ embeds: [Embed('Yellow', `<:MikaLoading:1416620663405412432> **${vi ? 'Đang chuyển dữ liệu...' : 'Moving the data...'}**\n${Users}`)] }))
         await wait(2000)
 
         //Ranking of this server: the new account takes the old one's document
@@ -67,6 +69,6 @@ module.exports = {
             await UserCards.deleteOne({ GuildID, UserID: OUser.id })
         }
 
-        await interaction.editReply({ embeds: [Embed('Green', `<:KikyouWink:1415972415204491405> **${vi ? 'Đã chuyển dữ liệu thành công!' : 'Data moved!'}**\n${Users}${(OldCards?.Cards?.length) ? `\n> ${vi ? 'Card đã chuyển' : 'Cards moved'}: \`${OldCards.Cards.length}\`` : ''}`)] })
+        await interaction.editReply(V2({ embeds: [Embed('Green', `<:KikyouWink:1415972415204491405> **${vi ? 'Đã chuyển dữ liệu thành công!' : 'Data moved!'}**\n${Users}${(OldCards?.Cards?.length) ? `\n> ${vi ? 'Card đã chuyển' : 'Cards moved'}: \`${OldCards.Cards.length}\`` : ''}`)] }))
     }
 }
