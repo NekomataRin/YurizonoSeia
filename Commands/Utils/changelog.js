@@ -144,15 +144,15 @@ module.exports = {
             try {
                 const channel = await interaction.client.channels.fetch(id)
                 for (const message of BuildMessages(Data, 'vi')) await channel.send(message)
-                Results.push(`✅ <#${id}>`)
+                Results.push(`<a:LYG_Check:900783424908963881> <#${id}>`)
             } catch (err) {
                 Log.Error(`Changelog - cannot post in ${id}:`, err.message)
-                Results.push(`❌ <#${id}> - \`${err.message}\``)
+                Results.push(`<a:LYG_Declined:911168125289005166> <#${id}> - \`${err.message}\``)
             }
         }
 
         await interaction.editReply(V2({
-            embeds: [SeiaEmbed(interaction, (Results.every(r => r.startsWith('✅'))) ? 'Green' : 'Red')
+            embeds: [SeiaEmbed(interaction, (Results.every(r => r.startsWith('<a:LYG_Check:900783424908963881>'))) ? 'Green' : 'Red')
                 .setTitle(`<:seiaheh:1244128244664504392> • Changelog v${version} - ${(Publish) ? 'Published' : 'Test'}`)
                 .setDescription(Results.join('\n'))]
         }))

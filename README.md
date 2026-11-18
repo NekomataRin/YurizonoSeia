@@ -9,9 +9,11 @@ Nekorin727 - The TRUE Owner Of This Bot
 
 A small one: buttons and menus now sit inside Seia's message box (Discord's Components V2) instead of floating under it.
 
-- Messages with buttons / menus are one box with a colored edge like an embed, the buttons and menus are inside it: `/help`, `/background-list`, `/leaderboard`, `/quick-math-top`, `/game-2048-top`, `/game-2048`, `/howgay-stats`, `/omikuji-stats`, `/shiprate`, `/number-convert`, `/warn-list`, `/background-manage-list`, the reset commands with a confirm button, `/data-transfer`, and posting `/changelog`
+- Messages with buttons / menus keep the classic embed layout (colored edge, user name, title, text, fields, image, footer), the buttons and menus are now inside the box: `/help`, `/background-list`, `/leaderboard`, `/quick-math-top`, `/game-2048-top`, `/game-2048`, `/howgay-stats`, `/omikuji-stats`, `/shiprate`, `/number-convert`, `/warn-list`, `/background-manage-list`, the reset commands with a confirm button, `/data-transfer`, and posting `/changelog`
 - When the time is up, the buttons / menus go away and the content stays
 - Commands without buttons still show embeds like before
+- No more default (Unicode) emojis in Seia's answers, only the server's own emojis: the top 3 of the leaderboards get osu! ranks (SS / S / A) instead of medals, `/omikuji` cards have no icons in their titles and list their omens with ▸
+- `/howgay` special cases go by the first decimal, no rounding: `72.7` = any result from `72.7000%` to `72.7999%`
 
 ## Changelog - v1.4.2
 
@@ -35,7 +37,7 @@ Commands of the same group now sit next to each other when you type `/`, and **m
 - `/restrict` + `/unrestrict` are **bot owner only** now: who can't use Seia's commands is the owner's call, and Mods can be restricted too (other bot owners can't)
 - Ranking / leaderboard commands can always be used by the bot owners: `/leaderboard-reset`, `/background-manage`, `/background-manage-list`, `/data-transfer`, `/quick-math-reset`, `/game-2048-reset`
 - Command descriptions say who can use them: `-Mod Only-`, `-Mod/Owner Only-`, `-Owner Only-`
-- New `/help`: the menu goes straight to each command group, each group is split into 👥 Everyone / 🛡️ Mod / 👑 Owner, command names are clickable, and the home page sums up every group
+- New `/help`: the menu goes straight to each command group, each group is split into Everyone / Mod / Owner sections, command names are clickable, and the home page sums up every group
 - Every `/background-*` command is on the Utils page, `/exp-set` + `/exp-penalty` on the Ranking page
 
 ### Rank cards per server

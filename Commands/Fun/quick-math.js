@@ -133,8 +133,8 @@ module.exports = {
 
                     await ReplyMsg.edit({
                         embeds: [GameEmbed(vi
-                            ? `## Trò Chơi Kết Thúc!\n**Độ Khó** \`${OfficialKey}\` | **Level** \`${level}\` | **Câu** \`${count + 1}\` | **Điểm** \`${score}\` \n\`\`\`js\n${Eqt.Text} = ${Eqt.Answer}\`\`\`${NewBest ? '\n> 🏆 **Kỷ lục mới!** Xem bảng xếp hạng bằng `/quick-math-top`' : ''}`
-                            : `## Game Over!\n**Difficulty** \`${OfficialKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \n\`\`\`js\n${Eqt.Text} = ${Eqt.Answer}\`\`\`${NewBest ? '\n> 🏆 **New best score!** See the leaderboard with `/quick-math-top`' : ''}`,
+                            ? `## Trò Chơi Kết Thúc!\n**Độ Khó** \`${OfficialKey}\` | **Level** \`${level}\` | **Câu** \`${count + 1}\` | **Điểm** \`${score}\` \n\`\`\`js\n${Eqt.Text} = ${Eqt.Answer}\`\`\`${NewBest ? '\n> <a:LYG_Star:1084085189174632538> **Kỷ lục mới!** Xem bảng xếp hạng bằng `/quick-math-top`' : ''}`
+                            : `## Game Over!\n**Difficulty** \`${OfficialKey}\` | **Level** \`${level}\` | **Question** \`${count + 1}\` | **Score** \`${score}\` \n\`\`\`js\n${Eqt.Text} = ${Eqt.Answer}\`\`\`${NewBest ? '\n> <a:LYG_Star:1084085189174632538> **New best score!** See the leaderboard with `/quick-math-top`' : ''}`,
                             OriginalColor, OriginalEmoji)]
                     }).catch(() => {})
                     return

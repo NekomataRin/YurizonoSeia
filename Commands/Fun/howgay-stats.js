@@ -23,8 +23,8 @@ module.exports = {
         const LangKey = await GetLanguage(interaction)
         if (!LangKey) return
         const vi = (LangKey === 'vi')
-        const UserTitle = vi ? `🏳️‍🌈 Thống Kê Chỉ Số Gay Của Người Dùng` : `🏳️‍🌈 Checking Gayness Stats Of A User`
-        const ServerTitle = vi ? `🏳️‍🌈 Thống Kê Chỉ Số Gay Của Cả Server` : `🏳️‍🌈 Checking Gayness Stats Of Server`
+        const UserTitle = vi ? `<:imgay:1356678016348197047> Thống Kê Chỉ Số Gay Của Người Dùng` : `<:imgay:1356678016348197047> Checking Gayness Stats Of A User`
+        const ServerTitle = vi ? `<:imgay:1356678016348197047> Thống Kê Chỉ Số Gay Của Cả Server` : `<:imgay:1356678016348197047> Checking Gayness Stats Of Server`
 
         const UserRow = new ActionRowBuilder().addComponents(
             new UserSelectMenuBuilder()

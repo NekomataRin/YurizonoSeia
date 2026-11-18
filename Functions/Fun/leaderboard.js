@@ -1,7 +1,8 @@
 const { SeiaEmbed } = require('../../Utils/embed')
 
 const PerPage = 10
-const Medals = ['🥇', '🥈', '🥉']
+// osu! ranks instead of medals for the top 3: SS, S, A
+const Medals = ['<:RankX:1367507004058501341>', '<:RankS:1367506729545371788>', '<:RankA:1367506082892615760>']
 
 /*
 Leaderboard pages (10 players each) for /leaderboard, /quick-math-top and /game-2048-top

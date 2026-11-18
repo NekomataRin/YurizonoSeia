@@ -116,7 +116,7 @@ module.exports = async (client, message) => {
     if (redirectLinks.length === 1) {
         const Steps = `${EMOJI_STEP1} Open the link in your browser.\n${EMOJI_STEP2} Copy the full video or reel URL from the address bar.\n${EMOJI_STEP3} Repost that full link in the chat (NOT HERE) and I’ll convert it automatically for you!\n\n> Also: Don't forget this link you've sent here in case you wanted to copy again: ${redirectLinks[0][0]}`
         try {
-            await message.author.send(`🔗 Sensei! You sent a **Facebook redirect link**, please follow these steps below to get the full link!\n\n${Steps}`)
+            await message.author.send(`<a:LYG_Arrow:1093051541667196949> Sensei! You sent a **Facebook redirect link**, please follow these steps below to get the full link!\n\n${Steps}`)
 
             const notice = await message.channel.send(`${EMOJI_ERROR} ${message.author} Sensei! This link is a redirect link, I cannot automatically convert it to the link you need. Please check your DMs for the instructions!`)
             setTimeout(() => notice.delete().catch(() => {}), 10000)

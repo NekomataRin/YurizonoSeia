@@ -29,7 +29,7 @@ module.exports = {
         const Time = (ms) => `<t:${Math.floor(ms / 1000)}> (<t:${Math.floor(ms / 1000)}:R>)`
 
         const Lines = [
-            `${Arrow} **${vi ? 'Tên user' : 'User'}:** ${user} (\`${user.username}\`)${(user.bot) ? ' • 🤖 Bot' : ''}`,
+            `${Arrow} **${vi ? 'Tên user' : 'User'}:** ${user} (\`${user.username}\`)${(user.bot) ? ' • `BOT`' : ''}`,
             `${Arrow} **User ID:** \`${user.id}\``,
             `${Arrow} **${vi ? 'Ngày tạo tài khoản' : 'Account created'}:** ${Time(user.createdTimestamp)}`,
             (member) ? `${Arrow} **${vi ? 'Ngày tham gia server' : 'Joined the server'}:** ${Time(member.joinedTimestamp)}` : `${Arrow} **${vi ? 'Không có ở trong server này' : 'Not in this server'}**`

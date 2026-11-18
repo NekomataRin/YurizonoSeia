@@ -34,8 +34,8 @@ const Changelog = {
         },
         {
             Name: '<:seiaheh:1244128244664504392> Ranking & minigame',
-            Value: `▸ \`/top\` → \`/leaderboard\`, có nút chuyển trang ◀ ▶ và huy chương cho top 3
-▸ Thêm role **﹝🔥﹞True Member** cho mốc **30000** tổng EXP (vĩnh viễn, giống ﹝🔒﹞Secret Access ở mốc 10000)
+            Value: `▸ \`/top\` → \`/leaderboard\`, có nút chuyển trang <a:LYG_LArrow:1086297531379613767> <a:LYG_RArrow:1086297678624854077> và huy chương cho top 3
+▸ Thêm role **True Member** cho mốc **30000** tổng EXP (vĩnh viễn, giống Secret Access ở mốc 10000)
 ▸ Điểm \`/quick-math\` giờ tính theo từng server (điểm cũ được giữ ở \`LazyGang\`)
 ▸ Mod có thể reset bảng điểm của server: \`/quick-math-reset\`, \`/game-2048-reset\`
 ▸ \`/reset-rank\` và \`/rank-background\` dùng được ở **All Factor** với các role quản lí của server đó
@@ -82,8 +82,8 @@ const Changelog = {
             },
             {
                 Name: '<:seiaheh:1244128244664504392> Ranking & minigames',
-                Value: `▸ \`/top\` → \`/leaderboard\`, with ◀ ▶ page buttons and medals for the top 3
-▸ New **﹝🔥﹞True Member** role at **30000** total EXP (permanent, like ﹝🔒﹞Secret Access at 10000)
+                Value: `▸ \`/top\` → \`/leaderboard\`, with <a:LYG_LArrow:1086297531379613767> <a:LYG_RArrow:1086297678624854077> page buttons and medals for the top 3
+▸ New **True Member** role at **30000** total EXP (permanent, like Secret Access at 10000)
 ▸ \`/quick-math\` scores are per server now (the old ones stay on \`LazyGang\`)
 ▸ Mods can reset the server's boards: \`/quick-math-reset\`, \`/game-2048-reset\`
 ▸ \`/reset-rank\` and \`/rank-background\` work on **All Factor** for its staff roles

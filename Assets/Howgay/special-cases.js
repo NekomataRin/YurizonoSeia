@@ -1,6 +1,6 @@
 /*
 /howgay easter eggs.
-Key = the result rounded to 1 decimal, e.g. "72.7" = any result from 72.6500% to 72.7499%
+Key = the result cut to 1 decimal (no rounding), e.g. "72.7" = any result from 72.7000% to 72.7999%
 To add one: add an entry below + put its image in Assets/Howgay/CaseImg/Special/NumberCases/
 /howgay-stats shows it automatically, no database change needed.
 */

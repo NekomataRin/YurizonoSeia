@@ -33,7 +33,7 @@ function createGameButtons(UndoUsed = true) {
             Blank(7),
             new ButtonBuilder().setCustomId('undo').setEmoji('1390076263951237240').setStyle(ButtonStyle.Secondary).setDisabled(UndoUsed),
             Blank(8),
-            new ButtonBuilder().setCustomId('quit').setEmoji('❌').setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder().setCustomId('quit').setEmoji('<a:LYG_Declined:911168125289005166>').setStyle(ButtonStyle.Secondary),
             Blank(9)
         )
     ]
@@ -95,12 +95,12 @@ module.exports = {
             embeds: [SeiaEmbed(interaction)
                 .setTitle(`**Game 2048** (Mode: \`${Modeinfo.name}\`)`)
                 .setDescription(vi
-                    ? `Dùng các **nút mũi tên** để **di chuyển**, <:undo:1390076263951237240> để **Undo**, và **❌** để thoát\n${ModeDesc}`
-                    : `Please use the **Arrow Buttons** to **Move**, <:undo:1390076263951237240> to **Undo**, and **❌** to quit\n${ModeDesc}`)]
+                    ? `Dùng các **nút mũi tên** để **di chuyển**, <:undo:1390076263951237240> để **Undo**, và **<a:LYG_Declined:911168125289005166>** để thoát\n${ModeDesc}`
+                    : `Please use the **Arrow Buttons** to **Move**, <:undo:1390076263951237240> to **Undo**, and **<a:LYG_Declined:911168125289005166>** to quit\n${ModeDesc}`)]
         }))
         await wait(5000)
 
-        const Controls = vi ? 'Dùng mũi tên để di chuyển, <:undo:1390076263951237240> để Undo, ❌ để thoát.' : 'Use arrows to move, <:undo:1390076263951237240> to Undo, ❌ to Quit.'
+        const Controls = vi ? 'Dùng mũi tên để di chuyển, <:undo:1390076263951237240> để Undo, <a:LYG_Declined:911168125289005166> để thoát.' : 'Use arrows to move, <:undo:1390076263951237240> to Undo, <a:LYG_Declined:911168125289005166> to Quit.'
         const BoardEmbed = (color = 'Yellow', desc = Controls) => SeiaEmbed(interaction, color)
             .setTitle(`**Game 2048** (Mode: \`${Modeinfo.name}\`)`)
             .setDescription(desc)
@@ -170,7 +170,7 @@ module.exports = {
                 }
             }
 
-            if (NewBest) reasonText += vi ? '\n> 🏆 **Kỷ lục mới!** Xem bảng xếp hạng bằng `/game-2048-top`' : '\n> 🏆 **New best score!** See the leaderboard with `/game-2048-top`'
+            if (NewBest) reasonText += vi ? '\n> <a:LYG_Star:1084085189174632538> **Kỷ lục mới!** Xem bảng xếp hạng bằng `/game-2048-top`' : '\n> <a:LYG_Star:1084085189174632538> **New best score!** See the leaderboard with `/game-2048-top`'
 
             //The interaction token only lasts 15 minutes, long games edit the message directly
             const GameOver = V2({ embeds: [BoardEmbed('Grey', reasonText)] })

@@ -250,7 +250,7 @@ const { V2 } = require('../../Utils/container')
 await interaction.editReply(V2({ embeds: [MyEmbed], components: [Row] }))   // có nút
 await i.update(V2({ embeds: [Result] }))                                     // bước sau, không còn nút
 ```
-`V2` tự chuyển: màu embed → màu viền, author / tiêu đề / nội dung / field / thumbnail / ảnh / footer → các khối chữ + ảnh trong khung, các hàng nút → đáy khung.
+`V2` vẽ khung **giống hệt bố cục embed truyền thống**, chỉ thêm nút / menu vào trong: màu embed → viền màu; khối đầu = tên người dùng (chữ nhỏ) + tiêu đề in đậm + nội dung (thumbnail nằm bên phải như embed); field = tên in đậm + giá trị; ảnh lớn bên dưới; footer chữ nhỏ kèm giờ; hàng nút / menu ở đáy khung. Khung V2 không vẽ được icon nhỏ cạnh tên / footer, nên footer dùng một emoji Seia nhỏ thay icon.
 
 **3 luật bắt buộc** (Discord kiểm tra, sai là lỗi `Invalid Form Body`):
 1. **Tin đã gửi dạng V2 thì MỌI lần sửa sau của chính tin đó cũng phải qua `V2(...)`**: `i.update`, `editReply` kết quả, lần sửa xoá nút khi hết giờ... Không được quay lại `{ embeds }` thường.
@@ -438,7 +438,7 @@ Khởi động bot mà card thiếu ảnh / trùng key thì log có dòng `[WARN
 
 | Muốn | Sửa ở đâu |
 |---|---|
-| Thêm easter egg `/howgay` | `Assets/Howgay/special-cases.js`: key = kết quả làm tròn 1 chữ số thập phân (`"72.7"`), + ảnh trong `Assets/Howgay/CaseImg/Special/NumberCases/`. Không cần sửa database |
+| Thêm easter egg `/howgay` | `Assets/Howgay/special-cases.js`: key = kết quả **cắt** còn 1 chữ số thập phân, không làm tròn (`"72.7"` = 72.7000% → 72.7999%), + ảnh trong `Assets/Howgay/CaseImg/Special/NumberCases/`. Không cần sửa database |
 | Thêm người không check được `/howgay` | `Assets/Howgay/rejected.js`: ID người dùng + ảnh trong `CaseImg/Rejected/` + câu `en-US` / `vi`. Comment phía trên = tên hiển thị (@username) |
 | Câu nhận xét `/howgay` theo khoảng % | `Assets/Howgay/Texts/allcases.js` (tiếng Anh) + `allcases-vn.js` (tiếng Việt) |
 | Câu `/omikuji` | `Assets/Omikuji/Texts/cases.js` + `cases-vn.js`, cấu hình ở `Assets/Omikuji/config.js` |
@@ -453,6 +453,7 @@ Khởi động bot mà card thiếu ảnh / trùng key thì log có dòng `[WARN
 - **Seia chỉ dùng được emoji của server Seia đang ở** (Lazy Gang, các server LYG_EmojiSaver / LYG Asset...). Emoji của server khác sẽ hiện thành chữ `:tên:`.
 - **Không dùng emoji của All Factor.**
 - Emoji Hololive / Touhou cũ đã lỗi thời trong câu trả lời của lệnh → dùng emoji **Blue Archive / Senren Banka**. Riêng emoji trong `Assets/` (card Touhou, ô 2048, xúc xắc...) là asset, giữ nguyên.
+- **Không dùng emoji mặc định (Unicode) như 🏆 ✅ ❌ 👑 🥇** ở bất cứ đâu Seia hiển thị (lệnh, event, cả asset như lá xăm, changelog): luôn dùng emoji riêng của server cho chuyên nghiệp. Ký hiệu chữ như `▸ • ►` và `©` thì được. Vài emoji riêng thay thế hay dùng: hoàn thành `LYG_Check`, lỗi / thoát `LYG_Declined`, kỷ lục `LYG_Star`, top 3 bảng xếp hạng `RankX` / `RankS` / `RankA`.
 - Nút bấm: `.setEmoji('ID')` (chỉ số ID). Menu: `emoji: '<:tên:ID>'`.
 
 ---
@@ -549,7 +550,7 @@ node -e "console.log(require('./Assets/RankCards').RankCards.length,'cards')"
 - [ ] `deferReply()` đầu tiên (trừ lệnh mở modal)
 - [ ] `GetLanguage` → `if (!LangKey) return`
 - [ ] Câu trả lời song ngữ, Seia xưng "em" gọi "Sensei"
-- [ ] Emoji dùng được, không phải All Factor, không phải Hololive / Touhou (ngoài asset)
+- [ ] Emoji dùng được, không phải All Factor, không phải Hololive / Touhou (ngoài asset), **không có emoji Unicode**
 - [ ] Có nút / menu → gửi bằng `V2(...)`, và mọi lần sửa sau của tin đó cũng `V2(...)` (cả lúc hết giờ)
 - [ ] Cooldown: field trong `Database/cooldown.js` + dòng trong `/check-cooldown`
 - [ ] Thời gian lưu / so sánh dùng `Clock.Now()`

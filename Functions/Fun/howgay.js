@@ -22,9 +22,9 @@ function FormatTicks(ticks) {
     return (ticks / SCALE).toFixed(4)
 }
 
-// Key of the special table: result rounded to 1 decimal, 727499 (72.7499%) -> '72.7'
+// Key of the special table: result CUT to 1 decimal (no rounding), 727000 -> 727999 (72.7000% -> 72.7999%) = '72.7'
 function SpecialKey(ticks) {
-    return (Math.round(ticks / 1000) / 10).toFixed(1)
+    return (Math.floor(ticks / 1000) / 10).toFixed(1)
 }
 
 // Mongo map keys can't contain '.', so '72.7' is saved as '72_7'

@@ -66,7 +66,7 @@ module.exports = {
             .setCustomId('bg-col')
             .setPlaceholder(vi ? 'Chọn bộ sưu tập' : 'Pick a collection')
             .addOptions([
-                { label: vi ? '| Tổng quan' : '| Overview', description: vi ? 'Mọi bộ sưu tập + card đang dùng' : 'Every collection + your equipped card', emoji: '📚', value: 'home', default: current === 'home' },
+                { label: vi ? '| Tổng quan' : '| Overview', description: vi ? 'Mọi bộ sưu tập + card đang dùng' : 'Every collection + your equipped card', emoji: '<:NoaNoted:1247028261847040050>', value: 'home', default: current === 'home' },
                 { label: vi ? '| Card của Sensei' : '| Your cards', description: `${Mine.length} card`, emoji: Icon.owned, value: 'mine', default: current === 'mine' },
                 ...Parts.map(p => ({ label: `| ${p.Name}`, description: `${p.Cards.length} card · ${L.owned.toLowerCase()} ${Owned(p.Cards)}`, emoji: p.Cards[0].Emoji, value: p.Id, default: current === p.Id }))
             ].slice(0, 25)))

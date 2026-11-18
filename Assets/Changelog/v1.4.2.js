@@ -31,7 +31,7 @@ const Changelog = {
 ▸ \`/restrict\` + \`/unrestrict\` giờ **chỉ chủ bot** mới dùng được: cấm ai dùng lệnh của Seia là việc chủ bot quyết, Mod cũng bị cấm như thường
 ▸ Lệnh ranking / bảng điểm thì chủ bot luôn dùng được: \`/leaderboard-reset\`, \`/background-manage\`, \`/background-manage-list\`, \`/data-transfer\`, \`/quick-math-reset\`, \`/game-2048-reset\`
 ▸ Mô tả lệnh ghi rõ ai dùng được: \`-Mod Only-\`, \`-Mod/Owner Only-\`, \`-Owner Only-\`
-▸ \`/help\` làm mới: menu chọn thẳng từng nhóm lệnh, mỗi nhóm chia phần 👥 Mọi người / 🛡️ Mod / 👑 Owner, bấm vào tên lệnh là dùng được luôn
+▸ \`/help\` làm mới: menu chọn thẳng từng nhóm lệnh, mỗi nhóm chia phần <:arona:1245354648651563101> Mọi người / <:ShirokoGun:1243750682759008268> Mod / <:typhoYahoo:1568985448762843237> Owner, bấm vào tên lệnh là dùng được luôn
 ▸ Cả nhóm \`/background-*\` nằm chung trang **Tiện ích**, \`/exp-set\` + \`/exp-penalty\` ở trang **Xếp hạng**`
         },
         {
@@ -51,13 +51,13 @@ const Changelog = {
         },
         {
             Name: '<:SeiaSip:1244890166116618340> Linh tinh',
-            Value: `▸ \`/howgay\` ở All Factor giờ cũng có role **﹝🌈﹞ I'M GAY** và **﹝🔥﹞Giga CHAD**, nằm trên role Member để hiện màu
+            Value: `▸ \`/howgay\` ở All Factor giờ cũng có role **I'M GAY** và **Giga CHAD**, nằm trên role Member để hiện màu
 ▸ Cập nhật danh sách người dùng không thể check bằng \`/howgay\`
 ▸ \`/mod-afk\`: ping chủ bot lúc ổng đang AFK sẽ thấy một lời nhắc đặc biệt của Seia, thử là biết~
 ▸ \`/rank\` và \`/leaderboard\` ghi rõ "bị phạt EXP" thay vì "bị hạn chế" (để khỏi nhầm với \`/restrict\`)
 ▸ Các lệnh hồi sinh từ Miosha giờ xưng hô đúng kiểu Seia: em - Sensei
 ▸ Emoji Hololive / Touhou cũ trong câu trả lời của lệnh đã đổi sang emoji Blue Archive / Senren Banka (card Touhou và các asset của game vẫn giữ nguyên)
-▸ \`/background-list\` làm mới: chọn bộ sưu tập rồi chọn card trong menu thả xuống, khỏi bấm ◀ ▶ qua 66 trang; \`card\` để mở thẳng một card, có trang "Card của Sensei"
+▸ \`/background-list\` làm mới: chọn bộ sưu tập rồi chọn card trong menu thả xuống, khỏi bấm <a:LYG_LArrow:1086297531379613767> <a:LYG_RArrow:1086297678624854077> qua 66 trang; \`card\` để mở thẳng một card, có trang "Card của Sensei"
 ▸ Sửa vài lỗi chính tả trong câu trả lời của \`/background-manage\``
         }
     ],
@@ -83,7 +83,7 @@ const Changelog = {
 ▸ \`/restrict\` + \`/unrestrict\` are **bot owner only** now: who can't use Seia's commands is the owner's call, and Mods can be restricted too
 ▸ Ranking / leaderboard commands can always be used by the bot owners: \`/leaderboard-reset\`, \`/background-manage\`, \`/background-manage-list\`, \`/data-transfer\`, \`/quick-math-reset\`, \`/game-2048-reset\`
 ▸ Command descriptions say who can use them: \`-Mod Only-\`, \`-Mod/Owner Only-\`, \`-Owner Only-\`
-▸ New \`/help\`: the menu goes straight to each command group, each group is split into 👥 Everyone / 🛡️ Mod / 👑 Owner, and you can click a command to use it
+▸ New \`/help\`: the menu goes straight to each command group, each group is split into <:arona:1245354648651563101> Everyone / <:ShirokoGun:1243750682759008268> Mod / <:typhoYahoo:1568985448762843237> Owner, and you can click a command to use it
 ▸ Every \`/background-*\` command is on the **Utils** page, \`/exp-set\` + \`/exp-penalty\` on the **Ranking** page`
             },
             {
@@ -103,13 +103,13 @@ const Changelog = {
             },
             {
                 Name: '<:SeiaSip:1244890166116618340> Misc',
-                Value: `▸ \`/howgay\` on All Factor now has the **﹝🌈﹞ I'M GAY** and **﹝🔥﹞Giga CHAD** roles too, right above Member so their color shows
+                Value: `▸ \`/howgay\` on All Factor now has the **I'M GAY** and **Giga CHAD** roles too, right above Member so their color shows
 ▸ Updated the list of users \`/howgay\` can't check
 ▸ \`/mod-afk\`: ping the bot owner while he's AFK and Seia has a special reminder for you, try it~
 ▸ \`/rank\` and \`/leaderboard\` say "EXP penalty" instead of "restricted" (no mix-up with \`/restrict\`)
 ▸ Commands revived from Miosha now talk like Seia (em / Sensei in Vietnamese)
 ▸ The old Hololive / Touhou emojis in command answers were swapped for Blue Archive / Senren Banka ones (Touhou cards and game assets stay)
-▸ New \`/background-list\`: pick a collection, then a card, in drop-down menus instead of ◀ ▶ through 66 pages; \`card\` opens one card directly, plus a "Your cards" page
+▸ New \`/background-list\`: pick a collection, then a card, in drop-down menus instead of <a:LYG_LArrow:1086297531379613767> <a:LYG_RArrow:1086297678624854077> through 66 pages; \`card\` opens one card directly, plus a "Your cards" page
 ▸ A few typos fixed in \`/background-manage\`'s answers`
             }
         ]

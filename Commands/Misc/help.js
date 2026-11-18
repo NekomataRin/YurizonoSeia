@@ -30,10 +30,10 @@ const Labels = [
     { Text: '-NekoRin\'s Only-', Group: 'owner', Note: 'NekoRin' }
 ]
 const Groups = [
-    { Key: 'all', vi: '👥 Mọi người', en: '👥 Everyone' },
-    { Key: 'modowner', vi: '🛡️ Mod / Owner', en: '🛡️ Mod / Owner' },
-    { Key: 'mod', vi: '🛡️ Mod', en: '🛡️ Mod' },
-    { Key: 'owner', vi: '👑 Owner', en: '👑 Owner' }
+    { Key: 'all', vi: '<:arona:1245354648651563101> Mọi người', en: '<:arona:1245354648651563101> Everyone' },
+    { Key: 'modowner', vi: '<:HinaRose:1392733063762546779> Mod / Owner', en: '<:HinaRose:1392733063762546779> Mod / Owner' },
+    { Key: 'mod', vi: '<:ShirokoGun:1243750682759008268> Mod', en: '<:ShirokoGun:1243750682759008268> Mod' },
+    { Key: 'owner', vi: '<:typhoYahoo:1568985448762843237> Owner', en: '<:typhoYahoo:1568985448762843237> Owner' }
 ]
 
 // Clickable command (</name:id>) once Discord gave its ID (Handlers/commandHandler.js), plain bold text otherwise
@@ -53,7 +53,7 @@ function Describe(command, vi) {
 
 const CommandsOf = (client, Folder) => client.commands.filter(c => c.Category === Folder).sort((a, b) => a.data.name.localeCompare(b.data.name))
 
-// Pages of one category: "👥 Everyone" commands first, then the staff ones (more pages only when it's too long)
+// Pages of one category: "Everyone" commands first, then the staff ones (more pages only when it's too long)
 function CategoryPages(interaction, Folder, vi) {
     const Cat = CategoryOf(Folder)
     const List = CommandsOf(interaction.client, Folder).map(c => Describe(c, vi))
@@ -117,7 +117,7 @@ module.exports = {
                 '> <:KikyouLove:1415972689822093383> Changelog · <a:ShirokoChill:1230150488360615937> Credits · <a:ShirokoWot:1230151146249781298> FAQ',
                 '',
                 `-# ${vi ? 'Đổi ngôn ngữ trả lời của Seia' : 'Change Seia\'s language'}: ${Mention(commands.get('setup-language'))}`,
-                `🔗 [[Support Server - Lazy Gang]](${Invite})`
+                `<a:LYG_Arrow:1093051541667196949> [[Support Server - Lazy Gang]](${Invite})`
             ].join('\n'))
 
         const Data = Changelogs[Version]

@@ -12,7 +12,7 @@ const Changelog = {
     Title: '<:seiaheh:1244128244664504392> **Yurizono Seia - Changelog v1.4.0**',
     Description: `<:SeiaSip:1244890166116618340> Chào các Sensei! Bản **\`1.4.0\`** đã chính thức lên sóng, đây là toàn bộ những gì đã thay đổi nè~
 
-### 💬 Lời nhắn từ chủ bot
+### <:SeiaSip:1244890166116618340> Lời nhắn từ chủ bot
 > <:seiaheh:1244128244664504392> - *Well, sau một khoảng thời gian dài, cuối cùng cũng đã update cho mấy chế bản \`1.4.0\` đây, lưu ý là bản này trở đi là chỉ toàn instruction cho \`Claude Pro\`, nhưng logic cốt lõi vẫn quen thuộc đó thôi nhá, yên tâm, tui làm chủ được prompt mà nên nếu có bug thì có thể nhìn vào mà fix nhá =)))*`,
 
     Sections: [
@@ -65,7 +65,7 @@ const Changelog = {
             Name: '<:SeiaPeek:1244890461592621147> Bảng xếp hạng mới',
             Value: `▸ \`/quick-math-top\`: bảng xếp hạng theo từng độ khó
 ▸ \`/game-2048-top\`: bảng xếp hạng theo từng chế độ
-▸ Phá kỷ lục sẽ có thông báo 🏆 ở cuối ván
+▸ Phá kỷ lục sẽ có thông báo <a:LYG_Star:1084085189174632538> ở cuối ván
 -# Lưu ý: Cái này tui chưa kiểm chứng cụ thể, nên chưa rõ nhá!`
         },
         {
@@ -94,7 +94,7 @@ const Changelog = {
     En: {
         Description: `<:SeiaSip:1244890166116618340> Hello Sensei! Version **\`1.4.0\`** is officially out, here is everything that changed~
 
-### 💬 A message from the bot owner
+### <:SeiaSip:1244890166116618340> A message from the bot owner
 > <:seiaheh:1244128244664504392> - *Well, after a looong time, here is finally the \`1.4.0\` update. From this version on, everything is written with \`Claude Pro\` instructions, but the core logic is the same one you know, don't worry. I'm in control of the prompts, so if there's a bug I can look at it and fix it =)))*`,
         Sections: [
             {
@@ -146,7 +146,7 @@ const Changelog = {
                 Name: '<:SeiaPeek:1244890461592621147> New leaderboards',
                 Value: `▸ \`/quick-math-top\`: leaderboard for each difficulty
 ▸ \`/game-2048-top\`: leaderboard for each mode
-▸ Beating your best score shows a 🏆 message at the end of the game
+▸ Beating your best score shows a <a:LYG_Star:1084085189174632538> message at the end of the game
 -# Note: I haven't fully checked this one yet, so not sure!`
             },
             {

@@ -71,7 +71,7 @@ module.exports = {
         const target = interaction.options.getUser('user') || interaction.user
         const tuser = await interaction.guild.members.fetch(target.id).catch(() => null)
         const AvgChr = interaction.options.getBoolean('avg') || false
-        const Title = vi ? `🏳️‍🌈 Kiểm tra độ gay của ai đó` : `🏳️‍🌈 Checking gayness of a user`
+        const Title = vi ? `<:imgay:1356678016348197047> Kiểm tra độ gay của ai đó` : `<:imgay:1356678016348197047> Checking gayness of a user`
         const Thumbnail = AvatarOf(tuser || target)
 
         //Rejected users + bots (Seia has her own line in Rejected)

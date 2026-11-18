@@ -30,8 +30,8 @@ module.exports = {
         const LangKey = await GetLanguage(interaction)
         if (!LangKey) return
         const vi = (LangKey === 'vi')
-        const UserTitle = vi ? `🎋 Thống Kê Lượt Dùng Omikuji Của Người Dùng` : `🎋 Checking Omikuji Stats Of A User`
-        const ServerTitle = vi ? `🎋 Thống Kê Lượt Dùng Omikuji Của Toàn Server` : `🎋 Checking Omikuji Stats Of Server`
+        const UserTitle = vi ? `<:LYG_Omikuji:1084322622491344937> Thống Kê Lượt Dùng Omikuji Của Người Dùng` : `<:LYG_Omikuji:1084322622491344937> Checking Omikuji Stats Of A User`
+        const ServerTitle = vi ? `<:LYG_Omikuji:1084322622491344937> Thống Kê Lượt Dùng Omikuji Của Toàn Server` : `<:LYG_Omikuji:1084322622491344937> Checking Omikuji Stats Of Server`
 
         if (interaction.guild.id !== process.env.GUILD_ID) {
             return interaction.editReply({
